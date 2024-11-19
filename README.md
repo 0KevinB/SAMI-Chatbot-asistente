@@ -1,32 +1,20 @@
-# SAMMY - Chatbot Asistente Médico para la Diabetes
+# SAMMY - Asistente Virtual para Seguimiento de Diabetes
 
-SAMMY es un chatbot asistente diseñado para ayudar a pacientes y médicos en el seguimiento de la diabetes. El sistema permite cargar historias clínicas, consultarlas de manera eficiente y generar recomendaciones personalizadas basadas en la información médica. Todo esto, con un enfoque en mejorar la calidad de vida de los pacientes y apoyar a los médicos en su práctica diaria.
+## 📋 Descripción
+SAMMY es un chatbot de WhatsApp diseñado para mejorar el seguimiento de pacientes con diabetes, facilitando el acceso a historias clínicas y proporcionando recomendaciones personalizadas mediante inteligencia artificial.
 
-## 🚀 Características principales
+## 🚀 Características Principales
+- Acceso a historias clínicas vía WhatsApp
+- Recomendaciones personalizadas usando IA
+- Panel web para médicos
+- Gestión segura de datos médicos
 
-### Gestión de historias clínicas
-- Los médicos pueden cargar archivos PDF con datos médicos
-- Los pacientes pueden consultar sus historias clínicas en cualquier momento
-
-### Recomendaciones personalizadas
-- SAMMY analiza la información médica y genera sugerencias personalizadas usando inteligencia artificial
-
-### Integración con WhatsApp
-- Permite una comunicación sencilla y directa con los usuarios
-
-### Privacidad y seguridad
-- Cumple con normativas para proteger los datos sensibles de los usuarios
-
-## 🛠️ Tecnologías utilizadas
-
-- **Frontend:** SnatchBot para la creación del flujo conversacional
-- **Backend:** Django con Django REST Framework para la gestión de datos y API
-- **Base de datos:** Firebase Firestore para almacenamiento en la nube
-- **Procesamiento de PDFs:** Librerías como DocumentConverter, PyPDF2, o Tesseract OCR
-- **Mensajería:** WhatsApp Business API
-- **Inteligencia Artificial:** OpenAI API para generar recomendaciones personalizadas
-
-## 🏗️ Arquitectura del sistema
+## 🛠️ Tecnologías
+- **Backend:** Node.js con Express
+- **Frontend:** Angular
+- **Base de Datos:** Firebase
+- **IA:** OpenAI API
+- **Autenticación:** Firebase Auth
 
 ### Flujo general
 
@@ -42,77 +30,42 @@ SAMMY es un chatbot asistente diseñado para ayudar a pacientes y médicos en el
 1. Consulta su historia clínica desde WhatsApp mediante comandos simples
 2. Recibe recomendaciones personalizadas y consejos médicos
 
-### Diagrama de arquitectura
-```
-[Usuario (Médico/Paciente)] 
-        ↓
-    [SnatchBot]
-        ↓
-   [Django Backend]
-        ↓
-[Firebase (Base de datos + Almacenamiento)]
-        ↓
- [OpenAI API para IA]
-```
 
-## 🧩 Metodología de trabajo
+## ⚙️ Configuración del Proyecto
 
-### Metodología ágil
-Seguiremos un enfoque iterativo e incremental utilizando Scrum:
+### Prerrequisitos
+- Node.js 16+
+- Angular CLI
+- Cuenta en Firebase
+- API Key de OpenAI
+- WhatsApp Business API
 
-- Sprints de 2 semanas
-- Backlog del producto con prioridades definidas
-- Reuniones diarias (15 minutos) para seguimiento
-- Entrega de MVP inicial en la primera iteración
-
-### Tareas iniciales
-1. Diseñar el flujo del chatbot en SnatchBot
-2. Configurar el entorno backend con Django y Firebase
-3. Implementar la funcionalidad básica de carga de PDFs
-4. Prototipo funcional para la consulta de historias clínicas
-
-## 🌟 Primeros pasos
-
-### 1. Requisitos previos
-Asegúrate de tener instalados:
-- Python 3.9+ (para el backend)
-- Django y Django REST Framework
-- Firebase CLI y cuenta en Firebase
-- Acceso a la OpenAI API y cuenta en SnatchBot
-- Herramientas para la WhatsApp Business API (como Twilio)
-
-### 2. Clonar el repositorio
+### Instalación
 ```bash
-git clone https://github.com/tu-usuario/SAMMY-Chatbot-asistente.git
-cd SAMMY-Chatbot-asistente
+# Clonar el repositorio
+git clone https://github.com/0KevinB/sammy-chatbot.git
+
+# Instalar dependencias
+npm install
+
+# Configurar variables de entorno
+# Crear archivo .env con:
+FIREBASE_CONFIG=your_config
+OPENAI_API_KEY=your_key
+WHATSAPP_TOKEN=your_token
 ```
 
-### 3. Instalar dependencias del backend
-```bash
-pip install -r requirements.txt
-```
+## 📱 MVP - Funcionalidades
 
-### 4. Configurar variables de entorno
-Crea un archivo `.env` con las siguientes claves:
-```env
-OPENAI_API_KEY=tu_clave_de_openai
-FIREBASE_PROJECT_ID=tu_id_de_firebase
-WHATSAPP_API_TOKEN=tu_token_de_whatsapp
-```
+### Panel Médico (Angular)
+- Login/Registro de médicos
+- Subida de historias clínicas (PDF)
+- Gestión de pacientes
 
-### 5. Ejecutar el servidor
-```bash
-python manage.py runserver
-```
-
-## 🎯 Próximos pasos
-- Finalizar la configuración del flujo en SnatchBot
-- Implementar la integración de WhatsApp con la API
-- Desarrollar las reglas iniciales para recomendaciones básicas
-- Probar el sistema con usuarios reales y recopilar feedback
-
-## 📖 Documentación
-Consulta la Wiki del proyecto para obtener más detalles sobre la arquitectura, configuraciones avanzadas y guías para desarrolladores.
+### Chatbot (WhatsApp)
+- Consulta de historia clínica
+- Recomendaciones básicas
+- Respuestas automatizadas con IA
 
 ## 🤝 Contribuir
 ¡Nos encantaría recibir tu ayuda! Si tienes ideas o quieres contribuir, sigue estos pasos:
@@ -122,10 +75,14 @@ Consulta la Wiki del proyecto para obtener más detalles sobre la arquitectura, 
 3. Haz tus cambios y realiza un commit (`git commit -m "Descripción del cambio"`)
 4. Sube tus cambios (`git push origin feature/nueva-funcionalidad`)
 5. Abre un Pull Request
-
+   
 ## 📧 Contacto
-Si tienes preguntas o sugerencias, no dudes en contactarnos:
 
-**Kevin - Creador principal**
-- Correo: kevin@ejemplo.com
-- LinkedIn: linkedin.com/in/kevin
+**Kevin Barrazueta**
+- Correo: kabarrazzueta@utpl.edu.ec
+
+**Carolina Alvarado**
+- Correo: cdalvarado3@utpl.edu.ec
+
+**Jean Alejo**
+- Correo: jgalejo@utpl.edu.ec
