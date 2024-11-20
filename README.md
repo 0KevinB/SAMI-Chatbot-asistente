@@ -1,7 +1,7 @@
-# SAMMY - Asistente Virtual para Seguimiento de Diabetes
+# SAMI - Asistente Virtual para Seguimiento de Diabetes
 
 ## 📋 Descripción
-SAMMY es un chatbot de WhatsApp diseñado para mejorar el seguimiento de pacientes con diabetes, facilitando el acceso a historias clínicas y proporcionando recomendaciones personalizadas mediante inteligencia artificial.
+SAMI es un chatbot de WhatsApp diseñado para mejorar el seguimiento de pacientes con diabetes, facilitando el acceso a historias clínicas y proporcionando recomendaciones personalizadas mediante inteligencia artificial.
 
 ## 🚀 Características Principales
 - Acceso a historias clínicas vía WhatsApp
@@ -19,7 +19,7 @@ SAMMY es un chatbot de WhatsApp diseñado para mejorar el seguimiento de pacient
 ### Flujo general
 
 #### Médico
-1. Carga la historia clínica del paciente (PDF) a través de SAMMY
+1. Carga la historia clínica del paciente (PDF) a través de SAMI
 2. El sistema analiza el documento y extrae los datos relevantes
 
 #### Backend
@@ -43,7 +43,7 @@ SAMMY es un chatbot de WhatsApp diseñado para mejorar el seguimiento de pacient
 ### Instalación
 ```bash
 # Clonar el repositorio
-git clone https://github.com/0KevinB/sammy-chatbot.git
+git clone https://github.com/0KevinB/SAMI-chatbot.git
 
 # Instalar dependencias
 npm install
