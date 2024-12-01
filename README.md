@@ -1,20 +1,20 @@
 # SAMMY - Asistente Virtual para Seguimiento de Diabetes
 
 ## 📋 Descripción
-SAMMY es un chatbot de WhatsApp diseñado para mejorar el seguimiento de pacientes con diabetes, facilitando el acceso a historias clínicas y proporcionando recomendaciones personalizadas mediante inteligencia artificial.
+SAMMY es un chatbot diseñado para mejorar el seguimiento de pacientes con diabetes, facilitando el acceso a historias clínicas y proporcionando recomendaciones personalizadas mediante inteligencia artificial.
 
 ## 🚀 Características Principales
-- Acceso a historias clínicas vía WhatsApp
+- Acceso a historias clínicas
 - Recomendaciones personalizadas usando IA
 - Panel web para médicos
+- Aplicación movil para pacientes
 - Gestión segura de datos médicos
 
 ## 🛠️ Tecnologías
-- **Backend:** Node.js con Express
+- **Backend:** Django
 - **Frontend:** Angular
 - **Base de Datos:** Firebase
 - **IA:** OpenAI API
-- **Autenticación:** Firebase Auth
 
 ### Flujo general
 
@@ -27,7 +27,7 @@ SAMMY es un chatbot de WhatsApp diseñado para mejorar el seguimiento de pacient
 2. Genera recomendaciones basadas en reglas predefinidas e IA
 
 #### Paciente
-1. Consulta su historia clínica desde WhatsApp mediante comandos simples
+1. Consulta su historia clínica mediante comandos simples
 2. Recibe recomendaciones personalizadas y consejos médicos
 
 
@@ -35,25 +35,17 @@ SAMMY es un chatbot de WhatsApp diseñado para mejorar el seguimiento de pacient
 
 ### Prerrequisitos
 - Node.js 16+
-- Angular CLI
+- Django 5.1.3
+- Angular CLI 18.2.12
 - Cuenta en Firebase
 - API Key de OpenAI
-- WhatsApp Business API
 
 ### Instalación
 ```bash
 # Clonar el repositorio
 git clone https://github.com/0KevinB/sammy-chatbot.git
 
-# Instalar dependencias
-npm install
-
 # Configurar variables de entorno
-# Crear archivo .env con:
-FIREBASE_CONFIG=your_config
-OPENAI_API_KEY=your_key
-WHATSAPP_TOKEN=your_token
-```
 
 ## 📱 MVP - Funcionalidades
 
@@ -62,7 +54,7 @@ WHATSAPP_TOKEN=your_token
 - Subida de historias clínicas (PDF)
 - Gestión de pacientes
 
-### Chatbot (WhatsApp)
+### Chatbot (Flutter)
 - Consulta de historia clínica
 - Recomendaciones básicas
 - Respuestas automatizadas con IA
