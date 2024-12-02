@@ -1,4 +1,12 @@
+# Ignorar directorios comunes
 node_modules/
 dist/
+
+# Ignorar archivos de configuración sensibles
 .env
 firebase.json
+config/
+firebase_credentials.json
+
+# Ignorar cualquier archivo de configuración dentro del backend/SAMI/config/
+backend/SAMI/config/firebase_credentials.json
