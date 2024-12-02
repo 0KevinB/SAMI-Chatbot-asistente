@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'app',
     'rest_framework',
-    'corsheaders'
+    'corsheaders',
+    'rest_framework_simplejwt'
 ]
 
 MIDDLEWARE = [
@@ -58,17 +59,13 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
-    ],
-    'DEFAULT_PERMISSION_CLASSES': [
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+    'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
-    ],
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10,
+    ),
 }
-
 ROOT_URLCONF = 'SAMI.urls'
 
 TEMPLATES = [
@@ -149,10 +146,8 @@ from firebase_admin import credentials, firestore, storage
 FIREBASE_CREDENTIALS = "config/firebase_credentials.json"
 
 # Inicializa Firebase
-cred = credentials.Certificate(FIREBASE_CREDENTIALS)
+cred = credentials.Certificate("config/firebase_credentials.json")
 firebase_admin.initialize_app(cred, {
-    'storageBucket': 'sammy-ae034.appspot.com'
+    'storageBucket': 'sammy-ae034.firebasestorage.app'
 })
 
-# Configuración adicional
-FIREBASE_STORAGE_BUCKET = 'sammy-ae034.appspot.com'

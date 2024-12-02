@@ -11,3 +11,4 @@ firebase_crede
 # Ignorar cualquier archivo de configuración dentro del backend/SAMI/config/
 backend/SAMI/config/firebase_credentials.json
 docs/Informacion (1)/
+backend/SAMI/test.py
