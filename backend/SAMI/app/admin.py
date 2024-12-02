@@ -1,4 +1,6 @@
 from django.contrib import admin
-from .models import PDF
+from .models import *
 
-admin.site.register(PDF)
+admin.site.register(HistoriaClinica)
+admin.site.register(Medico)
+admin.site.register(Paciente)

@@ -1,63 +1,73 @@
-import io
-from django.http import Http404
-from rest_framework.views import APIView
+# app/views.py
+
+from rest_framework import viewsets, status
 from rest_framework.response import Response
-from rest_framework import status
+from rest_framework.decorators import action
+from rest_framework.parsers import MultiPartParser, FormParser
+from .models import Medico, Paciente, HistoriaClinica
+from .serializers import MedicoSerializer, PacienteSerializer, HistoriaClinicaSerializer, HistoriaClinicaCreateSerializer
 from firebase_admin import storage
-import PyPDF2
-from .models import PDF
-from .serializers import PDFTextSerializer, PDFFileSerializer
-from rest_framework.permissions import AllowAny
-from PyPDF2.errors import PdfReadError
+import uuid
 
-class PDFTextView(APIView):
-    def get(self, request, pk):
-        try:
-            pdf = PDF.objects.get(pk=pk)
-        except PDF.DoesNotExist:
-            raise Http404
+class MedicoViewSet(viewsets.ModelViewSet):
+    queryset = Medico.objects.all()
+    serializer_class = MedicoSerializer
+    lookup_field = 'cedula'
 
-        bucket = storage.bucket()
-        blob = bucket.blob(pdf.firebase_path)
+class PacienteViewSet(viewsets.ModelViewSet):
+    queryset = Paciente.objects.all()
+    serializer_class = PacienteSerializer
+    lookup_field = 'cedula'
 
-        # Descargar el archivo PDF de Firebase Storage
-        pdf_file = io.BytesIO()
-        try:
-            blob.download_to_file(pdf_file)
-            pdf_file.seek(0)
-        except Exception as e:
-            return Response({'error': f'Error descargando el archivo: {str(e)}'}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+class HistoriaClinicaViewSet(viewsets.ModelViewSet):
+    queryset = HistoriaClinica.objects.all()
+    serializer_class = HistoriaClinicaSerializer
+    parser_classes = (MultiPartParser, FormParser)
 
-        # Extraer el texto del PDF
-        try:
-            pdf_reader = PyPDF2.PdfFileReader(pdf_file)
-            text = ""
-            for page in range(pdf_reader.numPages):
-                text += pdf_reader.getPage(page).extractText()
-        except PdfReadError as e:
-            return Response({'error': f'Error leyendo el archivo PDF: {str(e)}'}, status=status.HTTP_400_BAD_REQUEST)
+    def get_serializer_class(self):
+        if self.action == 'create':
+            return HistoriaClinicaCreateSerializer
+        return self.serializer_class
 
-        serializer = PDFTextSerializer(data={'text': text})
-        if serializer.is_valid():
-            return Response(serializer.data)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-class PDFListView(APIView):
-    permission_classes = [AllowAny]
-
-    def get(self, request):
-        bucket = storage.bucket()
-        blobs = bucket.list_blobs(prefix='')  # Lista de archivos en el bucket
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
         
-        pdf_files = []
-        for blob in blobs:
-            if blob.name.lower().endswith('.pdf'):
-                pdf_files.append({
-                    'name': blob.name.split('/')[-1],
-                    'path': blob.name,
-                    'updated': blob.updated
-                })
+        archivo_pdf = request.FILES.get('archivo_pdf')
+        if not archivo_pdf:
+            return Response({'error': 'No se proporcionó ningún archivo PDF'}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Usa el serializador para los datos dinámicos
-        serializer = PDFFileSerializer(pdf_files, many=True)
+        try:
+            paciente = Paciente.objects.get(cedula=serializer.validated_data['paciente_cedula'])
+            medico = Medico.objects.get(cedula=serializer.validated_data['medico_cedula'])
+        except (Paciente.DoesNotExist, Medico.DoesNotExist):
+            return Response({'error': 'Paciente o Médico no encontrado'}, status=status.HTTP_404_NOT_FOUND)
+
+        # Subir archivo a Firebase Storage
+        bucket = storage.bucket()
+        blob = bucket.blob(f'historias_clinicas/{uuid.uuid4()}.pdf')
+        blob.upload_from_file(archivo_pdf)
+
+        # Crear la historia clínica
+        historia_clinica = HistoriaClinica.objects.create(
+            paciente=paciente,
+            medico=medico,
+            archivo_pdf=blob.public_url
+        )
+
+        return Response(HistoriaClinicaSerializer(historia_clinica).data, status=status.HTTP_201_CREATED)
+
+    @action(detail=False, methods=['GET'])
+    def por_paciente(self, request):
+        cedula_paciente = request.query_params.get('cedula')
+        if not cedula_paciente:
+            return Response({'error': 'Se requiere la cédula del paciente'}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            paciente = Paciente.objects.get(cedula=cedula_paciente)
+        except Paciente.DoesNotExist:
+            return Response({'error': 'Paciente no encontrado'}, status=status.HTTP_404_NOT_FOUND)
+
+        historias = HistoriaClinica.objects.filter(paciente=paciente)
+        serializer = self.get_serializer(historias, many=True)
         return Response(serializer.data)
