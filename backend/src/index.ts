@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import { errorHandler } from "./middleware/errorHandler";
+import "tsconfig-paths/register";
 import authRoutes from "./routes/auth.routes";
 import fileRoutes from "./routes/file.routes";
 // import medicosRoutes from './routes/medicos.routes';

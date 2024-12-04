@@ -1,37 +1,54 @@
-import { Request, Response } from "express";
-import { AuthService } from "../services/auth.service";
-import { logger } from "../utils/logger";
+// Controlador de Autenticación
+import { AuthService } from "@/services/auth.service";
+import { Request, Response, NextFunction } from "express";
+import { validationResult } from "express-validator";
 
 export class AuthController {
-  static async register(req: Request, res: Response) {
+  /**
+   * Registro de usuario con validación de express-validator
+   */
+  static async register(req: Request, res: Response, next: NextFunction) {
     try {
-      console.log("Request body:", req.body);
-      const token = await AuthService.register(req.body);
-      res.status(201).json({ token });
-    } catch (error: any) {
-      logger.error("Registration error:", error);
-      if (error.message === "User already exists") {
-        res.status(409).json({ message: error.message });
-      } else if (
-        error.message === "Cédula is required and cannot be empty" ||
-        error.message === "Password is required"
-      ) {
-        res.status(400).json({ message: error.message });
-      } else {
-        res.status(500).json({ message: "An unexpected error occurred" });
+      // Validar errores de express-validator
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
       }
+
+      const token = await AuthService.register(req.body);
+      res.status(201).json({
+        message: "User registered successfully",
+        token,
+      });
+    } catch (error: any) {
+      res.status(error.status || 500).json({
+        message: error.message || "Registration failed",
+      });
     }
   }
 
-  static async login(req: Request, res: Response) {
+  /**
+   * Login de usuario con validación de express-validator
+   */
+  static async login(req: Request, res: Response, next: NextFunction) {
     try {
-      console.log("Request body:", req.body);
+      // Validar errores de express-validator
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+      }
+
       const { cedula, password } = req.body;
       const token = await AuthService.login(cedula, password);
-      res.json({ token });
+
+      res.json({
+        message: "Login successful",
+        token,
+      });
     } catch (error: any) {
-      logger.error("Login error:", error);
-      res.status(401).json({ message: error.message });
+      res.status(401).json({
+        message: error.message || "Authentication failed",
+      });
     }
   }
 }
