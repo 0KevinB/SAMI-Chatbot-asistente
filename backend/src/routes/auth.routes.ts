@@ -10,21 +10,21 @@ router.post(
   [
     body("cedula")
       .notEmpty()
-      .withMessage("Cédula is required")
+      .withMessage("La cédula es obligatoria")
       .isString()
-      .withMessage("Cédula must be a string"),
+      .withMessage("La cédula debe ser una cadena de texto"),
     body("nombre")
       .notEmpty()
-      .withMessage("Name is required")
+      .withMessage("El nombre es obligatorio")
       .isString()
-      .withMessage("Name must be a string"),
-    body("email").isEmail().withMessage("Invalid email format"),
+      .withMessage("El nombre debe ser una cadena de texto"),
+    body("email").isEmail().withMessage("El formato del correo es inválido"),
     body("password")
       .isLength({ min: 8 })
-      .withMessage("Password must be at least 8 characters"),
+      .withMessage("La contraseña debe tener al menos 8 caracteres"),
     body("role")
       .isIn(["admin", "medico", "paciente"])
-      .withMessage("Invalid user role"),
+      .withMessage("El rol del usuario es inválido"),
   ],
   AuthController.register
 );
@@ -32,8 +32,8 @@ router.post(
 router.post(
   "/login",
   [
-    body("cedula").notEmpty().withMessage("Cédula is required"),
-    body("password").notEmpty().withMessage("Password is required"),
+    body("cedula").notEmpty().withMessage("La cédula es obligatoria"),
+    body("password").notEmpty().withMessage("La contraseña es obligatoria"),
   ],
   AuthController.login
 );

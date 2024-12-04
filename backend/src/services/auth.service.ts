@@ -14,13 +14,13 @@ export class AuthService {
     // Validaciones exhaustivas
     this.validateRegistrationData(userData);
     if (!userData.cedula || userData.cedula.trim() === "") {
-      throw new Error("Cédula is required and cannot be empty");
+      throw new Error("La cédula es obligatoria y no puede estar vacía");
     }
     const userRef = db.collection("users").doc(userData.cedula);
     const snapshot = await userRef.get();
 
     if (snapshot.exists) {
-      throw new Error("User already exists");
+      throw new Error("El usuario ya existe");
     }
 
     // Hash de contraseña con salt adicional
@@ -50,7 +50,7 @@ export class AuthService {
     const snapshot = await userRef.get();
 
     if (!snapshot.exists) {
-      throw new Error("User not found");
+      throw new Error("Usuario no encontrado");
     }
 
     const user = snapshot.data() as User;
@@ -58,7 +58,7 @@ export class AuthService {
     // Comparación de contraseña con tiempo constante
     const isValidPassword = await bcrypt.compare(password, user.password);
     if (!isValidPassword) {
-      throw new Error("Invalid credentials");
+      throw new Error("Credenciales inválidas");
     }
 
     // Generar token con información mínima necesaria
@@ -93,29 +93,29 @@ export class AuthService {
   private static validateRegistrationData(userData: Partial<User>) {
     // Validación de cédula
     if (!userData.cedula || userData.cedula.trim() === "") {
-      throw new Error("Cédula is required and cannot be empty");
+      throw new Error("La cédula es obligatoria y no puede estar vacía");
     }
 
     // Validación de email
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!userData.email || !emailRegex.test(userData.email)) {
-      throw new Error("Invalid email format");
+      throw new Error("El formato del correo es inválido");
     }
 
     // Validación de contraseña
     if (!userData.password || userData.password.length < 8) {
-      throw new Error("Password must be at least 8 characters long");
+      throw new Error("La contraseña debe tener al menos 8 caracteres");
     }
 
     // Validación de rol
     const validRoles = ["admin", "medico", "paciente"];
     if (!userData.role || !validRoles.includes(userData.role)) {
-      throw new Error("Invalid user role");
+      throw new Error("El rol del usuario es inválido");
     }
 
     // Validación de nombre
     if (!userData.nombre || userData.nombre.trim() === "") {
-      throw new Error("Name is required");
+      throw new Error("El nombre es obligatorio");
     }
   }
 
@@ -129,7 +129,7 @@ export class AuthService {
     const snapshot = await userRef.get();
 
     if (!snapshot.exists) {
-      throw new Error("User not found");
+      throw new Error("Usuario no encontrado");
     }
 
     const userData = snapshot.data() as User;
