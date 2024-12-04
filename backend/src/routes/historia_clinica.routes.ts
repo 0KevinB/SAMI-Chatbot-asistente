@@ -1,6 +1,6 @@
 import express from "express";
 import multer from "multer";
-import { HistoriaClinicaController } from "../controllers/historia_clinica.controller";
+import { HistoriaClinicaController } from "@/controllers/historia_clinica.controller";
 
 const router = express.Router();
 const upload = multer({ storage: multer.memoryStorage() });

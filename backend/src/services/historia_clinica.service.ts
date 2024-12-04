@@ -1,5 +1,5 @@
-import { db, storage } from "../config/firebase";
-import { HistoriaClinica } from "../types";
+import { db, storage } from "@/config/firebase";
+import { HistoriaClinica } from "@/types";
 import { v4 as uuidv4 } from "uuid";
 
 export class HistoriaClinicaService {

@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { HistoriaClinicaService } from "../services/historia_clinica.service";
-import { logger } from "../utils/logger";
+import { HistoriaClinicaService } from "@/services/historia_clinica.service";
+import { logger } from "@/utils/logger";
 
 export class HistoriaClinicaController {
   static async crear(req: Request, res: Response) {
@@ -28,12 +28,10 @@ export class HistoriaClinicaController {
       res.status(201).json(historiaClinica);
     } catch (error: any) {
       logger.error("Error al crear historia clínica:", error);
-      res
-        .status(500)
-        .json({
-          message: "Error al crear la historia clínica",
-          error: error.message,
-        });
+      res.status(500).json({
+        message: "Error al crear la historia clínica",
+        error: error.message,
+      });
     }
   }
 
@@ -51,12 +49,10 @@ export class HistoriaClinicaController {
       res.json(historiaClinica);
     } catch (error: any) {
       logger.error("Error al obtener historia clínica:", error);
-      res
-        .status(500)
-        .json({
-          message: "Error al obtener la historia clínica",
-          error: error.message,
-        });
+      res.status(500).json({
+        message: "Error al obtener la historia clínica",
+        error: error.message,
+      });
     }
   }
 
