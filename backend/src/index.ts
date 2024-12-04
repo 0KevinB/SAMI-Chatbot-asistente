@@ -10,6 +10,7 @@ import fileRoutes from "./routes/file.routes";
 // import citasRoutes from './routes/citas.routes';
 import chatbotRoutes from "./routes/chatbot.routes";
 import historiasClinicas from "./routes/historia_clinica.routes";
+import recetas from "./routes/recetas.routes";
 
 dotenv.config();
 
@@ -28,6 +29,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/chatbot", chatbotRoutes);
 app.use("/api/files", fileRoutes);
 app.use("/api/historias-clinicas", historiasClinicas);
+app.use("/api/recetas", recetas);
 
 // Error handling
 app.use(errorHandler);
