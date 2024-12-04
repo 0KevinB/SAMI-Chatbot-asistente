@@ -5,7 +5,7 @@ export interface User {
   nombre: string;
   email: string;
   password: string;
-  role: 'admin' | 'medico' | 'paciente';
+  role: "admin" | "medico" | "paciente";
   createdAt?: Timestamp;
   updatedAt?: Timestamp;
 }
@@ -67,6 +67,6 @@ export interface Cita {
   pacienteCedula: string;
   medicoCedula: string;
   fecha: Date;
-  estado: 'pendiente' | 'confirmada' | 'cancelada' | 'completada';
+  estado: "pendiente" | "confirmada" | "cancelada" | "completada";
   notas?: string;
 }

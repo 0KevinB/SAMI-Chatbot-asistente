@@ -1,10 +1,10 @@
-import { Router } from 'express';
-import { ChatbotService } from '../services/chatbot.service';
-import { authMiddleware } from '../middleware/auth.middleware';
+import { Router } from "express";
+import { ChatbotService } from "../services/chatbot.service";
+import { authMiddleware } from "../middleware/auth.middleware";
 
 const router = Router();
 
-router.post('/query', authMiddleware, async (req, res) => {
+router.post("/query", authMiddleware, async (req, res) => {
   try {
     const { query } = req.body;
     const response = await ChatbotService.handleQuery(query);
