@@ -1,1 +1,18 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+    /* variables de colores */
+    --light-blue-principal: #5DABF5;
+    --second-elements-color: #F0F4FF;
+    --second-text: #D1E0FF;
+    --background-color: #857E8E;
+    --titles-color: #4B4B4B;
+    --text-color: #000000;
+
+    /* variables de tipografia */
+    --title-style: 700 40px Roboto, sans-serif;
+    --subtitle-style: 500 32px Roboto, sans-serif;
+    --colum-title-style: 700 14px Roboto, sans-serif;
+    --text-button-style: 700 12px Roboto, sans-serif;
+    --text-style: 400 14px Roboto, sans-serif;
+  }
+
+
