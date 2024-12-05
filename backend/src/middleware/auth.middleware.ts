@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
-import { db } from "../config/firebase";
+import { db } from "@/config/firebase";
 
 export interface AuthRequest extends Request {
   user?: any;

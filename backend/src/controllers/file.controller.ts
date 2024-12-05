@@ -1,6 +1,9 @@
 import { Request, Response } from "express";
 import { FileService } from "@/services/file.service";
 
+/**
+ * Controlador para gestionar las operaciones relacionadas con los archivos
+ */
 export class FileController {
   private fileService: FileService;
 
@@ -8,6 +11,12 @@ export class FileController {
     this.fileService = new FileService();
   }
 
+  /**
+   * Obtener todos los archivos almacenados, opcionalmente filtrados por un prefijo
+   * @param req Objeto Request que puede contener un parámetro de consulta `prefix` para filtrar los archivos
+   * @param res Objeto Response que devolverá los archivos obtenidos o un error
+   * @returns Lista de archivos almacenados que coinciden con el prefijo, o mensaje de error
+   */
   async getAllFiles(req: Request, res: Response) {
     try {
       const prefix = req.query.prefix as string | undefined;
@@ -25,6 +34,12 @@ export class FileController {
     }
   }
 
+  /**
+   * Obtener la URL de un archivo específico
+   * @param req Objeto Request que contiene el nombre del archivo en los parámetros de la URL
+   * @param res Objeto Response que devolverá la URL firmada del archivo o un error
+   * @returns URL firmada del archivo, o mensaje de error
+   */
   async getFileUrl(req: Request, res: Response) {
     try {
       const fileName = req.params.fileName;
@@ -42,6 +57,12 @@ export class FileController {
     }
   }
 
+  /**
+   * Obtener la URL pública de un archivo específico
+   * @param req Objeto Request que contiene el nombre del archivo en los parámetros de la URL
+   * @param res Objeto Response que devolverá la URL pública del archivo o un error
+   * @returns URL pública del archivo, o mensaje de error
+   */
   async getPublicFileUrl(req: Request, res: Response) {
     try {
       const fileName = req.params.fileName;

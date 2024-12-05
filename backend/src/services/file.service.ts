@@ -1,6 +1,14 @@
 import * as admin from "firebase-admin";
 
+/**
+ * Servicio para gestionar archivos en Firebase Storage
+ */
 export class FileService {
+  /**
+   * Listar los archivos en Firebase Storage con un prefijo opcional
+   * @param prefix Prefijo opcional para filtrar los archivos
+   * @returns Lista de archivos con nombre, tamaño y fecha de actualización
+   */
   async listFiles(prefix?: string) {
     try {
       // Obtener el bucket por defecto
@@ -21,6 +29,11 @@ export class FileService {
     }
   }
 
+  /**
+   * Obtener la URL firmada de un archivo por su nombre
+   * @param fileName Nombre del archivo
+   * @returns URL firmada para acceder al archivo
+   */
   async getFileUrl(fileName: string) {
     try {
       const bucket = admin.storage().bucket();
@@ -39,6 +52,11 @@ export class FileService {
     }
   }
 
+  /**
+   * Obtener una URL pública de un archivo por su nombre
+   * @param fileName Nombre del archivo
+   * @returns URL pública para acceder al archivo
+   */
   async getPublicUrl(fileName: string) {
     try {
       const bucket = admin.storage().bucket();

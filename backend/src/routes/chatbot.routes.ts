@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { ChatbotService } from "../services/chatbot.service";
-import { authMiddleware } from "../middleware/auth.middleware";
+import { ChatbotService } from "@/services/chatbot.service";
+import { authMiddleware } from "@/middleware/auth.middleware";
 
 const router = Router();
 

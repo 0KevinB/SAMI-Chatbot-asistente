@@ -2,9 +2,15 @@ import { Request, Response } from "express";
 import { RecetaService } from "@/services/recetas.service";
 import { logger } from "@/utils/logger";
 
+/**
+ * Controlador para gestionar las operaciones relacionadas con las recetas médicas
+ */
 export class RecetaController {
   /**
-   * Crear una nueva receta
+   * Crear una nueva receta médica
+   * @param req Objeto Request que contiene los datos de la receta en el body y el archivo PDF en el campo `file`
+   * @param res Objeto Response que devolverá el resultado de la operación
+   * @returns Receta creada con los datos proporcionados
    */
   static async crear(req: Request, res: Response) {
     try {
@@ -42,7 +48,10 @@ export class RecetaController {
   }
 
   /**
-   * Obtener receta por ID
+   * Obtener una receta por su ID
+   * @param req Objeto Request que contiene el ID de la receta en los parámetros
+   * @param res Objeto Response que devolverá la receta o un error si no se encuentra
+   * @returns Receta correspondiente al ID proporcionado, o mensaje de error si no se encuentra
    */
   static async obtenerPorId(req: Request, res: Response) {
     try {
@@ -66,7 +75,10 @@ export class RecetaController {
   }
 
   /**
-   * Listar recetas de un paciente
+   * Listar todas las recetas de un paciente
+   * @param req Objeto Request que contiene la cédula del paciente en los parámetros
+   * @param res Objeto Response que devolverá la lista de recetas o un error si ocurre uno
+   * @returns Lista de recetas asociadas al paciente proporcionado
    */
   static async listarPorPaciente(req: Request, res: Response) {
     try {

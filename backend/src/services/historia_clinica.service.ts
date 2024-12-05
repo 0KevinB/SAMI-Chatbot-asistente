@@ -3,6 +3,15 @@ import { HistoriaClinica } from "@/types";
 import { v4 as uuidv4 } from "uuid";
 
 export class HistoriaClinicaService {
+  /**
+   * Crear una nueva historia clínica con archivo PDF
+   * @param pacienteCedula Cédula del paciente
+   * @param medicoCedula Cédula del médico
+   * @param descripcion Descripción de la historia clínica
+   * @param pdfFile Archivo PDF de la historia clínica
+   * @param fecha Fecha opcional de la historia clínica
+   * @returns Historia clínica creada
+   */
   static async crear(
     pacienteCedula: string,
     medicoCedula: string,
@@ -47,7 +56,11 @@ export class HistoriaClinicaService {
 
     return historiaClinica;
   }
-
+  /**
+   * Obtener historia clinica por su ID
+   * @param id Identificador de la historia clinica
+   * @returns Historia clinica encontrada o null
+   */
   static async obtenerPorId(id: string): Promise<HistoriaClinica | null> {
     const doc = await db.collection("historias_clinicas").doc(id).get();
     if (!doc.exists) {

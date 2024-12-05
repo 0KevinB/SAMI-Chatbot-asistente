@@ -2,7 +2,16 @@ import { Request, Response } from "express";
 import { HistoriaClinicaService } from "@/services/historia_clinica.service";
 import { logger } from "@/utils/logger";
 
+/**
+ * Controlador para gestionar las operaciones relacionadas con las historias clínicas
+ */
 export class HistoriaClinicaController {
+  /**
+   * Crear una nueva historia clínica
+   * @param req Objeto Request que contiene los datos de la historia clínica en el body y el archivo PDF en el campo `file`
+   * @param res Objeto Response que devolverá el resultado de la operación
+   * @returns Historia clínica creada con los datos proporcionados
+   */
   static async crear(req: Request, res: Response) {
     try {
       console.log(req.file, req.body);
@@ -35,6 +44,12 @@ export class HistoriaClinicaController {
     }
   }
 
+  /**
+   * Obtener historia clínica por ID
+   * @param req Objeto Request que contiene el ID de la historia clínica en los parámetros
+   * @param res Objeto Response que devolverá la historia clínica o un error si no se encuentra
+   * @returns Historia clínica correspondiente al ID proporcionado, o mensaje de error si no se encuentra
+   */
   static async obtenerPorId(req: Request, res: Response) {
     try {
       const { id } = req.params;
