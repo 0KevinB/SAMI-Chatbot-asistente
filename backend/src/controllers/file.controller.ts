@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { FileService } from "../services/file.service";
+import { FileService } from "@/services/file.service";
 
 export class FileController {
   private fileService: FileService;
