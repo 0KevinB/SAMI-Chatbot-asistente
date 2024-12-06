@@ -7,7 +7,8 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 97.5vh;
+    width: 100%;
   }
   
   .left-section {
@@ -16,6 +17,7 @@ body {
     padding: 40px;
     text-align: center;
     color: white;
+    margin-left: -10px;
   }
   
   .left-section .title-left-section {
@@ -24,7 +26,7 @@ body {
   }
 
   .left-section p{
-    font: var(--subtitle-style)
+    font: var(--text-style)
   }
   
   .left-section img {
@@ -44,8 +46,9 @@ body {
   .right-section .welcome-title {
     font: var(--title-style);
     color: var(--light-blue-principal);
-    margin-bottom: 20px;
+    margin-bottom: 150px;
     text-align: center;
+    margin-top: -150px;
   }  
   
   .right-section .label-form {
