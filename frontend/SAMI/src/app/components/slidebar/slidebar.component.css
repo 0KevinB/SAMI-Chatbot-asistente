@@ -1,0 +1,93 @@
+body {
+    margin: 0;
+  }
+  
+  .sidebar {
+    width: 250px;
+    height: 100vh;
+    background-color: var(--light-blue-principal); /* Color azul claro */
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: fixed;
+    left: 0;
+  }
+  
+  .sidebar .logo {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+  }
+  
+  .sidebar .logo img {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+  }
+  
+  .sidebar .logo h2 {
+    font-size: 20px;
+    margin: 0;
+  }
+  
+  .sidebar .menu {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0;
+  }
+  
+  .sidebar .menu li {
+    margin: 15px 0;
+  }
+  
+  .sidebar .menu li a {
+    text-decoration: none;
+    color: white;
+    font-size: 16px;
+    padding: 10px 20px;
+    display: block;
+    border-radius: 8px;
+    transition: background-color 0.3s;
+  }
+  
+  .sidebar .menu li a:hover {
+    background-color: #357acb; /* Color azul oscuro */
+  }
+  
+  .sidebar .profile {
+    padding: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+  }
+  
+  .sidebar .profile img {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  
+  .sidebar .profile div p {
+    margin: 0;
+    font-size: 14px;
+  }
+  
+  .sidebar .logout-btn {
+    background-color: #ff4b4b;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    margin-top: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    width: 100%;
+    text-align: center;
+  }
+  
+  .sidebar .logout-btn:hover {
+    background-color: #cc3939;
+  }
+  
