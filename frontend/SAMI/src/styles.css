@@ -14,5 +14,19 @@
     --text-button-style: 700 12px Roboto, sans-serif;
     --text-style: 400 14px Roboto, sans-serif;
   }
+/* Elimina márgenes y rellenos del body y el contenedor raíz */
+body, html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+/* Configura un estilo base para que la página ocupe toda la pantalla */
+#root, app-root {
+  width: 100%;
+  height: 100%;
+}
 
 
