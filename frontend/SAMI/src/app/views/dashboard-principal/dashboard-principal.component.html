@@ -1,4 +1,43 @@
-<body>
-<app-slidebar></app-slidebar>
-</body>
-
+<div class="dashboard">
+  <app-slidebar></app-slidebar>
+  <div class="content">
+    <header>
+      <h1>Gestión de pacientes</h1>
+      <div class="search-bar">
+        <input
+          type="text"
+          placeholder="Buscar paciente (Cédula, nombres ...)"
+        />
+        <button>
+          <i class="material-icons">search</i>
+        </button>
+      </div>
+      <button class="add-patient">+ Nuevo paciente</button>
+    </header>
+    <table>
+      <thead>
+        <tr>
+          <th>Cédula</th>
+          <th>Nombres</th>
+          <th>Apellidos</th>
+          <th>Teléfono</th>
+          <th>Fecha de Evaluación</th>
+          <th>Acción</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let paciente of listaPacientes">
+          <td class="data-patient">{{ paciente.cedula }}</td>
+          <td class="data-patient">{{ paciente.nombres }}</td>
+          <td class="data-patient">{{ paciente.apellidos }}</td>
+          <td class="data-patient">{{ paciente.telefono }}</td>
+          <td class="data-patient">{{ paciente.fechaEvaluacion }}</td>
+          <td>
+            <button>Ver paciente</button>
+            <button>Borrar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
