@@ -19,7 +19,7 @@ export interface User {
  * Incluye registros médicos, medicación e historial clínico
  */
 export interface Paciente extends User {
-  edad?: number; // Edad del paciente para contexto médico
+  fechaNacimiento?: string; // Fecha de nacimiento en formato ISO (YYYY-MM-DD)
   peso?: number; // Peso en kilogramos para seguimiento
   altura?: number; // Altura en centímetros
   genero?: "masculino" | "femenino" | "otro"; // Género para consideraciones médicas
