@@ -1,5 +1,76 @@
-body{
-    margin: 0;
-    padding: 0;
+.dashboard {
     display: flex;
-}
+    height: 100vh;
+
+  }
+  .data-patient{
+    font: var(--text-style);
+  }
+  .content {
+    flex: 1;
+    padding: 20px;
+  }
+  
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .content h1 {
+    font: var(--title-style);
+  }
+  .search-bar {
+    display: flex;
+    align-items: center;
+  }
+  
+  .search-bar input {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    margin-right: 10px;
+  }
+  
+  .search-bar button {
+    background: var(--light-blue-principal);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  table th,
+  table td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  table tr:hover {
+    background: #f9f9f9;
+  }
+  
+  .add-patient {
+    background: var(--light-blue-principal);
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .delete {
+    background: none;
+    border: none;
+    color: #f44336;
+    cursor: pointer;
+  }
+  

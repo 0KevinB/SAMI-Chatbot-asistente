@@ -1,23 +1,18 @@
 <div class="sidebar">
-    <div class="logo">
-      <img src="assets/images/Chatbot.png" alt="Logo SAMI" />
-      <h2>SAMI</h2>
-    </div>
-    <ul class="menu">
-      <h2 class="tittle-menu"> Menú</h2>
-      <li><a href="#gestion"><i class="fa-regular fa-address-book"></i>Gestión de pacientes</a></li>
-      <li><a href="#citas"> <i class="fa-regular fa-calendar"></i>Citas médicas</a></li>
-    </ul>
-    <div class="profile">
-      <h3>Perfil</h3>
-      <div class="dat-profile">
-        <img src="user-profile.jpg" alt="Foto de perfil" />
-      <div>
-        <p>Carolina Alvarado</p>
-        <p>dexample.com</p>
-      </div>
-      </div>
-      <button class="logout-btn">Salir</button>
-    </div>
+  <div class="logo">
+    <img src="assets/images/Chatbot.png" alt="Logo SAMI" />
+    <h2>SAMI</h2>
   </div>
-  
+  <ul class="menu">
+    <li><a href="#gestion">Gestión de pacientes</a></li>
+    <li><a href="#citas">Citas médicas</a></li>
+  </ul>
+  <div class="profile">
+    <img src="user-profile.jpg" alt="Foto de perfil" />
+    <div>
+      <p>Carolina Alvarado</p>
+      <p>dexample.com</p>
+    </div>
+    <button class="logout-btn" (click)="logout()">Salir</button>
+  </div>
+</div>
