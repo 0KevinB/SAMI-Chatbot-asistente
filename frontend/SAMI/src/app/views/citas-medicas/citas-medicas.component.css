@@ -1,10 +1,18 @@
 .container {
+    margin: 0px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .container h1{
+    font: var(--title-style);
+    color: var(--titles-color);
     margin: 20px;
   }
-  
-  full-calendar {
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    padding: 10px;
+
+  .dashboard{
+    display: flex;
+    flex-direction: row;
   }
+  
   

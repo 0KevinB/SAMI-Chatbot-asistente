@@ -20,7 +20,9 @@
   
   .content h1 {
     font: var(--title-style);
+    color: var(--titles-color);
   }
+
   .search-bar {
     display: flex;
     align-items: center;
@@ -31,15 +33,18 @@
     border: 1px solid #ddd;
     border-radius: 5px;
     margin-right: 10px;
+    width: 400px;
+    font: var(--text-style);
   }
   
-  .search-bar button {
+  .search-bar .search-button {
     background: var(--light-blue-principal);
     color: white;
     border: none;
     padding: 10px 15px;
     border-radius: 5px;
     cursor: pointer;
+    font: var(--text-button-style);
   }
   
   table {
@@ -65,6 +70,7 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    background-color: var(--green-button-color);
   }
 
   .title-column{
