@@ -17,12 +17,12 @@
     <table>
       <thead>
         <tr>
-          <th>Cédula</th>
-          <th>Nombres</th>
-          <th>Apellidos</th>
-          <th>Teléfono</th>
-          <th>Fecha de Evaluación</th>
-          <th>Acción</th>
+          <th class="title-column">Cédula</th>
+          <th class="title-column">Nombres</th>
+          <th class="title-column">Apellidos</th>
+          <th class="title-column">Teléfono</th>
+          <th class="title-column">Fecha de Evaluación</th>
+          <th class="title-column">Acción</th>
         </tr>
       </thead>
       <tbody>
@@ -33,8 +33,10 @@
           <td class="data-patient">{{ paciente.telefono }}</td>
           <td class="data-patient">{{ paciente.fechaEvaluacion }}</td>
           <td>
-            <button>Ver paciente</button>
-            <button>Borrar</button>
+            <div class="actions">
+              <button class="button-standar">Ver más</button>
+            <button class="delete-action"><i class="fa-solid fa-trash-can"></i></button>
+            </div>
           </td>
         </tr>
       </tbody>

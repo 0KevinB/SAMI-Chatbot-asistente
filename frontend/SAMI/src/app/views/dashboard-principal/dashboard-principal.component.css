@@ -66,6 +66,10 @@
     border-radius: 5px;
     cursor: pointer;
   }
+
+  .title-column{
+    font: var(--colum-title-style);
+  }
   
   .delete {
     background: none;
@@ -74,3 +78,24 @@
     cursor: pointer;
   }
   
+  .button-standar{
+    background: var(--light-blue-principal);
+  }
+
+  .button-standar:hover{
+    background: var(--light-blue-principal-hover);
+  }
+
+  .actions{
+    display: flex;
+    padding: 5px;
+    align-items: center;
+  }
+
+  .delete-action{
+    background: none;
+    border: none;
+    font-size: 25px;
+    margin-left: 20px;
+    color: var(--delete-color);
+  }

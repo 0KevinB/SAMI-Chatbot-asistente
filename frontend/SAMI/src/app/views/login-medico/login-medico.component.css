@@ -77,22 +77,18 @@ body {
     text-align: end;
   }
   
-  .login-button {
+  .button-standar {
     background-color: var(--light-blue-principal);
-    color: white;
-    font: var(--text-button-style);
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 10px;
-    cursor: pointer;
-    width: 50%;
   }
 
   .login-form {
     width: 100%;
     display: flex;
     flex-direction: column;
+  }
+
+  .button-standar:hover{
+    background: var(--light-blue-principal-hover);
   }
 
   .cont-button{
