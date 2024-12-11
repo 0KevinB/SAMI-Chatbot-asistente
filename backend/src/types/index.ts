@@ -134,4 +134,5 @@ export interface Cita {
   estado: "pendiente" | "confirmada" | "cancelada" | "completada"; // Estado actual
   notas?: string; // Observaciones adicionales
   motivoConsulta?: string; // Razón de la consulta
+  especialidad: string; // Especialidad del medico
 }

@@ -1,172 +1,79 @@
-import { CitasService } from "@/services/citas.service";
-import { Request, Response, NextFunction } from "express";
-import { validationResult } from "express-validator";
+// controllers/citas.controller.ts
+import { Request, Response } from "express";
+import { db } from "../config/firebase";
+import { Cita, Medico } from "../types";
 
-/**
- * Controlador para gestionar operaciones de citas
- */
 export class CitasController {
-  /**
-   * Crear una nueva cita
-   */
-  static async crearCita(req: Request, res: Response, next: NextFunction) {
+  static async crearCita(req: Request, res: Response) {
     try {
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return res.status(400).json({ errores: errors.array() });
+      const { pacienteCedula, especialidad, fecha, motivoConsulta } = req.body;
+
+      // Buscar médicos disponibles con la especialidad requerida
+      const medicosRef = db.collection("medicos");
+      const medicosSnapshot = await medicosRef
+        .where("especialidad", "==", especialidad)
+        .get();
+
+      if (medicosSnapshot.empty) {
+        return res.status(404).json({
+          message: "No hay médicos disponibles para esta especialidad",
+        });
       }
 
-      const cita = await CitasService.crearCita(req.body);
-      res.status(201).json({
-        mensaje: "Cita registrada exitosamente",
-        cita,
-      });
-    } catch (error: any) {
-      res.status(error.status || 500).json({
-        mensaje: error.message || "Error al registrar cita",
-      });
+      // Seleccionar un médico aleatoriamente (esto podría mejorarse con un algoritmo más sofisticado)
+      const medicos = medicosSnapshot.docs.map((doc) => doc.data() as Medico);
+      const medicoSeleccionado =
+        medicos[Math.floor(Math.random() * medicos.length)];
+
+      const nuevaCita: Cita = {
+        id: db.collection("citas").doc().id,
+        pacienteCedula,
+        medicoCedula: medicoSeleccionado.cedula,
+        fecha: new Date(fecha),
+        estado: "pendiente",
+        motivoConsulta,
+        especialidad,
+      };
+
+      await db.collection("citas").doc(nuevaCita.id).set(nuevaCita);
+
+      res.status(201).json(nuevaCita);
+    } catch (error) {
+      res.status(500).json({ message: "Error al crear la cita", error });
     }
   }
 
-  /**
-   * Obtener todas las citas
-   */
-  static async obtenerCitas(req: Request, res: Response, next: NextFunction) {
+  static async obtenerCitasMedico(req: Request, res: Response) {
     try {
-      const citas = await CitasService.obtenerCitas();
-      res.json({
-        mensaje: "Citas obtenidas exitosamente",
-        citas,
-      });
-    } catch (error: any) {
-      res.status(error.status || 500).json({
-        mensaje: error.message || "Error al obtener citas",
-      });
+      const { medicoCedula } = req.params;
+      const citasRef = db.collection("citas");
+      const snapshot = await citasRef
+        .where("medicoCedula", "==", medicoCedula)
+        .get();
+
+      const citas = snapshot.docs.map((doc) => doc.data() as Cita);
+      res.json(citas);
+    } catch (error) {
+      res.status(500).json({ message: "Error al obtener las citas", error });
     }
   }
 
-  /**
-   * Obtener una cita por su ID
-   */
-  static async obtenerCitaPorId(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) {
+  static async actualizarEstadoCita(req: Request, res: Response) {
     try {
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return res.status(400).json({ errores: errors.array() });
+      const { id } = req.params;
+      const { estado, horaInicio, horaFin } = req.body;
+
+      const citaRef = db.collection("citas").doc(id);
+      const cita = await citaRef.get();
+
+      if (!cita.exists) {
+        return res.status(404).json({ message: "Cita no encontrada" });
       }
 
-      const cita = await CitasService.obtenerCitaPorId(req.params.id);
-      res.json({
-        mensaje: "Cita obtenida exitosamente",
-        cita,
-      });
-    } catch (error: any) {
-      res.status(error.status || 404).json({
-        mensaje: error.message || "Cita no encontrada",
-      });
-    }
-  }
-
-  /**
-   * Obtener citas por médico
-   */
-  static async obtenerCitasPorMedico(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) {
-    try {
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return res.status(400).json({ errores: errors.array() });
-      }
-
-      const citas = await CitasService.obtenerCitasPorMedico(
-        req.params.medicoId
-      );
-      res.json({
-        mensaje: "Citas del médico obtenidas exitosamente",
-        citas,
-      });
-    } catch (error: any) {
-      res.status(error.status || 500).json({
-        mensaje: error.message || "Error al obtener citas del médico",
-      });
-    }
-  }
-
-  /**
-   * Obtener citas por paciente
-   */
-  static async obtenerCitasPorPaciente(
-    req: Request,
-    res: Response,
-    next: NextFunction
-  ) {
-    try {
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return res.status(400).json({ errores: errors.array() });
-      }
-
-      const citas = await CitasService.obtenerCitasPorPaciente(
-        req.params.pacienteId
-      );
-      res.json({
-        mensaje: "Citas del paciente obtenidas exitosamente",
-        citas,
-      });
-    } catch (error: any) {
-      res.status(error.status || 500).json({
-        mensaje: error.message || "Error al obtener citas del paciente",
-      });
-    }
-  }
-
-  /**
-   * Actualizar una cita
-   */
-  static async actualizarCita(req: Request, res: Response, next: NextFunction) {
-    try {
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return res.status(400).json({ errores: errors.array() });
-      }
-
-      const cita = await CitasService.actualizarCita(req.params.id, req.body);
-      res.json({
-        mensaje: "Cita actualizada exitosamente",
-        cita,
-      });
-    } catch (error: any) {
-      res.status(error.status || 500).json({
-        mensaje: error.message || "Error al actualizar cita",
-      });
-    }
-  }
-
-  /**
-   * Eliminar una cita
-   */
-  static async eliminarCita(req: Request, res: Response, next: NextFunction) {
-    try {
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return res.status(400).json({ errores: errors.array() });
-      }
-
-      await CitasService.eliminarCita(req.params.id);
-      res.json({
-        mensaje: "Cita eliminada exitosamente",
-      });
-    } catch (error: any) {
-      res.status(error.status || 500).json({
-        mensaje: error.message || "Error al eliminar cita",
-      });
+      await citaRef.update({ estado, horaInicio, horaFin });
+      res.json({ message: "Cita actualizada correctamente" });
+    } catch (error) {
+      res.status(500).json({ message: "Error al actualizar la cita", error });
     }
   }
 }
