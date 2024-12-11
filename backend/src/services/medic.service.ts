@@ -1,5 +1,5 @@
 import { db } from "@/config/firebase";
-import { Medico } from "@/types";
+import { Horario, Medico } from "@/types";
 
 export class MedicoService {
   /**
@@ -73,5 +73,31 @@ export class MedicoService {
     }
 
     await medicoRef.delete();
+  }
+  /**
+   * Actualizar el horario de un médico
+   * @param medicoCedula Cédula del médico
+   * @param horario Nuevo horario a agregar
+   */
+  static async actualizarHorario(
+    medicoCedula: string,
+    horario: Horario
+  ): Promise<void> {
+    const medicoRef = db.collection("users").doc(medicoCedula);
+    const medicoDoc = await medicoRef.get();
+
+    if (!medicoDoc.exists) {
+      throw new Error("Médico no encontrado");
+    }
+
+    const medicoData = medicoDoc.data() as Medico;
+
+    // Agregar el nuevo horario al array de horarioDisponible
+    const nuevoHorario = [...medicoData.horarioDisponible, horario];
+
+    // Actualizar el documento del médico
+    await medicoRef.update({
+      horarioDisponible: nuevoHorario,
+    });
   }
 }

@@ -131,7 +131,9 @@ export interface Cita {
   pacienteCedula: string; // Paciente que solicita
   medicoCedula: string; // Médico asignado
   fecha: Date; // Fecha y hora de la cita
-  estado: "pendiente" | "confirmada" | "cancelada" | "completada"; // Estado actual
+  horaInicio: string; // Hora estimada para el inicio de la cita medica
+  horaFin: string; // Hora estimada para la finalización de la cita medica
+  estado: "pendiente" | "confirmada" | "cancelada" | "completada"; // Estado actual de la cita medica
   notas?: string; // Observaciones adicionales
   motivoConsulta?: string; // Razón de la consulta
   especialidad: string; // Especialidad del medico
