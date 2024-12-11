@@ -1,17 +1,50 @@
 <div class="dashboard">
   <app-slidebar></app-slidebar>
-<div class="container">
-  <h1>Citas médicas</h1>
-  <div class="items-dashboard">
-    <div class="calendar">
-      aqui el calendario
-    </div>
-    <div class="pendient-date">
-      <h1> Solicitudes pendientes </h1>
-      <div class="pendient-notification">
-        
+  <div class="container">
+    <h1>Citas médicas</h1>
+    <div class="items-dashboard">
+      <div class="calendar">
+        <div class="calendar-header">
+          <h2>Calendario semanal</h2>
+          <div class="search-container">
+            <input
+              type="text"
+              placeholder="Buscar paciente (Cédula, nombres...)"
+              [(ngModel)]="searchTerm"
+            />
+            <span class="search-icon">&#128269;</span>
+          </div>
+        </div>
+        <div class="calendar-grid">
+          <ng-container *ngFor="let day of weekDays; let i = index">
+            <div class="calendar-day">
+              <div class="day-header">
+                <div class="day-name">{{ formatDate(day, "EEE") }}</div>
+                <div class="day-number">{{ formatDate(day, "dd") }}</div>
+              </div>
+              <div class="day-content">
+                <ng-container *ngFor="let appointment of appointments">
+                  <div
+                    class="appointment"
+                    [style.border-left-color]="appointment.color"
+                  >
+                    <div class="appointment-time">{{ appointment.time }}</div>
+                    <div class="appointment-name">
+                      {{ appointment.eventName }}
+                    </div>
+                  </div>
+                </ng-container>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+      <div class="pendient-date">
+        <h2>Solicitudes pendientes</h2>
+        <div class="pendient-notification">
+          <!-- Aquí puedes agregar la lógica para mostrar las solicitudes pendientes -->
+        </div>
       </div>
     </div>
   </div>
-</div>
 </div>
