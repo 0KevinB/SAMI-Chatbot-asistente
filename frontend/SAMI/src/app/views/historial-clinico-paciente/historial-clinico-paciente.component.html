@@ -1,1 +1,55 @@
-<p>historial-clinico-paciente works!</p>
+<div class="dashboard">
+    <app-slidebar></app-slidebar>
+    <div class="content">
+      <header>
+        <h1>Gestión de pacientes</h1>
+        <button class="add-history">+ Nueva historia</button>
+      </header>
+  
+      <div class="patient-data">
+        <div class="patient-info">
+          <img src="paciente.png" alt="paciente">
+          <div *ngFor="let paciente of listaPacientes" class="info">
+            <h3 class="data-patient">{{ paciente.nombres + paciente.apellidos }}</h3>
+            <p class="data-patient">{{ paciente.cedula }}</p>
+            <p class="data-patient">{{ paciente.telefono }}</p>
+            <p class="data-patient">{{ paciente.correo }}</p>
+          </div>
+        </div>
+  
+        <div class="history-chart">
+          <h3>Estado de glucosa</h3>
+          <!-- <app-line-chart [data]="waitingListData"></app-line-chart> -->
+        </div>
+  
+        <div class="history-list">
+          <h3>Historial Clínico</h3>
+          <table>
+            <thead>
+              <tr>
+                <th class="title-column">Fecha de consulta</th>
+                <th class="title-column">Motivo de consulta</th>
+                <th class="title-column">Acciones</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let paciente of listaPacientes">
+                <ng-container *ngFor="let historia of paciente.history" class="items">
+                  <tr>
+                    <td class="data-patient">{{ historia.fecha }}</td>
+                    <td class="data-patient">{{ historia.descripcion }}</td>
+                    <td>
+                      <div class="actions">
+                        <button class="button-standar">Ver más</button>
+                        <button class="delete-action"><i class="fa-solid fa-trash-can"></i></button>
+                      </div>
+                    </td>
+                  </tr>
+                </ng-container>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
