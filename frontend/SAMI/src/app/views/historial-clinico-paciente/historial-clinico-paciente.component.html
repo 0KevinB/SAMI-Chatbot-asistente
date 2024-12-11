@@ -36,12 +36,12 @@
               <tr *ngFor="let paciente of listaPacientes">
                 <ng-container *ngFor="let historia of paciente.history" class="items">
                   <tr>
-                    <td class="data-patient">{{ historia.fecha }}</td>
-                    <td class="data-patient">{{ historia.descripcion }}</td>
+                    <td class="date-history">{{ historia.fecha }}</td>
+                    <td class="description-history">{{ historia.descripcion }}</td>
                     <td>
                       <div class="actions">
                         <button class="button-standar">Ver más</button>
-                        <button class="delete-action"><i class="fa-solid fa-trash-can"></i></button>
+                        <!-- <button class="delete-action"><i class="fa-solid fa-trash-can"></i></button> -->
                       </div>
                     </td>
                   </tr>
