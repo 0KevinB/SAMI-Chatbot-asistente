@@ -1,0 +1,172 @@
+.dashboard {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .content {
+    flex: 1;
+    padding: 20px;
+  }
+  
+  header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .content h1 {
+    font: var(--title-style);
+    color: var(--titles-color);
+  }
+  
+  .add-history {
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: var(--green-button-color);
+    font: var(--text-button-style);
+  }
+  
+  .patient-data {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 30px;
+  }
+  
+  .patient-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+    width: 80%;
+  }
+  
+  .patient-info img {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    margin-right: 20px;
+  }
+  
+  .patient-info .data-patient {
+    font: var(--text-style);
+  
+  }
+  
+  .data-patient-name {
+    font-size: 16px;
+    color: #000000;
+    font: Roboto;
+  }
+  
+  .history-chart {
+    border-radius: 8px;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .history-chart h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 16px;
+  }
+  
+  .history-list {
+    border-radius: 8px;
+    padding: 20px;
+    width: 180%;
+  }
+  
+  .history-list h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 16px;
+  }
+  
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed;
+  }
+  
+  table thead {
+    background-color: transparent;
+    font: var(--colum-title-style);
+    color: var(--titles-color);
+    text-align: left;
+  }
+  
+  table th, table td {
+    padding: 12px 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  
+  table th {
+    border-bottom: 2px solid var(--titles-color);
+  }
+  
+  table tr {
+    border-bottom: 1px solid #e0e0e0;
+    margin-bottom: 10px;
+  }
+  
+  table td {
+    font: var(--text-style);
+    color: var(--text-color);
+    background-color: var(--second-elements-color);
+    text-align: left;
+  }
+  
+  .view-button {
+    background-color: blue;
+    color: white;
+    border: none;
+    padding: var(--spacing-sm) var(--spacing-md);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font: var(--text-button-style);
+  }
+  .history-container {
+    margin-top: 30px;
+    padding: 20px;
+  }
+  .Subtitulo{
+    font: var(--subtitle-style);
+    color: var(--light-blue-principal);
+    text-align: center;
+  }
+  .history-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  .history-table th, .history-table td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  .history-table td{
+    font: var(--text-style);
+  }
+  .view-btn {
+    background-color: var(--light-blue-principal);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .view-btn:hover {
+    background-color: var(--light-blue-principal-hover);
+  }
+  
