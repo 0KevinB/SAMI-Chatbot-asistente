@@ -1,6 +1,6 @@
-import { CitaService } from "@/services/citas.service";
 import { Request, Response, NextFunction } from "express";
 import { validationResult } from "express-validator";
+import { CitaService } from "@/services/citas.service";
 
 export class CitaController {
   static async crearCita(req: Request, res: Response, next: NextFunction) {
@@ -17,7 +17,7 @@ export class CitaController {
     }
   }
 
-  static async aceptarCita(req: Request, res: Response, next: NextFunction) {
+  static async actualizarCita(req: Request, res: Response, next: NextFunction) {
     try {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
@@ -25,24 +25,47 @@ export class CitaController {
       }
 
       const { id } = req.params;
-      const { fecha, horaInicio, horaFin } = req.body;
-      const cita = await CitaService.aceptarCita(
-        id,
-        fecha,
-        horaInicio,
-        horaFin
-      );
-      res.json({ mensaje: "Cita aceptada exitosamente", cita });
+      const cita = await CitaService.actualizarCita(id, req.body);
+      res.json({ mensaje: "Cita actualizada exitosamente", cita });
     } catch (error: any) {
       res.status(error.status || 500).json({ mensaje: error.message });
     }
   }
 
-  static async rechazarCita(req: Request, res: Response, next: NextFunction) {
+  static async cambiarEstadoCita(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ errores: errors.array() });
+      }
+
+      const { id } = req.params;
+      const { estado } = req.body;
+      const cita = await CitaService.cambiarEstadoCita(id, estado);
+      res.json({ mensaje: `Cita ${estado} exitosamente`, cita });
+    } catch (error: any) {
+      res.status(error.status || 500).json({ mensaje: error.message });
+    }
+  }
+
+  static async obtenerCita(req: Request, res: Response, next: NextFunction) {
     try {
       const { id } = req.params;
-      const cita = await CitaService.rechazarCita(id);
-      res.json({ mensaje: "Cita rechazada exitosamente", cita });
+      const cita = await CitaService.obtenerCita(id);
+      res.json(cita);
+    } catch (error: any) {
+      res.status(error.status || 500).json({ mensaje: error.message });
+    }
+  }
+
+  static async listarCitas(req: Request, res: Response, next: NextFunction) {
+    try {
+      const citas = await CitaService.listarCitas(req.query);
+      res.json(citas);
     } catch (error: any) {
       res.status(error.status || 500).json({ mensaje: error.message });
     }

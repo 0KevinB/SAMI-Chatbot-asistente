@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sami/screens/home_screen.dart';
 import 'package:sami/screens/chat_screen.dart';
-import 'package:sami/screens/alert_screen.dart'; // Import AlertScreen
+// Import AlertScreen
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});

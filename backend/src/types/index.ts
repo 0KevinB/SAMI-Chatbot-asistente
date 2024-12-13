@@ -50,7 +50,7 @@ export interface Paciente extends User {
  */
 export interface Medico extends User {
   especialidad: string; // Área de especialización médica
-  horarioDisponible: Horario[]; // Horarios de atención
+  citasMedicas: Cita[]; // Horarios de atención
   pacientes: string[]; // Cédulas de pacientes bajo su cuidado
   contactoConsultorio?: {
     // Información de contacto profesional
@@ -108,18 +108,6 @@ export interface Receta {
   fecha: Date; // Fecha de emisión
   pdfUrl: string; // Enlace al documento digitalizado
   medicamentos: Medicamento[]; // Lista de medicamentos recetados
-}
-
-/**
- * Horario de disponibilidad médica
- * Gestiona turnos y disponibilidad
- */
-export interface Horario {
-  dia: string; // Día de la semana
-  medicoCedula: string; // Médico asociado
-  horaInicio: string; // Hora de inicio del turno
-  horaFin: string; // Hora de fin del turno
-  disponible: boolean; // Estado de disponibilidad
 }
 
 /**

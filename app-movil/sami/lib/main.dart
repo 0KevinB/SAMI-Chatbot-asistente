@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:sami/screens/login_screen.dart';
-import 'package:sami/screens/home_screen.dart';
-import 'package:sami/screens/chat_screen.dart';
 
 void main() {
   runApp(const MyApp());

@@ -1,29 +1,30 @@
 import { db } from "@/config/firebase";
+import { Cita, Medico } from "@/types";
+import { FieldValue } from "firebase-admin/firestore";
+import { Query } from "firebase-admin/firestore";
 
 export class CitaService {
-  static async crearCita(data: any) {
-    const { usuarioCedula, medicoCedula, estado } = data;
+  static async crearCita(data: Omit<Cita, "id" | "createdAt">) {
     const citaRef = db.collection("citas").doc();
-    const nuevaCita = {
+    const nuevaCita: Cita = {
       id: citaRef.id,
-      usuarioCedula,
-      medicoCedula,
-      estado,
-      fecha: null,
-      horaInicio: null,
-      horaFin: null,
-      createdAt: new Date().toISOString(),
+      ...data,
     };
+
     await citaRef.set(nuevaCita);
+
+    // Actualizar el documento del médico
+    await db
+      .collection("users")
+      .doc(data.medicoCedula)
+      .update({
+        citasMedicas: FieldValue.arrayUnion(nuevaCita),
+      });
+
     return nuevaCita;
   }
 
-  static async aceptarCita(
-    id: string,
-    fecha: string,
-    horaInicio: string,
-    horaFin: string
-  ) {
+  static async actualizarCita(id: string, data: Partial<Cita>) {
     const citaRef = db.collection("citas").doc(id);
     const cita = await citaRef.get();
 
@@ -31,38 +32,18 @@ export class CitaService {
       throw new Error("Cita no encontrada");
     }
 
-    const citaData = cita.data();
-    if (citaData?.estado !== "pendiente") {
-      throw new Error("Solo las citas pendientes pueden ser aceptadas");
-    }
+    const citaActual = cita.data() as Cita;
+    const citaActualizada = { ...citaActual, ...data };
 
-    const updatedCita = {
-      ...citaData,
-      estado: "aceptada",
-      fecha,
-      horaInicio,
-      horaFin,
-    };
+    await citaRef.update(citaActualizada);
 
-    await citaRef.update(updatedCita);
+    // Actualizar el documento del médico
+    await this.actualizarCitaMedico(citaActual, citaActualizada);
 
-    // Actualizar disponibilidad del médico
-    const medicoRef = db.collection("medicos").doc(citaData.medicoCedula);
-    const medico = await medicoRef.get();
-
-    if (medico.exists) {
-      const horarioDisponible = medico.data()?.horarioDisponible || [];
-      const nuevoHorario = horarioDisponible.filter(
-        (horario: any) =>
-          horario.inicio !== horaInicio && horario.fin !== horaFin
-      );
-      await medicoRef.update({ horarioDisponible: nuevoHorario });
-    }
-
-    return updatedCita;
+    return citaActualizada;
   }
 
-  static async rechazarCita(id: string) {
+  static async cambiarEstadoCita(id: string, estado: Cita["estado"]) {
     const citaRef = db.collection("citas").doc(id);
     const cita = await citaRef.get();
 
@@ -70,13 +51,76 @@ export class CitaService {
       throw new Error("Cita no encontrada");
     }
 
-    const citaData = cita.data();
-    const updatedCita = {
-      ...citaData,
-      estado: "rechazada",
-    };
+    const citaActual = cita.data() as Cita;
+    const citaActualizada = { ...citaActual, estado };
 
-    await citaRef.update(updatedCita);
-    return updatedCita;
+    await citaRef.update({ estado });
+
+    // Actualizar el documento del médico
+    await this.actualizarCitaMedico(citaActual, citaActualizada);
+
+    return citaActualizada;
+  }
+
+  static async obtenerCita(id: string) {
+    const citaRef = db.collection("citas").doc(id);
+    const cita = await citaRef.get();
+
+    if (!cita.exists) {
+      throw new Error("Cita no encontrada");
+    }
+
+    return cita.data() as Cita;
+  }
+
+  static async listarCitas(
+    filtros: Partial<Cita> & { fechaInicio?: string; fechaFin?: string }
+  ) {
+    let query: Query = db.collection("citas"); // Declara query explícitamente como tipo Query
+
+    if (filtros.pacienteCedula) {
+      query = query.where("pacienteCedula", "==", filtros.pacienteCedula);
+    }
+    if (filtros.medicoCedula) {
+      query = query.where("medicoCedula", "==", filtros.medicoCedula);
+    }
+    if (filtros.estado) {
+      query = query.where("estado", "==", filtros.estado);
+    }
+    if (filtros.especialidad) {
+      query = query.where("especialidad", "==", filtros.especialidad);
+    }
+    if (filtros.fechaInicio) {
+      query = query.where("fecha", ">=", filtros.fechaInicio);
+    }
+    if (filtros.fechaFin) {
+      query = query.where("fecha", "<=", filtros.fechaFin);
+    }
+
+    const snapshot = await query.get();
+    return snapshot.docs.map((doc) => doc.data() as Cita);
+  }
+
+  private static async actualizarCitaMedico(
+    citaAnterior: Cita,
+    citaNueva: Cita
+  ) {
+    const medicoRef = db.collection("users").doc(citaNueva.medicoCedula);
+    const medicoDoc = await medicoRef.get();
+
+    if (!medicoDoc.exists) {
+      throw new Error("Médico no encontrado");
+    }
+
+    const medico = medicoDoc.data() as Medico;
+
+    // En lugar de almacenar toda la cita, solo se almacenará el ID de la cita
+    const citasActualizadas = medico.citasMedicas.map((cita) =>
+      cita.id === citaNueva.id ? { id: citaNueva.id } : cita
+    );
+
+    await medicoRef.update({
+      citasMedicas: citasActualizadas,
+    });
   }
 }
