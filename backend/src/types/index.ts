@@ -19,7 +19,7 @@ export interface User {
  * Incluye registros médicos, medicación e historial clínico
  */
 export interface Paciente extends User {
-  edad?: number; // Edad del paciente para contexto médico
+  fechaNacimiento?: string; // Fecha de nacimiento en formato ISO (YYYY-MM-DD)
   peso?: number; // Peso en kilogramos para seguimiento
   altura?: number; // Altura en centímetros
   genero?: "masculino" | "femenino" | "otro"; // Género para consideraciones médicas
@@ -50,7 +50,7 @@ export interface Paciente extends User {
  */
 export interface Medico extends User {
   especialidad: string; // Área de especialización médica
-  horarioDisponible: Horario[]; // Horarios de atención
+  citasMedicas: Cita[]; // Horarios de atención
   pacientes: string[]; // Cédulas de pacientes bajo su cuidado
   contactoConsultorio?: {
     // Información de contacto profesional
@@ -111,18 +111,6 @@ export interface Receta {
 }
 
 /**
- * Horario de disponibilidad médica
- * Gestiona turnos y disponibilidad
- */
-export interface Horario {
-  dia: string; // Día de la semana
-  medicoCedula: string; // Médico asociado
-  horaInicio: string; // Hora de inicio del turno
-  horaFin: string; // Hora de fin del turno
-  disponible: boolean; // Estado de disponibilidad
-}
-
-/**
  * Citas médicas
  * Gestiona programación y estado de consultas
  */
@@ -131,7 +119,10 @@ export interface Cita {
   pacienteCedula: string; // Paciente que solicita
   medicoCedula: string; // Médico asignado
   fecha: Date; // Fecha y hora de la cita
-  estado: "pendiente" | "confirmada" | "cancelada" | "completada"; // Estado actual
+  horaInicio: string; // Hora estimada para el inicio de la cita medica
+  horaFin: string; // Hora estimada para la finalización de la cita medica
+  estado: "pendiente" | "confirmada" | "cancelada" | "completada"; // Estado actual de la cita medica
   notas?: string; // Observaciones adicionales
   motivoConsulta?: string; // Razón de la consulta
+  especialidad: string; // Especialidad del medico
 }
