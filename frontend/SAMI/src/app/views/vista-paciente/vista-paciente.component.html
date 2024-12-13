@@ -1,1 +1,49 @@
-<p>vista-paciente works!</p>
+<div class="dashboard">
+  <app-slidebar></app-slidebar>
+  <div class="content">
+    <header>
+      <h1>Gestión de pacientes</h1>
+      <button class="add-history">+ Nueva historia</button>
+    </header>
+
+    <div class="patient-data">
+      <div class="patient-info">
+        <img src="./../../../assets/images/Chatbot.png" alt="paciente" />
+        <div *ngFor="let paciente of listaPacientes" class="info">
+          <h3 class="data-patient-name">
+            {{ paciente.nombres + paciente.apellidos }}
+          </h3>
+          <p class="data-patient">CI: {{ paciente.cedula }}</p>
+          <p class="data-patient">Contacto: {{ paciente.telefono }}</p>
+          <p class="data-patient">Correo: {{ paciente.correo }}</p>
+        </div>
+      </div>
+
+      <div class="history-chart">
+        <h3>Estado de glucosa</h3>
+        <!-- <app-line-chart [data]="waitingListData"></app-line-chart> -->
+      </div>
+    </div>
+    <div class="history-container">
+      <h2 class="Subtitulo">Historial Clínico</h2>
+      <table class="history-table">
+        <thead>
+          <tr>
+            <th>Fecha de consulta</th>
+            <th>Motivo de consulta</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let record of consultationRecords">
+            <td>{{ record.date }}</td>
+            <td>{{ record.reason }}</td>
+            <td>
+              <button class="view-btn">Ver historial</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

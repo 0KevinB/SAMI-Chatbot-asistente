@@ -20,7 +20,9 @@
   
   .content h1 {
     font: var(--title-style);
+    color: var(--titles-color);
   }
+
   .search-bar {
     display: flex;
     align-items: center;
@@ -31,15 +33,18 @@
     border: 1px solid #ddd;
     border-radius: 5px;
     margin-right: 10px;
+    width: 400px;
+    font: var(--text-style);
   }
   
-  .search-bar button {
+  .search-bar .search-button {
     background: var(--light-blue-principal);
     color: white;
     border: none;
     padding: 10px 15px;
     border-radius: 5px;
     cursor: pointer;
+    font: var(--text-button-style);
   }
   
   table {
@@ -65,6 +70,11 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    background-color: var(--green-button-color);
+  }
+
+  .title-column{
+    font: var(--colum-title-style);
   }
   
   .delete {
@@ -74,3 +84,169 @@
     cursor: pointer;
   }
   
+  .button-standar{
+    background: var(--light-blue-principal);
+  }
+
+  .button-standar:hover{
+    background: var(--light-blue-principal-hover);
+  }
+
+  .actions{
+    display: flex;
+    padding: 5px;
+    align-items: center;
+  }
+
+  .delete-action{
+    background: none;
+    border: none;
+    font-size: 25px;
+    margin-left: 20px;
+    color: var(--delete-color);
+  }
+
+  /* CSS completo */
+.content {
+  position: relative;
+  padding: 20px;
+}
+
+/* Botón para abrir el formulario */
+.open-form-button {
+  background: #60a5fa;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.open-form-button:hover {
+  background: #3b82f6;
+}
+
+/* Modal styles */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.patient-form {
+  background: white;
+  padding: 32px;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 843px;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Form title - Add this to your HTML */
+.patient-form::before {
+  content: "Agregar nuevo paciente";
+  display: block;
+  font-size: 24px;
+  color: #60A5FA;
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 24px;
+  margin-bottom: 48px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-label {
+  color: #6B7280;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.form-input {
+  background-color: #F0F7FF;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  padding: 12px;
+  font-size: 14px;
+  transition: all 0.2s ease;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #60A5FA;
+  box-shadow: 0 0 0 2px rgba(96, 165, 250, 0.2);
+}
+
+/* Date input specific styles */
+input[type="date"].form-input {
+  color: #6B7280;
+  padding-right: 12px;
+}
+
+/* Remove calendar icon from date input */
+input[type="date"]::-webkit-calendar-picker-indicator {
+  opacity: 0.5;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+
+.save-button, .cancel-button {
+  padding: 12px 32px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.save-button {
+  background-color: #60A5FA;
+  color: white;
+}
+
+.save-button:hover {
+  background-color: #3B82F6;
+}
+
+.cancel-button {
+  background-color: #DC2626;
+  color: white;
+}
+
+.cancel-button:hover {
+  background-color: #B91C1C;
+}
+
+/* Animation */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
