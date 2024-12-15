@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:sami/screens/main_screen.dart';
+import 'package:sami/services/auth_service.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -35,7 +36,8 @@ class _LoginScreenState extends State<LoginScreen> {
 
         if (response.statusCode == 200) {
           final data = json.decode(response.body);
-          // Here you would typically save the token
+          final token = data['token'];
+          await AuthService.saveToken(token);
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => const MainScreen()),
@@ -68,7 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset('assets/sami_logo.png', height: 120),
+                Image.asset('assets/img/sami_logo.png', height: 120),
                 const Text(
                   'SAMI',
                   style: TextStyle(
