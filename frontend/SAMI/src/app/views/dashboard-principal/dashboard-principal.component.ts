@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { SlidebarComponent } from '../../components/slidebar/slidebar.component';
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
-import { pacientes } from './pacientes.mock';
+import { pacientes } from '../../mocks/pacientes.mock';
 import { FormsModule } from '@angular/forms';
 
 interface Paciente {
