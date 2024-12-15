@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { AuthService } from './../../services/auth.service'; // Ajusta la ruta según tu estructura
+import { AuthService } from '../../services/users/auth.service'; // Ajusta la ruta según tu estructura
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 
