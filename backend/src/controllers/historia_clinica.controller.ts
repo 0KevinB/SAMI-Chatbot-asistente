@@ -14,7 +14,6 @@ export class HistoriaClinicaController {
    */
   static async crear(req: Request, res: Response) {
     try {
-      console.log(req.file, req.body);
       const { pacienteCedula, medicoCedula, descripcion, fecha } = req.body;
       const pdfFile = req.file;
 

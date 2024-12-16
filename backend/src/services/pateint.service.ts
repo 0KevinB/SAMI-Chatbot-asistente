@@ -1,5 +1,7 @@
 import { db } from "@/config/firebase";
-import { Paciente } from "@/types";
+import { GlucosaRecord, Paciente } from "@/types";
+import { log } from "console";
+import { firestore } from "firebase-admin"; // Importación correcta
 
 export class PatientService {
   /**
@@ -25,20 +27,6 @@ export class PatientService {
     }
 
     return { id: snapshot.id, ...snapshot.data() };
-  }
-
-  /**
-   * Crea un nuevo paciente en el documento "users" con rol "paciente".
-   */
-  static async createPatient(patientData: Partial<Paciente>) {
-    const patientRef = db.collection("users").doc();
-    const newPatient = {
-      ...patientData,
-      role: "paciente", // Aseguramos que el rol sea "paciente"
-      createdAt: new Date(),
-    };
-    await patientRef.set(newPatient);
-    return { id: patientRef.id, ...newPatient };
   }
 
   /**
@@ -73,5 +61,39 @@ export class PatientService {
     }
 
     await patientRef.delete();
+  }
+
+  static async addGlucosaRecord(
+    patientId: string,
+    glucosaRecord: GlucosaRecord
+  ) {
+    try {
+      const patientRef = db.collection("users").doc(patientId);
+      // Añadir el nuevo registro de glucosa al array de nivelesGlucosa
+      await patientRef.update({
+        nivelesGlucosa: firestore.FieldValue.arrayUnion({
+          valor: glucosaRecord.valor,
+          fecha: glucosaRecord.fecha || new Date(),
+          contexto: glucosaRecord.contexto || "aleatorio",
+          unidad: glucosaRecord.unidad || "mg/dL",
+          notas: glucosaRecord.notas || "",
+        }),
+      });
+
+      // Recuperar el documento actualizado para devolver el paciente completo
+      const updatedPatientDoc = await patientRef.get();
+      return {
+        id: patientId,
+        ...updatedPatientDoc.data(),
+      };
+    } catch (error: unknown) {
+      // Manejo de error tipado correctamente
+      if (error instanceof Error) {
+        throw new Error(
+          `Error al agregar registro de glucosa: ${error.message}`
+        );
+      }
+      throw new Error(`Error desconocido al agregar registro de glucosa`);
+    }
   }
 }

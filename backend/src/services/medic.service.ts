@@ -28,20 +28,6 @@ export class MedicoService {
   }
 
   /**
-   * Crea un nuevo médico en el documento "users" con rol "medico".
-   */
-  static async createMedico(medicoData: Partial<Medico>) {
-    const medicoRef = db.collection("users").doc();
-    const newMedico = {
-      ...medicoData,
-      role: "medico", // Aseguramos que el rol sea "medico"
-      createdAt: new Date(),
-    };
-    await medicoRef.set(newMedico);
-    return { id: medicoRef.id, ...newMedico };
-  }
-
-  /**
    * Actualiza los datos de un médico en el documento "users".
    */
   static async updateMedico(id: string, medicoData: Partial<Medico>) {

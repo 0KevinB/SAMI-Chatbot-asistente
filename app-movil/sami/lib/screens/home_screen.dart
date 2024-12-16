@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:sami/screens/alert_screen.dart';
 import 'package:sami/screens/appointment_screen.dart';
 import 'package:sami/screens/chat_screen.dart';
+import 'package:sami/screens/glucosa_record_screen.dart';
 import 'package:sami/services/auth_service.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -128,7 +129,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       icon: Icons.science_outlined,
                       title: 'Mis exámenes',
                       onTap: () {
-                        //   Navigator.push(context, MaterialPageRoute(builder: (context) => ))
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const GlucoseRecordForm()),
+                        );
                       },
                     ),
                   ],

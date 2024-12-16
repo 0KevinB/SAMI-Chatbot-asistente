@@ -14,7 +14,6 @@ export class RecetaController {
    */
   static async crear(req: Request, res: Response) {
     try {
-      console.log(req.file, req.body);
       const { pacienteCedula, medicoCedula, medicamentos, fecha } = req.body;
       const pdfFile = req.file;
 

@@ -10,11 +10,10 @@ class AuthService {
     final prefs = await shared_preferences.SharedPreferences.getInstance();
     await prefs.setString(_tokenKey, token);
 
-    // Decodificar el token y extraer el nombre
+    // Decode and save user data
     Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
     String fullName = decodedToken['nombre'] ?? '';
-    String firstName = fullName.trim().split(' ').first;
-
+    String firstName = fullName.split(' ')[0]; // Extrae el primer nombre
     await prefs.setString(_userDataKey, firstName);
   }
 
@@ -38,5 +37,17 @@ class AuthService {
     final token = await getToken();
     if (token == null) return false;
     return !JwtDecoder.isExpired(token);
+  }
+
+  static Future<String?> getUserId() async {
+    final token = await getToken();
+    if (token != null) {
+      try {
+        final decodedToken = JwtDecoder.decode(token);
+        return decodedToken['cedula'] as String?;
+        // ignore: empty_catches
+      } catch (e) {}
+    }
+    return null;
   }
 }
