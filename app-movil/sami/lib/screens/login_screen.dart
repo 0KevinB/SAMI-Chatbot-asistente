@@ -39,15 +39,18 @@ class _LoginScreenState extends State<LoginScreen> {
           final token = data['token'];
           await AuthService.saveToken(token);
           Navigator.pushReplacement(
+            // ignore: use_build_context_synchronously
             context,
             MaterialPageRoute(builder: (context) => const MainScreen()),
           );
         } else {
+          // ignore: use_build_context_synchronously
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Credenciales inválidas')),
           );
         }
       } catch (e) {
+        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Error de conexión')),
         );

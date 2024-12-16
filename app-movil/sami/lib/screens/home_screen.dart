@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:sami/screens/alert_screen.dart';
+import 'package:sami/screens/appointment_screen.dart';
+import 'package:sami/screens/chat_screen.dart';
 import 'package:sami/services/auth_service.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -34,12 +37,12 @@ class _HomeScreenState extends State<HomeScreen> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Header
-              Row(
+              const Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  const Icon(Icons.grid_view, color: Colors.blue),
+                  Icon(Icons.grid_view, color: Colors.blue),
                   Row(
-                    children: const [
+                    children: [
                       Icon(Icons.cloud_outlined, color: Colors.blue),
                       SizedBox(width: 16),
                       Icon(Icons.notifications_outlined, color: Colors.blue),
@@ -73,19 +76,21 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               // Medication Reminder
-              Container(
-                margin: const EdgeInsets.symmetric(vertical: 16),
-                padding: const EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  color: Colors.blue.shade50,
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: const Text(
-                  'Recuerda tomar tu medicina en 5 minutos',
-                  style: TextStyle(color: Colors.blue),
+              Center(
+                child: Container(
+                  margin: const EdgeInsets.symmetric(vertical: 16),
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: Colors.blue.shade50,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: const Text(
+                    'Recuerda tomar tu medicina en 5 minutos',
+                    style: TextStyle(color: Colors.blue),
+                  ),
                 ),
               ),
-              // Grid Menu
+
               Expanded(
                 child: GridView.count(
                   crossAxisCount: 2,
@@ -95,18 +100,36 @@ class _HomeScreenState extends State<HomeScreen> {
                     _buildMenuCard(
                       icon: Icons.calendar_month,
                       title: 'Citas médicas',
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) =>
+                                    const AppointmentsScreen()));
+                      },
                     ),
                     _buildMenuCard(
                       icon: Icons.chat_bubble_outline,
                       title: 'Nuevo chat',
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const ChatScreen()),
+                        );
+                      },
                     ),
                     _buildMenuCard(
                       icon: Icons.description_outlined,
                       title: 'Mis recetas',
+                      onTap: () {},
                     ),
                     _buildMenuCard(
                       icon: Icons.science_outlined,
                       title: 'Mis exámenes',
+                      onTap: () {
+                        //   Navigator.push(context, MaterialPageRoute(builder: (context) => ))
+                      },
                     ),
                   ],
                 ),
@@ -116,11 +139,21 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: Padding(
                   padding: const EdgeInsets.only(bottom: 16),
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      // Aquí iría la lógica para activar la emergencia
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const AlertScreen()));
+                    },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
-                      shape: const CircleBorder(),
-                      padding: const EdgeInsets.all(24),
+                      backgroundColor: Colors.blueAccent,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 50, vertical: 20),
+                      textStyle: const TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     child: const Text(
                       'BOTÓN DE\nEMERGENCIA',
@@ -143,26 +176,32 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildMenuCard({
     required IconData icon,
     required String title,
+    required VoidCallback onTap,
   }) {
-    return Card(
-      elevation: 2,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
-      ),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Icon(icon, size: 32, color: Colors.blue),
-          const SizedBox(height: 8),
-          Text(
-            title,
-            textAlign: TextAlign.center,
-            style: const TextStyle(
-              fontSize: 14,
-              color: Colors.black87,
-            ),
+    return GestureDetector(
+      onTap: onTap,
+      child: SizedBox(
+        child: Card(
+          elevation: 2,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
           ),
-        ],
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(icon, size: 32, color: Colors.blue),
+              const SizedBox(height: 8),
+              Text(
+                title,
+                textAlign: TextAlign.center,
+                style: const TextStyle(
+                  fontSize: 14,
+                  color: Colors.black87,
+                ),
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }

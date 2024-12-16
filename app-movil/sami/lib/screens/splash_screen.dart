@@ -22,10 +22,12 @@ class _SplashScreenState extends State<SplashScreen> {
         const Duration(seconds: 2)); // Para mostrar el splash por 2 segundos
 
     if (await AuthService.isTokenValid()) {
+      // ignore: use_build_context_synchronously
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (_) => const MainScreen()),
       );
     } else {
+      // ignore: use_build_context_synchronously
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (_) => const LoginScreen()),
       );

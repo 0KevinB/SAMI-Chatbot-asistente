@@ -13,15 +13,7 @@ class AuthService {
     // Decodificar el token y extraer el nombre
     Map<String, dynamic> decodedToken = JwtDecoder.decode(token);
     String fullName = decodedToken['nombre'] ?? '';
-
-    // Depuración: imprime el nombre completo
-    print('Nombre completo decodificado: $fullName');
-
-    // Extraer el primer nombre de manera robusta
     String firstName = fullName.trim().split(' ').first;
-
-    // Depuración: imprime el primer nombre
-    print('Primer nombre extraído: $firstName');
 
     await prefs.setString(_userDataKey, firstName);
   }
