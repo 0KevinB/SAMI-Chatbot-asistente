@@ -19,37 +19,35 @@
       <form (ngSubmit)="guardarPaciente()" class="patient-form">
         <div class="form-grid">
           <div class="form-group">
-            <label for="nombres" class="form-label">Nombres</label>
+            <label for="nombre" class="form-label">Nombres</label>
             <input
-              id="nombres"
+              id="nombre"
               type="text"
               class="form-input"
-              [(ngModel)]="nuevoPaciente.nombres"
-              name="nombres"
+              [(ngModel)]="nuevoPaciente.nombre"
+              name="nombre"
               required
             />
           </div>
           <div class="form-group">
-            <label for="apellidos" class="form-label">Apellidos</label>
+            <label for="apellido" class="form-label">Apellidos</label>
             <input
-              id="apellidos"
+              id="apellido"
               type="text"
               class="form-input"
-              [(ngModel)]="nuevoPaciente.apellidos"
-              name="apellidos"
+              [(ngModel)]="nuevoPaciente.apellido"
+              name="apellido"
               required
             />
           </div>
           <div class="form-group">
-            <label for="identificacion" class="form-label"
-              >Identificación</label
-            >
+            <label for="cedula" class="form-label">Identificación</label>
             <input
-              id="identificacion"
+              id="cedula"
               type="text"
               class="form-input"
-              [(ngModel)]="nuevoPaciente.identificacion"
-              name="identificacion"
+              [(ngModel)]="nuevoPaciente.cedula"
+              name="cedula"
               required
             />
           </div>
@@ -78,15 +76,15 @@
             />
           </div>
           <div class="form-group">
-            <label for="lugarNacimiento" class="form-label"
-              >Lugar de nacimiento</label
+            <label for="email" class="form-label"
+              >Correo electrónico</label
             >
             <input
-              id="lugarNacimiento"
-              type="text"
+              id="email"
+              type="email"
               class="form-input"
-              [(ngModel)]="nuevoPaciente.lugarNacimiento"
-              name="lugarNacimiento"
+              [(ngModel)]="nuevoPaciente.email"
+              name="email"
               required
             />
           </div>
@@ -118,9 +116,9 @@
       <tbody>
         <tr *ngFor="let paciente of listaPacientes">
           <td class="data-patient">{{ paciente.cedula }}</td>
-          <td class="data-patient">{{ paciente.nombres }}</td>
-          <td class="data-patient">{{ paciente.apellidos }}</td>
-          <td class="data-patient">{{ paciente.telefono }}</td>
+          <td class="data-patient">{{ paciente.nombre }}</td>
+          <td class="data-patient">{{ paciente.apellido }}</td>
+          <td class="data-patient">{{ paciente.contacto }}</td>
           <td class="data-patient">{{ paciente.fechaEvaluacion }}</td>
           <td>
             <div class="actions">

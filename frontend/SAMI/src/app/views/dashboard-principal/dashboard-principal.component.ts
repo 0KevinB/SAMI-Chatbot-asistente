@@ -6,10 +6,11 @@ import { pacientes } from '../../mocks/pacientes.mock';
 import { FormsModule } from '@angular/forms';
 
 interface Paciente {
-  nombres: string;
-  apellidos: string;
-  identificacion: string;
+  nombre: string;
+  apellido: string;
+  cedula: string;
   contacto: string;
+  email: string;
   fechaNacimiento: string;
   lugarNacimiento: string;
 }
@@ -25,10 +26,11 @@ export class DashboardPrincipalComponent {
   listaPacientes = pacientes;
   mostrarFormulario = false;
   nuevoPaciente: Paciente = {
-    nombres: '',
-    apellidos: '',
-    identificacion: '',
+    nombre: '',
+    apellido: '',
+    cedula: '',
     contacto: '',
+    email: '',
     fechaNacimiento: '',
     lugarNacimiento: '',
   };
@@ -42,19 +44,20 @@ export class DashboardPrincipalComponent {
     this.listaPacientes.push({
       ...this.nuevoPaciente,
       cedula: '',
-      telefono: '',
+      contacto: '',
       fechaEvaluacion: '',
     });
 
     // Resetear el formulario
     this.nuevoPaciente = {
-      nombres: '',
-      apellidos: '',
-      identificacion: '',
-      contacto: '',
+      nombre: '', // Cambia 'nombres' a 'nombre'
+      apellido: '', // Cambia 'apellidos' a 'apellido'
+      cedula: '', // Cambia 'identificacion' a 'cedula'
       fechaNacimiento: '',
-      lugarNacimiento: '',
-    };
+      email: '', 
+      contacto: '',
+      lugarNacimiento: ''
+    }
 
     // Ocultar el formulario
     this.mostrarFormulario = false;
@@ -64,10 +67,11 @@ export class DashboardPrincipalComponent {
     this.mostrarFormulario = false;
     // Resetear el formulario
     this.nuevoPaciente = {
-      nombres: '',
-      apellidos: '',
-      identificacion: '',
+      nombre: '',
+      apellido: '',
+      cedula: '',
       contacto: '',
+      email: '', 
       fechaNacimiento: '',
       lugarNacimiento: '',
     };
