@@ -12,33 +12,6 @@ router.get(
   PatientController.getPatientById
 );
 
-router.post(
-  "/",
-  [
-    body("nombre")
-      .notEmpty()
-      .withMessage("El nombre es obligatorio")
-      .isString()
-      .withMessage("El nombre debe ser una cadena de texto"),
-    body("apellido")
-      .notEmpty()
-      .withMessage("El apellido es obligatorio")
-      .isString()
-      .withMessage("El apellido debe ser una cadena de texto"),
-    body("fechaNacimiento")
-      .notEmpty()
-      .withMessage("La fecha de nacimiento es obligatoria")
-      .isDate()
-      .withMessage("La fecha de nacimiento debe tener un formato válido"),
-    body("cedula")
-      .notEmpty()
-      .withMessage("La cédula es obligatoria")
-      .isString()
-      .withMessage("La cédula debe ser una cadena de texto"),
-  ],
-  PatientController.createPatient
-);
-
 router.put(
   "/:id",
   [
@@ -68,5 +41,7 @@ router.delete(
   [param("id").isString().withMessage("El ID debe ser una cadena de texto")],
   PatientController.deletePatient
 );
+
+router.post("/:patientId/glucosa", PatientController.addGlucosaRecord);
 
 export default router;

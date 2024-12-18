@@ -18,10 +18,9 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Middleware
 app.use(
   cors({
-    origin: "http://localhost:4200",
+    origin: "*", // Permite todos los orígenes (NO recomendado para producción)
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
@@ -40,7 +39,9 @@ app.use("/api/recetas", recetas);
 
 // Error handling
 app.use(errorHandler);
-
+app.get("/", (req, res) => {
+  res.status(200).json({ message: "API está funcionando" });
+});
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

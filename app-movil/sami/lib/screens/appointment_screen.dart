@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sami/screens/appointments_form_screen.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class AppointmentsScreen extends StatefulWidget {
@@ -85,7 +86,12 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
             child: SizedBox(
               width: double.infinity,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const AppointmentFormScreen()));
+                },
                 child: const Text('Solicitar cita médica'),
               ),
             ),

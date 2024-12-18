@@ -21,16 +21,6 @@ export class MedicoController {
     }
   }
 
-  static async createMedico(req: Request, res: Response) {
-    try {
-      const medicoData = req.body;
-      const newMedico = await MedicoService.createMedico(medicoData);
-      res.status(201).json(newMedico);
-    } catch (error: any) {
-      res.status(400).json({ error: error.message });
-    }
-  }
-
   static async updateMedico(req: Request, res: Response) {
     try {
       const { id } = req.params;

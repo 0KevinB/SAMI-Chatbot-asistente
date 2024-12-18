@@ -27,20 +27,6 @@ export class PatientController {
     }
   }
 
-  static async createPatient(req: Request, res: Response, next: NextFunction) {
-    try {
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return res.status(400).json({ errores: errors.array() });
-      }
-
-      const patient = await PatientService.createPatient(req.body);
-      res.status(201).json(patient);
-    } catch (error: any) {
-      res.status(500).json({ mensaje: error.message });
-    }
-  }
-
   static async updatePatient(req: Request, res: Response, next: NextFunction) {
     try {
       const errors = validationResult(req);
@@ -66,6 +52,30 @@ export class PatientController {
       const { id } = req.params;
       await PatientService.deletePatient(id);
       res.status(204).send();
+    } catch (error: any) {
+      res.status(500).json({ mensaje: error.message });
+    }
+  }
+  static async addGlucosaRecord(
+    req: Request,
+    res: Response,
+    next: NextFunction
+  ) {
+    try {
+      const { patientId } = req.params;
+      const glucosaRecord = req.body;
+      // Validar los datos de entrada
+      if (!glucosaRecord.valor) {
+        return res
+          .status(400)
+          .json({ mensaje: "El valor de glucosa es obligatorio" });
+      }
+
+      const updatedPatient = await PatientService.addGlucosaRecord(
+        patientId,
+        glucosaRecord
+      );
+      res.status(200).json(updatedPatient);
     } catch (error: any) {
       res.status(500).json({ mensaje: error.message });
     }
