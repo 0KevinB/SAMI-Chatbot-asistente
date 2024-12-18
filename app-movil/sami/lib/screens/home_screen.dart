@@ -3,6 +3,7 @@ import 'package:sami/screens/alert_screen.dart';
 import 'package:sami/screens/appointment_screen.dart';
 import 'package:sami/screens/chat_screen.dart';
 import 'package:sami/screens/glucosa_record_screen.dart';
+import 'package:sami/screens/prescription_screen.dart';
 import 'package:sami/services/auth_service.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -123,7 +124,13 @@ class _HomeScreenState extends State<HomeScreen> {
                     _buildMenuCard(
                       icon: Icons.description_outlined,
                       title: 'Mis recetas',
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const PrescriptionScreen()),
+                        );
+                      },
                     ),
                     _buildMenuCard(
                       icon: Icons.science_outlined,

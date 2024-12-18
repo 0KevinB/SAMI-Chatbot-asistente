@@ -82,7 +82,9 @@ export class RecetaController {
   static async listarPorPaciente(req: Request, res: Response) {
     try {
       const { pacienteCedula } = req.params;
-      const recetas = await RecetaService.listarPorPaciente(pacienteCedula);
+      const recetas = await RecetaService.listarPorPacienteCedula(
+        pacienteCedula
+      );
 
       res.json(recetas);
     } catch (error: any) {

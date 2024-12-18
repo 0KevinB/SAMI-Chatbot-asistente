@@ -39,7 +39,9 @@ app.use("/api/recetas", recetas);
 
 // Error handling
 app.use(errorHandler);
-
+app.get("/", (req, res) => {
+  res.status(200).json({ message: "API está funcionando" });
+});
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

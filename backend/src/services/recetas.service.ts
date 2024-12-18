@@ -71,17 +71,37 @@ export class RecetaService {
   }
 
   /**
-   * Listar recetas de un paciente
+   * Listar recetas filtrando por la cédula del paciente
    * @param pacienteCedula Cédula del paciente
-   * @returns Lista de recetas
+   * @returns Lista de recetas filtradas
    */
-  static async listarPorPaciente(pacienteCedula: string): Promise<Receta[]> {
-    const snapshot = await db
-      .collection("recetas")
-      .where("pacienteCedula", "==", pacienteCedula)
-      .orderBy("fecha", "desc")
-      .get();
+  static async listarPorPacienteCedula(
+    pacienteCedula: string
+  ): Promise<Receta[]> {
+    try {
+      // Obtener todos los documentos de la colección "recetas"
+      const snapshot = await db.collection("recetas").get();
 
-    return snapshot.docs.map((doc) => doc.data() as Receta);
+      // Filtrar manualmente por el campo 'pacienteCedula'
+      const recetas: Receta[] = [];
+      snapshot.forEach((doc) => {
+        const data = doc.data();
+        if (data.pacienteCedula === pacienteCedula) {
+          recetas.push({
+            id: doc.id,
+            pacienteCedula: data.pacienteCedula,
+            medicoCedula: data.medicoCedula,
+            fecha: data.fecha.toDate(), // Convertir a Date si es un Timestamp
+            pdfUrl: data.pdfUrl,
+            medicamentos: data.medicamentos || [],
+          });
+        }
+      });
+
+      return recetas;
+    } catch (error) {
+      console.error("Error al listar las recetas:", error);
+      throw new Error("No se pudieron obtener las recetas");
+    }
   }
 }

@@ -17,12 +17,6 @@ export class HistoriaClinicaController {
       const { pacienteCedula, medicoCedula, descripcion, fecha } = req.body;
       const pdfFile = req.file;
 
-      if (!pdfFile) {
-        return res
-          .status(400)
-          .json({ message: "No se ha proporcionado un archivo PDF" });
-      }
-
       const fechaCreacion = fecha ? new Date(fecha) : undefined;
 
       const historiaClinica = await HistoriaClinicaService.crear(
