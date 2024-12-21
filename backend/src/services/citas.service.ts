@@ -89,29 +89,47 @@ export class CitaService {
   static async listarCitas(
     filtros: Partial<Cita> & { fechaInicio?: string; fechaFin?: string }
   ) {
-    let query: Query = db.collection("citas"); // Declara query explícitamente como tipo Query
+    try {
+      let query: Query = db.collection("citas");
 
-    if (filtros.pacienteCedula) {
-      query = query.where("pacienteCedula", "==", filtros.pacienteCedula);
-    }
-    if (filtros.medicoCedula) {
-      query = query.where("medicoCedula", "==", filtros.medicoCedula);
-    }
-    if (filtros.estado) {
-      query = query.where("estado", "==", filtros.estado);
-    }
-    if (filtros.especialidad) {
-      query = query.where("especialidad", "==", filtros.especialidad);
-    }
-    if (filtros.fechaInicio) {
-      query = query.where("fecha", ">=", filtros.fechaInicio);
-    }
-    if (filtros.fechaFin) {
-      query = query.where("fecha", "<=", filtros.fechaFin);
-    }
+      if (filtros.pacienteCedula) {
+        query = query.where("pacienteCedula", "==", filtros.pacienteCedula);
+      }
 
-    const snapshot = await query.get();
-    return snapshot.docs.map((doc) => doc.data() as Cita);
+      // Otros filtros (si son necesarios)
+      if (filtros.medicoCedula) {
+        query = query.where("medicoCedula", "==", filtros.medicoCedula);
+      }
+      if (filtros.estado) {
+        query = query.where("estado", "==", filtros.estado);
+      }
+      if (filtros.fecha) {
+        query = query.where("fecha", "==", filtros.fecha);
+      }
+      if (filtros.especialidad) {
+        query = query.where("especialidad", "==", filtros.especialidad);
+      }
+      if (filtros.fechaInicio) {
+        query = query.where("fecha", ">=", filtros.fechaInicio);
+      }
+      if (filtros.fechaFin) {
+        query = query.where("fecha", "<=", filtros.fechaFin);
+      }
+
+      const snapshot = await query.get();
+
+      if (snapshot.empty) {
+        return [];
+      }
+
+      return snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+    } catch (error) {
+      console.error("Error al listar citas:", error);
+      throw new Error("Error al intentar listar las citas");
+    }
   }
 
   private static async actualizarCitaMedico(

@@ -101,6 +101,10 @@ router.get(
       .isIn(["pendiente", "confirmada", "cancelada", "completada"])
       .withMessage("Estado inválido"),
     query("especialidad").optional(),
+    query("fecha")
+      .optional()
+      .isISO8601()
+      .withMessage("Formato de fecha inválido"),
     query("fechaInicio")
       .optional()
       .isISO8601()
