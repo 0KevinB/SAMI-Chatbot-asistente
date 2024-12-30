@@ -19,30 +19,11 @@ export const authMiddleware = async (
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET!) as any;
 
-    // Acceder al documento del usuario en Firestore
-    const userRef = db.collection("users").doc(decoded.cedula);
-    const snapshot = await userRef.get();
+    // Adjuntar solo la cédula al request, no es necesario buscar en Firestore
+    req.user = { cedula: decoded.cedula };
 
-    if (!snapshot.exists) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    const user = snapshot.data(); // Obtén los datos del usuario
-    req.user = user; // Guarda el usuario en la solicitud
-    next(); // Continua con la siguiente acción
+    next(); // Continuar con el siguiente middleware/controlador
   } catch (error) {
     res.status(401).json({ message: "Invalid token" });
   }
-};
-
-export const roleCheck = (roles: string[]) => {
-  return (req: AuthRequest, res: Response, next: NextFunction) => {
-    if (!req.user) {
-      return res.status(401).json({ message: "Unauthorized" });
-    }
-    if (!roles.includes(req.user.role)) {
-      return res.status(403).json({ message: "Forbidden" });
-    }
-    next(); // Continúa si el rol es válido
-  };
 };
