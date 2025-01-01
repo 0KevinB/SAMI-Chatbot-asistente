@@ -4,6 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { pacientes } from '../../mocks/pacientes.mock';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 
 interface Paciente {
   nombre: string;
@@ -17,7 +18,7 @@ interface Paciente {
 
 @Component({
   selector: 'app-dashboard-principal',
-  imports: [SlidebarComponent, HttpClientModule, CommonModule, FormsModule],
+  imports: [SlidebarComponent, HttpClientModule, CommonModule, FormsModule, RouterLink],
   templateUrl: './dashboard-principal.component.html',
   styleUrl: './dashboard-principal.component.css',
   standalone: true,
