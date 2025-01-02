@@ -3,7 +3,7 @@ import { authMiddleware } from "@/middleware/auth.middleware";
 
 const router = Router();
 
-router.post("/query", authMiddleware, async (req, res) => {
+router.post("/query", async (req, res) => {
   try {
     const { query } = req.body;
     const apiKey = process.env.GEMINI_API_KEY;

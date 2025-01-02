@@ -1,3 +1,5 @@
+// File: screens/appointments_screen.dart
+
 import 'package:flutter/material.dart';
 import 'package:sami/screens/appointments_form_screen.dart';
 import 'package:table_calendar/table_calendar.dart';
@@ -21,25 +23,30 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
   @override
   void initState() {
     super.initState();
+    _selectedDay = _focusedDay;
     _loadAppointments();
   }
 
   Future<void> _loadAppointments() async {
     setState(() => _isLoading = true);
     try {
-      final appointments = await AppointmentService.getAppointments(
-        fecha: _focusedDay.toIso8601String().split('T')[0],
-      );
-      setState(() {
-        _appointments = appointments;
-        _isLoading = false;
-      });
+      final appointments = await AppointmentService.getAppointments();
+      if (mounted) {
+        setState(() {
+          _appointments = appointments;
+          _isLoading = false;
+        });
+      }
     } catch (e) {
-      setState(() => _isLoading = false);
-      // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error al cargar las citas: $e')),
-      );
+      if (mounted) {
+        setState(() => _isLoading = false);
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Error al cargar las citas: $e'),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
     }
   }
 
@@ -67,8 +74,8 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
           : Column(
               children: [
                 TableCalendar(
-                  firstDay: DateTime.utc(2023, 1, 1),
-                  lastDay: DateTime.utc(2024, 12, 31),
+                  firstDay: DateTime.now().subtract(const Duration(days: 365)),
+                  lastDay: DateTime.now().add(const Duration(days: 365)),
                   focusedDay: _focusedDay,
                   calendarFormat: _calendarFormat,
                   selectedDayPredicate: (day) {
@@ -81,9 +88,11 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                     });
                   },
                   onFormatChanged: (format) {
-                    setState(() {
-                      _calendarFormat = format;
-                    });
+                    if (_calendarFormat != format) {
+                      setState(() {
+                        _calendarFormat = format;
+                      });
+                    }
                   },
                   eventLoader: (day) {
                     return _getAppointmentsForDay(day);
@@ -108,6 +117,7 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                               time:
                                   'Hora: ${appointment.horaInicio} - ${appointment.horaFin}',
                               status: appointment.estado,
+                              motivoEstado: appointment.motivoEstado,
                             );
                           },
                         ),
@@ -140,6 +150,7 @@ class AppointmentCard extends StatelessWidget {
   final String location;
   final String time;
   final String status;
+  final String? motivoEstado;
 
   const AppointmentCard({
     super.key,
@@ -147,6 +158,7 @@ class AppointmentCard extends StatelessWidget {
     required this.location,
     required this.time,
     required this.status,
+    this.motivoEstado,
   });
 
   @override
@@ -176,6 +188,34 @@ class AppointmentCard extends StatelessWidget {
             Text(location),
             const SizedBox(height: 4),
             Text(time),
+            if (status.toLowerCase() == 'cancelada' &&
+                motivoEstado != null) ...[
+              const SizedBox(height: 8),
+              Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  color: Colors.red.shade50,
+                  borderRadius: BorderRadius.circular(4),
+                  border: Border.all(color: Colors.red.shade200),
+                ),
+                child: Row(
+                  children: [
+                    Icon(Icons.info_outline,
+                        size: 16, color: Colors.red.shade700),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: Text(
+                        motivoEstado!,
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: Colors.red.shade700,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ],
         ),
       ),

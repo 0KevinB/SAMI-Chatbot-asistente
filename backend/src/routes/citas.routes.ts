@@ -67,6 +67,10 @@ router.put(
     body("especialidad").optional(),
     body("notas").optional(),
     body("motivoConsulta").optional(),
+    body("motivoEstado")
+      .optional()
+      .isString()
+      .withMessage("El motivo debe ser una cadena de texto"),
   ],
   CitaController.actualizarCita
 );

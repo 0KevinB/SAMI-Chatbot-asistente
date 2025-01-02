@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'dart:convert';
 import 'package:sami/services/chat_service.dart';
 
 class ChatScreen extends StatefulWidget {

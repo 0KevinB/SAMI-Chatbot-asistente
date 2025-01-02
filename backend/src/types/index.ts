@@ -125,4 +125,5 @@ export interface Cita {
   notas?: string; // Observaciones adicionales
   motivoConsulta?: string; // Razón de la consulta
   especialidad: string; // Especialidad del medico
+  motivoEstado?: string; // Campo del motivo del cambio de estado
 }
