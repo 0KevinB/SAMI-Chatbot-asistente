@@ -67,6 +67,10 @@ router.put(
     body("especialidad").optional(),
     body("notas").optional(),
     body("motivoConsulta").optional(),
+    body("motivoEstado")
+      .optional()
+      .isString()
+      .withMessage("El motivo debe ser una cadena de texto"),
   ],
   CitaController.actualizarCita
 );
@@ -101,6 +105,10 @@ router.get(
       .isIn(["pendiente", "confirmada", "cancelada", "completada"])
       .withMessage("Estado inválido"),
     query("especialidad").optional(),
+    query("fecha")
+      .optional()
+      .isISO8601()
+      .withMessage("Formato de fecha inválido"),
     query("fechaInicio")
       .optional()
       .isISO8601()

@@ -62,12 +62,32 @@ export class CitaController {
     }
   }
 
-  static async listarCitas(req: Request, res: Response, next: NextFunction) {
+  static async listarCitas(req: Request, res: Response) {
     try {
-      const citas = await CitaService.listarCitas(req.query);
-      res.json(citas);
-    } catch (error: any) {
-      res.status(error.status || 500).json({ mensaje: error.message });
+      // Lee los filtros enviados en el cuerpo de la solicitud
+      const filtros = req.query;
+
+      // Llama a la función listarCitas con los filtros
+      const citas = await CitaService.listarCitas(filtros);
+
+      // Devuelve las citas al cliente
+      return res.status(200).json({
+        message:
+          Array.isArray(citas) && citas.length > 0
+            ? "Citas encontradas"
+            : "No se encontraron citas",
+        total: Array.isArray(citas) ? citas.length : 0,
+        citas: Array.isArray(citas) ? citas : [],
+      });
+    } catch (error) {
+      console.error(
+        "Error al listar citas:",
+        error instanceof Error ? error.message : error
+      );
+      return res.status(500).json({
+        message: "Ocurrió un error al intentar listar las citas",
+        error: error instanceof Error ? error.message : "Error desconocido",
+      });
     }
   }
 }
