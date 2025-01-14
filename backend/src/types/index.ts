@@ -7,6 +7,7 @@ import { Timestamp } from "firebase-admin/firestore";
 export interface User {
   cedula: string; // Identificador único de documento/cédula
   nombre: string; // Nombre completo del usuario
+  apellido: string; // Nombre completo del usuario
   email: string; // Correo electrónico para inicio de sesión y contacto
   password: string; // Contraseña hasheada para autenticación
   role: "admin" | "medico" | "paciente"; // Rol de usuario para control de acceso

@@ -3,22 +3,20 @@ import { SlidebarComponent } from '../../components/slidebar/slidebar.component'
 import { HttpClientModule } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Patient } from '../../interfaces/patient.interface';
-import { PacienteService } from '../../services/users/paciente.service';
-import { catchError, Observable, of } from 'rxjs';
 
 interface Paciente {
-  nombres: string;
-  apellidos: string;
-  identificacion: string;
+  nombre: string;
+  apellido: string;
+  cedula: string;
   contacto: string;
+  email: string;
   fechaNacimiento: string;
   lugarNacimiento: string;
 }
 
 @Component({
   selector: 'app-dashboard-principal',
-  imports: [SlidebarComponent, HttpClientModule, CommonModule, FormsModule],
+  imports: [SlidebarComponent, HttpClientModule, CommonModule, FormsModule, RouterLink],
   templateUrl: './dashboard-principal.component.html',
   styleUrl: './dashboard-principal.component.css',
   standalone: true,
@@ -99,6 +97,7 @@ export class DashboardPrincipalComponent {
         };
       },
     });
+    
   }
 
   cancelarFormulario() {

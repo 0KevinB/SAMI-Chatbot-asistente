@@ -17,6 +17,18 @@ export class VistaPacienteComponent {
       date: '13-Ago-2023, 10:00 AM',
       reason: 'EDEMA DE MIEMBRO INFERIOR IZQUIERDO',
     },
+    {
+      date: '13-Ago-2023, 10:00 AM',
+      reason: 'EDEMA DE MIEMBRO INFERIOR IZQUIERDO',
+    },
+    {
+      date: '13-Ago-2023, 10:00 AM',
+      reason: 'EDEMA DE MIEMBRO INFERIOR IZQUIERDO',
+    },
+    {
+      date: '13-Ago-2023, 10:00 AM',
+      reason: 'EDEMA DE MIEMBRO INFERIOR IZQUIERDO',
+    },
   ];
   patient: any = pacientes[0];
 }
