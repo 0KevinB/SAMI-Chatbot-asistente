@@ -4,6 +4,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:sami/screens/main_screen.dart';
 import 'package:sami/services/auth_service.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -73,21 +74,77 @@ class _LoginScreenState extends State<LoginScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Image.asset('assets/img/sami_logo.png', height: 120),
-                const Text(
+                Text(
+                  'BotAssit',
+                  style: GoogleFonts.roboto(
+                      fontWeight: FontWeight.bold,
+                      textStyle: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFFD1E0FF),
+                      )),
+                ),
+                Text(
                   'SAMI',
-                  style: TextStyle(
-                    fontSize: 32,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF2196F3),
-                  ),
+                  style: GoogleFonts.roboto(
+                      fontWeight: FontWeight.bold,
+                      textStyle: const TextStyle(
+                        fontSize: 50,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF5DABF5),
+                      )),
+                ),
+                Image.asset('assets/img/sami_logo.png', height: 120),
+                const SizedBox(height: 32),
+                Text(
+                  'Ingresar al sistema',
+                  style: GoogleFonts.roboto(
+                      fontWeight: FontWeight.bold,
+                      textStyle: const TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF4B4B4B),
+                      )),
                 ),
                 const SizedBox(height: 32),
                 TextFormField(
                   controller: _cedulaController,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     labelText: 'Número de cédula',
-                    border: OutlineInputBorder(),
+                    labelStyle: GoogleFonts.roboto(
+                      textStyle: const TextStyle(
+                        color: Color(0xFF857E8E),
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    // Esto mueve el label fuera del input
+                    isDense: true,
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 12),
+                    // Estilos del input
+                    filled: true,
+                    fillColor: const Color(0xFFF0F4FF),
+                    // Bordes redondeados para todos los estados
+                    enabledBorder: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderSide:
+                          BorderSide(color: Color(0xFF5DABF5), width: 2),
+                    ),
+                    focusedBorder: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderSide:
+                          BorderSide(color: Color(0xFF0466C3), width: 2),
+                    ),
+                    errorBorder: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderSide: BorderSide(color: Colors.red, width: 2),
+                    ),
+                    focusedErrorBorder: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderSide: BorderSide(color: Colors.red, width: 2),
+                    ),
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
                   keyboardType: TextInputType.number,
                   inputFormatters: [
@@ -109,7 +166,35 @@ class _LoginScreenState extends State<LoginScreen> {
                   controller: _passwordController,
                   decoration: const InputDecoration(
                     labelText: 'Contraseña',
-                    border: OutlineInputBorder(),
+                    labelStyle: TextStyle(
+                      color: Color(0xFF857E8E),
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    isDense: true,
+                    contentPadding:
+                        EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    filled: true,
+                    fillColor: Color(0xFFF0F4FF),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderSide:
+                          BorderSide(color: Color(0xFF5DABF5), width: 2),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderSide:
+                          BorderSide(color: Color(0xFF0466C3), width: 2),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderSide: BorderSide(color: Colors.red, width: 2),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderSide: BorderSide(color: Colors.red, width: 2),
+                    ),
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
                   obscureText: true,
                   validator: (value) {
@@ -124,18 +209,46 @@ class _LoginScreenState extends State<LoginScreen> {
                   width: double.infinity,
                   height: 48,
                   child: ElevatedButton(
+                    style: ButtonStyle(
+                        backgroundColor: WidgetStateProperty.all<Color>(
+                            const Color(0xFF5DABF5))),
                     onPressed: _isLoading ? null : _login,
                     child: _isLoading
                         ? const CircularProgressIndicator()
-                        : const Text('Ingresar'),
+                        : Text('Ingresar',
+                            style: GoogleFonts.roboto(
+                                textStyle: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                            ))),
                   ),
                 ),
                 const SizedBox(height: 16),
-                TextButton(
-                  onPressed: () {
-                    // Implement password recovery
-                  },
-                  child: const Text('Recuperar contraseña'),
+                Container(
+                  decoration: const BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(
+                        color: Color(0xFF857E8E),
+                        width: 1.0,
+                      ),
+                    ),
+                  ),
+                  child: TextButton(
+                    onPressed: () {
+                      // Implement password recovery
+                    },
+                    child: Text(
+                      'Recuperar contraseña',
+                      style: GoogleFonts.roboto(
+                        textStyle: const TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF857E8E),
+                        ),
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),
