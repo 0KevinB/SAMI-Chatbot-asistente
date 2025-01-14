@@ -29,7 +29,6 @@ export class LoginMedicoComponent {
 
             const decodedToken = this.authService.getDecodedToken();
             if (decodedToken && decodedToken.role === 'medico') {
-              console.log('Acceso permitido, rol médico');
               this.router.navigate(['/dashboard-principal']);
             } else {
               console.error('Acceso denegado, rol no permitido');

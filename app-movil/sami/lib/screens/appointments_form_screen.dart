@@ -79,8 +79,9 @@ class _AppointmentFormScreenState extends State<AppointmentFormScreen> {
       if (_startTime == null) throw Exception('Seleccione hora de inicio');
       if (_endTime == null) throw Exception('Seleccione hora de fin');
       if (_selectedDoctor == null) throw Exception('Seleccione un médico');
-      if (_selectedSpecialty == null)
+      if (_selectedSpecialty == null) {
         throw Exception('Seleccione una especialidad');
+      }
 
       final appointmentData = {
         "pacienteCedula": pacienteCedula,
