@@ -2,7 +2,7 @@ import { db, storage } from "@/config/firebase";
 import { HistoriaClinica } from "@/types";
 import { v4 as uuidv4 } from "uuid";
 
-import { FieldValue } from "firebase-admin/firestore";
+import { FieldValue, Timestamp } from "firebase-admin/firestore";
 
 export class HistoriaClinicaService {
   /**
@@ -88,8 +88,14 @@ export class HistoriaClinicaService {
     if (!doc.exists) {
       return null;
     }
-    return doc.data() as HistoriaClinica;
-  }
+    const data = doc.data() as HistoriaClinica & { fecha: Timestamp };
 
-  // Puedes agregar más métodos según sea necesario, como listar, actualizar, eliminar, etc.
+    // Convert Firestore Timestamp to ISO string
+    const fecha = data.fecha.toDate();
+
+    return {
+      ...data,
+      fecha: fecha,
+    };
+  }
 }

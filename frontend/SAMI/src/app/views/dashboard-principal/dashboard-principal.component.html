@@ -15,84 +15,70 @@
       </button>
     </header>
 
+    <!-- dashboard-principal.component.html -->
     <div *ngIf="mostrarFormulario" class="modal-overlay">
       <form (ngSubmit)="guardarPaciente()" class="patient-form">
         <div class="form-grid">
           <div class="form-group">
-            <label for="nombres" class="form-label">Nombres</label>
+            <label for="nombre" class="form-label">Nombres y Apellidos</label>
             <input
-              id="nombres"
+              id="nombre"
               type="text"
               class="form-input"
-              [(ngModel)]="nuevoPaciente.nombres"
-              name="nombres"
+              [(ngModel)]="nuevoPaciente.nombre"
+              name="nombre"
               required
             />
           </div>
           <div class="form-group">
-            <label for="apellidos" class="form-label">Apellidos</label>
+            <label for="cedula" class="form-label">Cédula</label>
             <input
-              id="apellidos"
+              id="cedula"
               type="text"
               class="form-input"
-              [(ngModel)]="nuevoPaciente.apellidos"
-              name="apellidos"
+              [(ngModel)]="nuevoPaciente.cedula"
+              name="cedula"
               required
             />
           </div>
           <div class="form-group">
-            <label for="identificacion" class="form-label"
-              >Identificación</label
-            >
+            <label for="telefono" class="form-label">Teléfono</label>
             <input
-              id="identificacion"
-              type="text"
-              class="form-input"
-              [(ngModel)]="nuevoPaciente.identificacion"
-              name="identificacion"
-              required
-            />
-          </div>
-          <div class="form-group">
-            <label for="contacto" class="form-label">Contacto</label>
-            <input
-              id="contacto"
+              id="telefono"
               type="tel"
               class="form-input"
-              [(ngModel)]="nuevoPaciente.contacto"
-              name="contacto"
+              [(ngModel)]="nuevoPaciente.telefono"
+              name="telefono"
               required
             />
           </div>
           <div class="form-group">
-            <label for="fechaNacimiento" class="form-label"
-              >Fecha de nacimiento</label
-            >
+            <label for="email" class="form-label">Correo electrónico</label>
             <input
-              id="fechaNacimiento"
-              type="date"
+              id="email"
+              type="email"
               class="form-input"
-              [(ngModel)]="nuevoPaciente.fechaNacimiento"
-              name="fechaNacimiento"
+              [(ngModel)]="nuevoPaciente.email"
+              name="email"
               required
             />
           </div>
           <div class="form-group">
-            <label for="lugarNacimiento" class="form-label"
-              >Lugar de nacimiento</label
-            >
+            <label for="password" class="form-label">Contraseña</label>
             <input
-              id="lugarNacimiento"
-              type="text"
+              id="password"
+              type="password"
               class="form-input"
-              [(ngModel)]="nuevoPaciente.lugarNacimiento"
-              name="lugarNacimiento"
+              [(ngModel)]="nuevoPaciente.password"
+              name="password"
               required
             />
           </div>
         </div>
         <div class="modal-actions">
-          <button type="submit" class="save-button">GUARDAR</button>
+          <button type="submit" class="save-button" [disabled]="!formIsValid()">
+            GUARDAR
+          </button>
           <button
             type="button"
             class="cancel-button"
@@ -103,7 +89,6 @@
         </div>
       </form>
     </div>
-
     <table>
       <thead>
         <tr>
@@ -118,14 +103,19 @@
       <tbody>
         <tr *ngFor="let paciente of listaPacientes">
           <td class="data-patient">{{ paciente.cedula }}</td>
-          <td class="data-patient">{{ paciente.nombres }}</td>
-          <td class="data-patient">{{ paciente.apellidos }}</td>
-          <td class="data-patient">{{ paciente.telefono }}</td>
-          <td class="data-patient">{{ paciente.fechaEvaluacion }}</td>
+          <td class="data-patient">{{ paciente.nombre }}</td>
+          <td class="data-patient">{{ paciente.nombre }}</td>
+          <td class="data-patient">{{ paciente.telefono || "N/A" }}</td>
+          <td class="data-patient">
+            {{ getUltimaFechaEvaluacion(paciente) }}
+          </td>
           <td>
             <div class="actions">
               <button class="button-standar">Ver más</button>
-              <button class="delete-action">
+              <button
+                class="delete-action"
+                (click)="deletePatient(paciente.id)"
+              >
                 <i class="fa-solid fa-trash-can"></i>
               </button>
             </div>

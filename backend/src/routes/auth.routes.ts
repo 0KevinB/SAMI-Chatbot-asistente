@@ -13,6 +13,11 @@ router.post(
       .withMessage("La cédula es obligatoria")
       .isString()
       .withMessage("La cédula debe ser una cadena de texto"),
+    body("telefono")
+      .notEmpty()
+      .withMessage("Debe tener un número de teléfono")
+      .isString()
+      .withMessage("El número debe ser una cadena de texto"),
     body("nombre")
       .notEmpty()
       .withMessage("El nombre es obligatorio")
