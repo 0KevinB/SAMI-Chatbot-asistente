@@ -6,7 +6,6 @@ import { FormsModule } from '@angular/forms';
 import { Patient } from '../../interfaces/patient.interface';
 import { PacienteService } from '../../services/users/paciente.service';
 import { catchError, Observable, of } from 'rxjs';
-import { RouterLink } from '@angular/router';
 
 interface Paciente {
   nombres: string;
@@ -19,7 +18,7 @@ interface Paciente {
 
 @Component({
   selector: 'app-dashboard-principal',
-  imports: [SlidebarComponent, HttpClientModule, CommonModule, FormsModule, RouterLink],
+  imports: [SlidebarComponent, HttpClientModule, CommonModule, FormsModule],
   templateUrl: './dashboard-principal.component.html',
   styleUrl: './dashboard-principal.component.css',
   standalone: true,

@@ -125,3 +125,21 @@ h2 {
   /* Estilos para las notificaciones pendientes */
 }
 
+.appointment {
+  margin-bottom: 5px;
+  padding: 5px;
+  border-left-width: 4px;
+  border-left-style: solid;
+  background-color: #f0f0f0;
+  font-size: 0.9em;
+}
+
+.appointment-time {
+  font-weight: bold;
+}
+
+.appointment-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
