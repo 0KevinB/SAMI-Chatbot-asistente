@@ -94,7 +94,7 @@ export interface HistoriaClinica {
   pacienteCedula: string; // Referencia al paciente
   medicoCedula: string; // Médico que realizó el registro
   fecha: Date; // Fecha del registro
-  pdfUrl: string; // Enlace al documento digitalizado
+  pdfUrl: string | ""; // Enlace al documento digitalizado
   descripcion: string; // Resumen del encuentro médico
 }
 
@@ -126,4 +126,5 @@ export interface Cita {
   notas?: string; // Observaciones adicionales
   motivoConsulta?: string; // Razón de la consulta
   especialidad: string; // Especialidad del medico
+  motivoEstado?: string; // Campo del motivo del cambio de estado
 }

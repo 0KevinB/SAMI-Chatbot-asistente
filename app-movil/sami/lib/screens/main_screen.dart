@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sami/screens/home_screen.dart';
 import 'package:sami/screens/chat_screen.dart';
-// Import AlertScreen
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -23,6 +22,8 @@ class _MainScreenState extends State<MainScreen> {
     return Scaffold(
       body: _screens[_selectedIndex],
       bottomNavigationBar: NavigationBar(
+        backgroundColor: Colors.white,
+        elevation: 0,
         selectedIndex: _selectedIndex,
         onDestinationSelected: (int index) {
           setState(() {

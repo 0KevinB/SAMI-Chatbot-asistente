@@ -15,11 +15,12 @@
       </button>
     </header>
 
+    <!-- dashboard-principal.component.html -->
     <div *ngIf="mostrarFormulario" class="modal-overlay">
       <form (ngSubmit)="guardarPaciente()" class="patient-form">
         <div class="form-grid">
           <div class="form-group">
-            <label for="nombre" class="form-label">Nombres</label>
+            <label for="nombre" class="form-label">Nombres y Apellidos</label>
             <input
               id="nombre"
               type="text"
@@ -30,55 +31,30 @@
             />
           </div>
           <div class="form-group">
-            <label for="apellido" class="form-label">Apellidos</label>
-            <input
-              id="apellido"
-              type="text"
-              class="form-input"
-              [(ngModel)]="nuevoPaciente.apellido"
-              name="apellido"
-              required
-            />
-          </div>
-          <div class="form-group">
-            <label for="cedula" class="form-label">Identificación</label>
+            <label for="cedula" class="form-label">Cédula</label>
             <input
               id="cedula"
               type="text"
               class="form-input"
               [(ngModel)]="nuevoPaciente.cedula"
               name="cedula"
+
               required
             />
           </div>
           <div class="form-group">
-            <label for="contacto" class="form-label">Contacto</label>
+            <label for="telefono" class="form-label">Teléfono</label>
             <input
-              id="contacto"
+              id="telefono"
               type="tel"
               class="form-input"
-              [(ngModel)]="nuevoPaciente.contacto"
-              name="contacto"
+              [(ngModel)]="nuevoPaciente.telefono"
+              name="telefono"
               required
             />
           </div>
           <div class="form-group">
-            <label for="fechaNacimiento" class="form-label"
-              >Fecha de nacimiento</label
-            >
-            <input
-              id="fechaNacimiento"
-              type="date"
-              class="form-input"
-              [(ngModel)]="nuevoPaciente.fechaNacimiento"
-              name="fechaNacimiento"
-              required
-            />
-          </div>
-          <div class="form-group">
-            <label for="email" class="form-label"
-              >Correo electrónico</label
-            >
+            <label for="email" class="form-label">Correo electrónico</label>
             <input
               id="email"
               type="email"
@@ -88,9 +64,22 @@
               required
             />
           </div>
+          <div class="form-group">
+            <label for="password" class="form-label">Contraseña</label>
+            <input
+              id="password"
+              type="password"
+              class="form-input"
+              [(ngModel)]="nuevoPaciente.password"
+              name="password"
+              required
+            />
+          </div>
         </div>
         <div class="modal-actions">
-          <button type="submit" class="save-button">GUARDAR</button>
+          <button type="submit" class="save-button" [disabled]="!formIsValid()">
+            GUARDAR
+          </button>
           <button
             type="button"
             class="cancel-button"
@@ -101,7 +90,6 @@
         </div>
       </form>
     </div>
-
     <table>
       <thead>
         <tr>
@@ -117,13 +105,18 @@
         <tr *ngFor="let paciente of listaPacientes">
           <td class="data-patient">{{ paciente.cedula }}</td>
           <td class="data-patient">{{ paciente.nombre }}</td>
-          <td class="data-patient">{{ paciente.apellido }}</td>
-          <td class="data-patient">{{ paciente.contacto }}</td>
-          <td class="data-patient">{{ paciente.fechaEvaluacion }}</td>
+          <td class="data-patient">{{ paciente.nombre }}</td>
+          <td class="data-patient">{{ paciente.telefono || "N/A" }}</td>
+          <td class="data-patient">
+            {{ getUltimaFechaEvaluacion(paciente) }}
+          </td>
           <td>
             <div class="actions">
-              <button routerLink="/perfil-paciente" class="button-standar">Ver más</button>
-              <button class="delete-action">
+              <button class="button-standar">Ver más</button>
+              <button
+                class="delete-action"
+                (click)="deletePatient(paciente.id)"
+              >
                 <i class="fa-solid fa-trash-can"></i>
               </button>
             </div>

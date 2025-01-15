@@ -2,13 +2,15 @@ import { db, storage } from "@/config/firebase";
 import { HistoriaClinica } from "@/types";
 import { v4 as uuidv4 } from "uuid";
 
+import { FieldValue, Timestamp } from "firebase-admin/firestore";
+
 export class HistoriaClinicaService {
   /**
-   * Crear una nueva historia clínica con archivo PDF
+   * Crear una nueva historia clínica
    * @param pacienteCedula Cédula del paciente
    * @param medicoCedula Cédula del médico
    * @param descripcion Descripción de la historia clínica
-   * @param pdfFile Archivo PDF de la historia clínica
+   * @param pdfFile Archivo PDF de la historia clínica (opcional)
    * @param fecha Fecha opcional de la historia clínica
    * @returns Historia clínica creada
    */
@@ -16,46 +18,66 @@ export class HistoriaClinicaService {
     pacienteCedula: string,
     medicoCedula: string,
     descripcion: string,
-    pdfFile: Express.Multer.File,
+    pdfFile?: Express.Multer.File,
     fecha?: Date
   ): Promise<HistoriaClinica> {
     const id = uuidv4();
     const fechaCreacion = fecha || new Date(); // Usa la fecha proporcionada o la actual
 
-    // Validar el archivo PDF
-    if (!pdfFile || pdfFile.mimetype !== "application/pdf") {
-      throw new Error("Se requiere un archivo PDF válido");
+    let pdfUrl = ""; // Valor por defecto vacío para pdfUrl
+
+    // Si se proporciona un archivo PDF, lo subimos a Firebase Storage
+    if (pdfFile && pdfFile.mimetype === "application/pdf") {
+      const fileName = `historias_clinicas/${id}.pdf`;
+      const file = storage.bucket().file(fileName);
+
+      await file.save(pdfFile.buffer, {
+        metadata: { contentType: "application/pdf" },
+      });
+
+      // Obtener la URL firmada del archivo
+      const [url] = await file.getSignedUrl({
+        action: "read",
+        expires: "03-01-2500",
+      });
+
+      pdfUrl = url; // Asignar la URL si el PDF se subió
     }
 
-    // Subir el archivo PDF a Firebase Storage
-    const fileName = `historias_clinicas/${id}.pdf`;
-    const file = storage.bucket().file(fileName);
-    await file.save(pdfFile.buffer, {
-      metadata: {
-        contentType: "application/pdf",
-      },
-    });
-
-    // Obtener la URL del archivo
-    const [url] = await file.getSignedUrl({
-      action: "read",
-      expires: "03-01-2500", // Fecha lejana en el futuro
-    });
-
+    // Crear el objeto de la historia clínica
     const historiaClinica: HistoriaClinica = {
       id,
       pacienteCedula,
       medicoCedula,
       fecha: fechaCreacion,
-      pdfUrl: url,
+      pdfUrl, // Será undefined si no se subió ningún PDF
       descripcion,
     };
 
     // Guardar los metadatos en Firestore
     await db.collection("historias_clinicas").doc(id).set(historiaClinica);
 
+    // Relacionar la historia clínica con el paciente
+    const pacienteSnapshot = await db
+      .collection("users")
+      .where("cedula", "==", pacienteCedula)
+      .limit(1)
+      .get();
+
+    if (pacienteSnapshot.empty) {
+      throw new Error("Paciente no encontrado");
+    }
+
+    const pacienteRef = pacienteSnapshot.docs[0].ref;
+
+    // Actualizar el campo 'historiasClinicas' usando arrayUnion para evitar duplicados
+    await pacienteRef.update({
+      historiasClinicas: FieldValue.arrayUnion({ id: historiaClinica.id }),
+    });
+
     return historiaClinica;
   }
+
   /**
    * Obtener historia clinica por su ID
    * @param id Identificador de la historia clinica
@@ -66,8 +88,14 @@ export class HistoriaClinicaService {
     if (!doc.exists) {
       return null;
     }
-    return doc.data() as HistoriaClinica;
-  }
+    const data = doc.data() as HistoriaClinica & { fecha: Timestamp };
 
-  // Puedes agregar más métodos según sea necesario, como listar, actualizar, eliminar, etc.
+    // Convert Firestore Timestamp to ISO string
+    const fecha = data.fecha.toDate();
+
+    return {
+      ...data,
+      fecha: fecha,
+    };
+  }
 }

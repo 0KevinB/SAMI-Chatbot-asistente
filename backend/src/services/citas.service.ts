@@ -5,6 +5,7 @@ import { Query } from "firebase-admin/firestore";
 
 export class CitaService {
   static async crearCita(data: Omit<Cita, "id" | "createdAt">) {
+    // Crear la referencia y la cita
     const citaRef = db.collection("citas").doc();
     const nuevaCita: Cita = {
       id: citaRef.id,
@@ -13,13 +14,25 @@ export class CitaService {
 
     await citaRef.set(nuevaCita);
 
-    // Actualizar el documento del médico
-    await db
+    // Buscar el documento del médico usando la cédula
+    const medicoSnapshot = await db
       .collection("users")
-      .doc(data.medicoCedula)
-      .update({
-        citasMedicas: FieldValue.arrayUnion(nuevaCita),
-      });
+      .where("cedula", "==", data.medicoCedula) // Filtrar por el campo 'cedula'
+      .limit(1) // Suponiendo que la cédula es única
+      .get();
+
+    // Validar si el médico existe
+    if (medicoSnapshot.empty) {
+      throw new Error("Médico no encontrado");
+    }
+
+    // Obtener la referencia del documento del médico
+    const medicoRef = medicoSnapshot.docs[0].ref;
+
+    // Actualizar el campo citasMedicas usando arrayUnion
+    await medicoRef.update({
+      citasMedicas: FieldValue.arrayUnion({ id: nuevaCita.id }),
+    });
 
     return nuevaCita;
   }
@@ -76,49 +89,75 @@ export class CitaService {
   static async listarCitas(
     filtros: Partial<Cita> & { fechaInicio?: string; fechaFin?: string }
   ) {
-    let query: Query = db.collection("citas"); // Declara query explícitamente como tipo Query
+    try {
+      let query: Query = db.collection("citas");
 
-    if (filtros.pacienteCedula) {
-      query = query.where("pacienteCedula", "==", filtros.pacienteCedula);
-    }
-    if (filtros.medicoCedula) {
-      query = query.where("medicoCedula", "==", filtros.medicoCedula);
-    }
-    if (filtros.estado) {
-      query = query.where("estado", "==", filtros.estado);
-    }
-    if (filtros.especialidad) {
-      query = query.where("especialidad", "==", filtros.especialidad);
-    }
-    if (filtros.fechaInicio) {
-      query = query.where("fecha", ">=", filtros.fechaInicio);
-    }
-    if (filtros.fechaFin) {
-      query = query.where("fecha", "<=", filtros.fechaFin);
-    }
+      if (filtros.pacienteCedula) {
+        query = query.where("pacienteCedula", "==", filtros.pacienteCedula);
+      }
 
-    const snapshot = await query.get();
-    return snapshot.docs.map((doc) => doc.data() as Cita);
+      // Otros filtros (si son necesarios)
+      if (filtros.medicoCedula) {
+        query = query.where("medicoCedula", "==", filtros.medicoCedula);
+      }
+      if (filtros.estado) {
+        query = query.where("estado", "==", filtros.estado);
+      }
+      if (filtros.fecha) {
+        query = query.where("fecha", "==", filtros.fecha);
+      }
+      if (filtros.especialidad) {
+        query = query.where("especialidad", "==", filtros.especialidad);
+      }
+      if (filtros.fechaInicio) {
+        query = query.where("fecha", ">=", filtros.fechaInicio);
+      }
+      if (filtros.fechaFin) {
+        query = query.where("fecha", "<=", filtros.fechaFin);
+      }
+
+      const snapshot = await query.get();
+
+      if (snapshot.empty) {
+        return [];
+      }
+
+      return snapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+    } catch (error) {
+      console.error("Error al listar citas:", error);
+      throw new Error("Error al intentar listar las citas");
+    }
   }
 
   private static async actualizarCitaMedico(
     citaAnterior: Cita,
     citaNueva: Cita
   ) {
-    const medicoRef = db.collection("users").doc(citaNueva.medicoCedula);
-    const medicoDoc = await medicoRef.get();
+    // Buscar el documento del médico usando la cédula como campo
+    const medicoSnapshot = await db
+      .collection("users")
+      .where("cedula", "==", citaNueva.medicoCedula) // Filtrar por el campo 'cedula'
+      .limit(1) // Suponiendo que la cédula es única
+      .get();
 
-    if (!medicoDoc.exists) {
+    // Validar si el documento existe
+    if (medicoSnapshot.empty) {
       throw new Error("Médico no encontrado");
     }
 
-    const medico = medicoDoc.data() as Medico;
+    // Obtener la referencia del primer documento encontrado
+    const medicoRef = medicoSnapshot.docs[0].ref;
+    const medico = medicoSnapshot.docs[0].data() as Medico;
 
-    // En lugar de almacenar toda la cita, solo se almacenará el ID de la cita
+    // Actualizar la lista de citas
     const citasActualizadas = medico.citasMedicas.map((cita) =>
       cita.id === citaNueva.id ? { id: citaNueva.id } : cita
     );
 
+    // Actualizar el documento del médico
     await medicoRef.update({
       citasMedicas: citasActualizadas,
     });

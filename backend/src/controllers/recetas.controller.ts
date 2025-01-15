@@ -14,7 +14,6 @@ export class RecetaController {
    */
   static async crear(req: Request, res: Response) {
     try {
-      console.log(req.file, req.body);
       const { pacienteCedula, medicoCedula, medicamentos, fecha } = req.body;
       const pdfFile = req.file;
 
@@ -83,7 +82,9 @@ export class RecetaController {
   static async listarPorPaciente(req: Request, res: Response) {
     try {
       const { pacienteCedula } = req.params;
-      const recetas = await RecetaService.listarPorPaciente(pacienteCedula);
+      const recetas = await RecetaService.listarPorPacienteCedula(
+        pacienteCedula
+      );
 
       res.json(recetas);
     } catch (error: any) {

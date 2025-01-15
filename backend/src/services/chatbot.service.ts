@@ -1,24 +1,45 @@
-// src/services/chatbot.service.ts
-import { OpenAI } from "openai";
+import { db } from "@/config/firebase";
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY!,
-});
+// Obtener historial de conversaciones
+export const getConversationHistory = async (userId: string) => {
+  const docRef = db.collection("chatHistory").doc(userId);
+  const doc = await docRef.get();
 
-/**
- * Servicio para interactuar con la API de OpenAI y manejar consultas de chatbot
- */
-export class ChatbotService {
-  /**
-   * Método que maneja una consulta enviada por el usuario
-   * @param query Consulta enviada por el usuario
-   * @returns Respuesta generada por el modelo GPT-4
-   */
-  static async handleQuery(query: string) {
-    const response = await openai.chat.completions.create({
-      model: "gpt-4",
-      messages: [{ role: "user", content: query }],
-    });
-    return response.choices[0].message?.content;
+  if (!doc.exists) {
+    return []; // Si no hay historial, devolver array vacío
   }
-}
+
+  return doc.data()?.history || [];
+};
+
+// Guardar historial de conversación
+export const saveConversationHistory = async (
+  userId: string,
+  history: any[]
+) => {
+  const docRef = db.collection("chatHistory").doc(userId);
+  await docRef.set({ history });
+};
+
+// Enviar consulta a Gemini
+export const sendQueryToGemini = async (query: string, history: any[]) => {
+  const apiKey = process.env.GEMINI_API_KEY;
+
+  const geminiResponse = await fetch(
+    `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        contents: history.concat({ parts: [{ text: query }] }),
+      }),
+    }
+  );
+
+  const data: any = await geminiResponse.json();
+  return (
+    data.candidates?.[0]?.content?.parts?.[0]?.text || "Respuesta no disponible"
+  );
+};

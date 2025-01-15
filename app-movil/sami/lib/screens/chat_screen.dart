@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:sami/services/chat_service.dart';
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({super.key});
@@ -10,11 +11,11 @@ class ChatScreen extends StatefulWidget {
 class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _messageController = TextEditingController();
   final List<ChatMessage> _messages = [];
+  bool _isLoading = false;
 
   @override
   void initState() {
     super.initState();
-    // Add initial bot message
     _messages.add(
       const ChatMessage(
         text: "Hola, Soy SAMI, dime ¿cómo puedo ayudarte el día de hoy?",
@@ -24,21 +25,38 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
-  void _handleSubmitted(String text) {
+  Future<void> _handleSubmitted(String text) async {
     if (text.isEmpty) return;
 
-    _messageController.clear();
     setState(() {
       _messages.add(ChatMessage(text: text, isBot: false));
-      // Simulate bot response
-      _messages.add(
-        const ChatMessage(
-          text: "Entiendo, ¿en qué más puedo ayudarte?",
+      _isLoading = true;
+    });
+
+    _messageController.clear();
+
+    try {
+      final ChatService chatService = ChatService();
+      final String botResponse = await chatService.sendQuery(text);
+
+      setState(() {
+        _messages.add(ChatMessage(
+          text: botResponse,
           isBot: true,
           showOptions: true,
-        ),
-      );
-    });
+        ));
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _messages.add(const ChatMessage(
+          text:
+              "Lo siento, hubo un error al procesar tu solicitud. Por favor, intenta de nuevo.",
+          isBot: true,
+        ));
+        _isLoading = false;
+      });
+    }
   }
 
   @override
@@ -74,6 +92,11 @@ class _ChatScreenState extends State<ChatScreen> {
                   _messages[_messages.length - 1 - index],
             ),
           ),
+          if (_isLoading)
+            const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: CircularProgressIndicator(),
+            ),
           const Divider(height: 1.0),
           Container(
             decoration: BoxDecoration(color: Theme.of(context).cardColor),

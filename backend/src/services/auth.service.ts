@@ -10,21 +10,35 @@ export class AuthService {
    * @param userData Datos parciales del usuario a registrar
    * @returns Token de autenticación
    */
+
+  /**
+   * Registra un nuevo usuario con validaciones adicionales
+   * @param userData Datos parciales del usuario a registrar
+   * @returns Token de autenticación
+   */
   static async register(userData: Partial<User>) {
     // Validaciones exhaustivas
     this.validateRegistrationData(userData);
     if (!userData.cedula || userData.cedula.trim() === "") {
       throw new Error("La cédula es obligatoria y no puede estar vacía");
     }
-    const userRef = db.collection("users").doc(userData.cedula);
-    const snapshot = await userRef.get();
 
-    if (snapshot.exists) {
+    // Verificar si ya existe un usuario con la misma cédula
+    const querySnapshot = await db
+      .collection("users")
+      .where("cedula", "==", userData.cedula)
+      .limit(1)
+      .get();
+
+    if (!querySnapshot.empty) {
       throw new Error("El usuario ya existe");
     }
 
     // Hash de contraseña con salt adicional
     const hashedPassword = await bcrypt.hash(userData.password!, 12);
+
+    // Generar un ID aleatorio o usar el ID automático de Firestore
+    const documentId = db.collection("users").doc().id;
 
     // Preparar datos del usuario con timestamps
     const newUser = {
@@ -34,8 +48,10 @@ export class AuthService {
       updatedAt: Timestamp.now(),
     };
 
-    // Guardar usuario y generar token
-    await userRef.set(newUser);
+    // Guardar usuario en Firestore
+    await db.collection("users").doc(documentId).set(newUser);
+
+    // Generar token y retornarlo
     return this.generateToken(newUser);
   }
 
@@ -46,14 +62,18 @@ export class AuthService {
    * @returns Token de autenticación
    */
   static async login(cedula: string, password: string) {
-    const userRef = db.collection("users").doc(cedula);
+    const userRef = db
+      .collection("users")
+      .where("cedula", "==", cedula)
+      .limit(1); // Limitar la búsqueda a un solo documento
+
     const snapshot = await userRef.get();
 
-    if (!snapshot.exists) {
+    if (snapshot.empty) {
       throw new Error("Usuario no encontrado");
     }
 
-    const user = snapshot.data() as User;
+    const user = snapshot.docs[0].data() as User;
 
     // Comparación de contraseña con tiempo constante
     const isValidPassword = await bcrypt.compare(password, user.password);

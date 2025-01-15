@@ -12,28 +12,6 @@ router.get(
   MedicoController.getMedicoById
 );
 
-router.post(
-  "/",
-  [
-    body("nombre")
-      .notEmpty()
-      .withMessage("El nombre es obligatorio")
-      .isString()
-      .withMessage("El nombre debe ser una cadena de texto"),
-    body("especialidad")
-      .notEmpty()
-      .withMessage("La especialidad es obligatoria")
-      .isString()
-      .withMessage("La especialidad debe ser una cadena de texto"),
-    body("cedula")
-      .notEmpty()
-      .withMessage("La cédula es obligatoria")
-      .isString()
-      .withMessage("La cédula debe ser una cadena de texto"),
-  ],
-  MedicoController.createMedico
-);
-
 router.put(
   "/:id",
   [
