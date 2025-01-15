@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sami/screens/home_screen.dart';
 import 'package:sami/screens/chat_screen.dart';
+import 'package:sami/screens/profile_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -15,6 +16,7 @@ class _MainScreenState extends State<MainScreen> {
   static const List<Widget> _screens = <Widget>[
     HomeScreen(),
     ChatScreen(),
+    ProfileScreen()
   ];
 
   @override

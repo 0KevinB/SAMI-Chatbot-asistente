@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:sami/screens/alert_screen.dart';
 import 'package:sami/screens/appointment_screen.dart';
@@ -6,6 +7,7 @@ import 'package:sami/screens/glucosa_record_screen.dart';
 import 'package:sami/screens/prescription_screen.dart';
 import 'package:sami/services/auth_service.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:sami/services/notification_service.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -16,17 +18,50 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   String _userName = 'Usuario';
+  int _currentNotificationIndex = 0;
+  Timer? _notificationTimer;
 
   @override
   void initState() {
     super.initState();
     _loadUserName();
+    _startNotificationTimer();
   }
 
   Future<void> _loadUserName() async {
     final userName = await AuthService.getUserName();
     setState(() {
       _userName = userName;
+    });
+  }
+
+  void _startNotificationTimer() {
+    _notificationTimer = Timer.periodic(const Duration(seconds: 30), (timer) {
+      setState(() {
+        _currentNotificationIndex =
+            (_currentNotificationIndex + 1) % notifications.length;
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _notificationTimer?.cancel();
+    super.dispose();
+  }
+
+  void _nextNotification() {
+    setState(() {
+      _currentNotificationIndex =
+          (_currentNotificationIndex + 1) % notifications.length;
+    });
+  }
+
+  void _previousNotification() {
+    setState(() {
+      _currentNotificationIndex =
+          (_currentNotificationIndex - 1 + notifications.length) %
+              notifications.length;
     });
   }
 
@@ -88,9 +123,27 @@ class _HomeScreenState extends State<HomeScreen> {
                     color: Colors.blue.shade50,
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: const Text(
-                    'Recuerda tomar tu medicina en 5 minutos',
-                    style: TextStyle(color: Colors.blue),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      IconButton(
+                        icon: const Icon(Icons.arrow_back_ios,
+                            color: Colors.blue),
+                        onPressed: _previousNotification,
+                      ),
+                      Expanded(
+                        child: Text(
+                          notifications[_currentNotificationIndex].message,
+                          style: const TextStyle(color: Colors.blue),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.arrow_forward_ios,
+                            color: Colors.blue),
+                        onPressed: _nextNotification,
+                      ),
+                    ],
                   ),
                 ),
               ),
