@@ -1,15 +1,19 @@
-body {
-    margin: 0;
-    padding: 0;
-  }
-  
-  .container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 97.5vh;
-    width: 100%;
-  }
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Cambiado de 97.5vh a 100vh */
+  width: 100%;
+  overflow: hidden; /* Para evitar scroll innecesario */
+}
+
   
   .left-section {
     width: 50%;
@@ -17,12 +21,14 @@ body {
     padding: 40px;
     text-align: center;
     color: white;
-    margin-left: -10px;
+    height: 100%; 
+    margin-left: -10px; 
   }
   
   .left-section .title-left-section {
     font: var(--title-style);
     margin-bottom: 10px;
+    margin-top: 105px;
   }
 
   .left-section p{

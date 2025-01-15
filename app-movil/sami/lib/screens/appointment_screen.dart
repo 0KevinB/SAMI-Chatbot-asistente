@@ -5,6 +5,9 @@ import 'package:sami/screens/appointments_form_screen.dart';
 import 'package:table_calendar/table_calendar.dart';
 import '../services/appointment_service.dart';
 import '../models/appointment.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
+import 'package:intl/date_symbol_data_local.dart';
 
 class AppointmentsScreen extends StatefulWidget {
   const AppointmentsScreen({super.key});
@@ -23,6 +26,7 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
   @override
   void initState() {
     super.initState();
+    initializeDateFormatting('es_ES', null);
     _selectedDay = _focusedDay;
     _loadAppointments();
   }
@@ -61,7 +65,9 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: const BackButton(),
-        title: const Text('CITAS MÉDICAS'),
+        title: Text('CITAS MÉDICAS',
+            style:
+                GoogleFonts.roboto(fontSize: 20, fontWeight: FontWeight.bold)),
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),
@@ -77,6 +83,7 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                   firstDay: DateTime.now().subtract(const Duration(days: 365)),
                   lastDay: DateTime.now().add(const Duration(days: 365)),
                   focusedDay: _focusedDay,
+                  locale: 'es_ES',
                   calendarFormat: _calendarFormat,
                   selectedDayPredicate: (day) {
                     return isSameDay(_selectedDay, day);
@@ -87,16 +94,46 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                       _focusedDay = focusedDay;
                     });
                   },
-                  onFormatChanged: (format) {
-                    if (_calendarFormat != format) {
-                      setState(() {
-                        _calendarFormat = format;
-                      });
-                    }
-                  },
+                  // Añade el eventLoader para mostrar los indicadores
                   eventLoader: (day) {
                     return _getAppointmentsForDay(day);
                   },
+                  calendarStyle: CalendarStyle(
+                    selectedDecoration: BoxDecoration(
+                      color: Colors.blue.shade400,
+                      shape: BoxShape.circle,
+                    ),
+                    todayDecoration: BoxDecoration(
+                      color: Colors.blue.shade100,
+                      shape: BoxShape.circle,
+                    ),
+                    defaultTextStyle: const TextStyle(color: Color(0xFF5DABF5)),
+                    weekendTextStyle: const TextStyle(color: Color(0xFF857E8E)),
+                    selectedTextStyle: const TextStyle(color: Colors.white),
+                    todayTextStyle: const TextStyle(color: Colors.white),
+                    // Configura el estilo del marcador de eventos
+                    markerDecoration: const BoxDecoration(
+                      color: Color(0xFF5DABF5),
+                      shape: BoxShape.circle,
+                    ),
+                    markerSize: 6.0, // Tamaño del círculo indicador
+                    markersAlignment:
+                        Alignment.bottomCenter, // Posición del indicador
+                    markerMargin:
+                        const EdgeInsets.only(top: 1), // Margen del indicador
+                  ),
+                  headerStyle: const HeaderStyle(
+                    formatButtonVisible: false,
+                    titleCentered: true,
+                    titleTextStyle: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  daysOfWeekStyle: const DaysOfWeekStyle(
+                    weekdayStyle: TextStyle(color: Colors.black87),
+                    weekendStyle: TextStyle(color: Colors.black87),
+                  ),
                 ),
                 const Divider(),
                 Expanded(

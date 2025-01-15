@@ -43,3 +43,8 @@ body, html {
   width: 50%;
 }
 
+h1 {
+  font: var(--title-style);
+  color: var(--titles-color);
+}
+

@@ -153,7 +153,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ),
               // Emergency Button
               const SizedBox(
-                height: 24,
+                height: 16,
               ),
               Center(
                 child: Padding(
