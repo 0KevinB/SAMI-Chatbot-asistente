@@ -121,10 +121,32 @@ h2 {
   font-weight: bold;
 }
 
+.calendar-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.calendar-week {
+  display: flex;
+  gap: 5px;
+}
+
+.calendar-day {
+  flex: 1;
+  border: 1px solid #ccc;
+  padding: 10px;
+  background-color: #f9f9f9;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+
 .pendient-notification {
   /* Estilos para las notificaciones pendientes */
 }
-
 .appointment {
   margin-bottom: 5px;
   padding: 5px;

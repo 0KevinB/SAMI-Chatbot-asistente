@@ -5,44 +5,76 @@
     <div class="items-dashboard">
       <div class="calendar">
         <div class="calendar-header">
-          <h2>Calendario semanal</h2>
+          <h2>Calendario mensual</h2>
           <div class="search-container">
             <input
               type="text"
               placeholder="Buscar paciente (Cédula, nombres...)"
               [(ngModel)]="searchTerm"
+              (input)="onSearch()"
             />
             <span class="search-icon">&#128269;</span>
           </div>
         </div>
-        <div class="calendar-grid">
-          <ng-container *ngFor="let day of weekDays; let i = index">
-            <div class="calendar-day">
-              <div class="day-header">
-                <div class="day-name">{{ formatDate(day, "EEE") }}</div>
-                <div class="day-number">{{ formatDate(day, "dd") }}</div>
-              </div>
-              <div class="day-content">
-                <ng-container *ngFor="let appointment of appointments">
-                  <div
-                    class="appointment"
-                    [style.border-left-color]="appointment.color"
-                  >
-                    <div class="appointment-time">{{ appointment.time }}</div>
-                    <div class="appointment-name">
-                      {{ appointment.eventName }}
-                    </div>
+        
+        <!-- Loading State -->
+        <div *ngIf="isLoading" class="loading-state">
+          Cargando citas...
+        </div>
+
+        <!-- Error State -->
+        <div *ngIf="error" class="error-state">
+          {{ error }}
+        </div>
+
+        <!-- Calendar Grid -->
+        <div class="calendar-grid" *ngIf="!isLoading && !error">
+          <ng-container *ngFor="let week of getWeeks()">
+            <div class="calendar-week">
+              <ng-container *ngFor="let day of week">
+                <div class="calendar-day">
+                  <div class="day-header">
+                    <div class="day-name">{{ formatDate(day, "EEE") }}</div>
+                    <div class="day-number">{{ formatDate(day, "dd") }}</div>
                   </div>
-                </ng-container>
-              </div>
+                  <div class="day-content">
+                    <ng-container *ngFor="let appointment of getAppointmentsForDay(day)">
+                      <div
+                        class="appointment"
+                        [class]="appointment.color"
+                        [class.appointment-pending]="appointment.estado === 'pendiente'"
+                        [class.appointment-confirmed]="appointment.estado === 'confirmada'"
+                        [class.appointment-cancelled]="appointment.estado === 'cancelada'"
+                        [class.appointment-completed]="appointment.estado === 'completada'"
+                      >
+                        <div class="appointment-time">{{ appointment.horaInicio }}</div>
+                        <div class="appointment-name">{{ appointment.eventName }}</div>
+                        <div class="appointment-status" [class]="appointment.color">
+                          {{ appointment.estado }}
+                        </div>
+                      </div>
+                    </ng-container>
+                  </div>
+                </div>
+              </ng-container>
             </div>
           </ng-container>
-        </div>s
+        </div>
+        
       </div>
+      
       <div class="pendient-date">
         <h2>Solicitudes pendientes</h2>
         <div class="pendient-notification">
-          <!-- Aquí puedes agregar la lógica para mostrar las solicitudes pendientes -->
+          <ng-container *ngFor="let appointment of appointments">
+            <div *ngIf="appointment.estado === 'pendiente'" class="pending-item">
+              <div class="pending-time">{{ appointment.horaInicio }}</div>
+              <div class="pending-details">
+                <div>{{ appointment.eventName }}</div>
+                <div class="pending-specialty">{{ appointment.especialidad }}</div>
+              </div>
+            </div>
+          </ng-container>
         </div>
       </div>
     </div>
