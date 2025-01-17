@@ -55,8 +55,8 @@ export class VistaPacienteComponent implements OnInit, AfterViewInit {
         if (data) {
           this.paciente = data;
           this.consultationRecords = data.historiasClinicas || [];
-          this.loadDoctorInfo();
           this.renderGlucoseChart();
+          this.loadDoctorInfo();
           console.log('Datos del paciente:', this.paciente);
         }
       },
