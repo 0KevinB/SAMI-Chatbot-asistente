@@ -63,12 +63,24 @@ export class PatientService {
     await patientRef.delete();
   }
 
-  static async addGlucosaRecord(
-    patientId: string,
-    glucosaRecord: GlucosaRecord
-  ) {
+  static async addGlucosaRecord(cedula: string, glucosaRecord: GlucosaRecord) {
     try {
-      const patientRef = db.collection("users").doc(patientId);
+      // Primero buscamos al paciente por cédula
+      const querySnapshot = await db
+        .collection("users")
+        .where("cedula", "==", cedula)
+        .where("role", "==", "paciente")
+        .limit(1)
+        .get();
+
+      if (querySnapshot.empty) {
+        throw new Error(`No se encontró paciente con cédula ${cedula}`);
+      }
+
+      // Obtener la referencia del primer (y único) documento encontrado
+      const patientRef = querySnapshot.docs[0].ref;
+      const patientId = querySnapshot.docs[0].id;
+
       // Añadir el nuevo registro de glucosa al array de nivelesGlucosa
       await patientRef.update({
         nivelesGlucosa: firestore.FieldValue.arrayUnion({

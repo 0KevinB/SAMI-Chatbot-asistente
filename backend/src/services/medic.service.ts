@@ -14,50 +14,59 @@ export class MedicoService {
   }
 
   /**
-   * Obtiene un médico por su ID desde el documento "users".
+   * Obtiene un médico por su cédula desde la colección "users".
    */
-  static async getMedicoById(id: string) {
-    const medicoRef = db.collection("users").doc(id);
-    const snapshot = await medicoRef.get();
+  static async getMedicoByCedula(cedula: string) {
+    const medicosRef = db.collection("users");
+    const query = medicosRef.where("cedula", "==", cedula).limit(1);
+    const snapshot = await query.get();
 
-    if (!snapshot.exists) {
+    if (snapshot.empty) {
       throw new Error("Médico no encontrado");
     }
 
-    return { id: snapshot.id, ...snapshot.data() };
+    const doc = snapshot.docs[0];
+    return { id: doc.id, ...doc.data() };
   }
-
   /**
-   * Actualiza los datos de un médico en el documento "users".
+   * Actualiza los datos de un médico en la colección "users" usando su cédula.
    */
-  static async updateMedico(id: string, medicoData: Partial<Medico>) {
-    const medicoRef = db.collection("users").doc(id);
-    const snapshot = await medicoRef.get();
+  static async updateMedicoByCedula(
+    cedula: string,
+    medicoData: Partial<Medico>
+  ) {
+    const medicosRef = db.collection("users");
+    const query = medicosRef.where("cedula", "==", cedula).limit(1);
+    const snapshot = await query.get();
 
-    if (!snapshot.exists) {
+    if (snapshot.empty) {
       throw new Error("Médico no encontrado");
     }
 
+    const doc = snapshot.docs[0];
     const updatedData = {
-      ...snapshot.data(),
+      ...doc.data(),
       ...medicoData,
       updatedAt: new Date(),
     };
-    await medicoRef.update(updatedData);
-    return { id, ...updatedData };
+
+    await doc.ref.update(updatedData);
+    return { id: doc.id, ...updatedData };
   }
 
   /**
-   * Elimina un médico del documento "users".
+   * Elimina un médico de la colección "users" usando su cédula.
    */
-  static async deleteMedico(id: string) {
-    const medicoRef = db.collection("users").doc(id);
-    const snapshot = await medicoRef.get();
+  static async deleteMedicoByCedula(cedula: string) {
+    const medicosRef = db.collection("users");
+    const query = medicosRef.where("cedula", "==", cedula).limit(1);
+    const snapshot = await query.get();
 
-    if (!snapshot.exists) {
+    if (snapshot.empty) {
       throw new Error("Médico no encontrado");
     }
 
-    await medicoRef.delete();
+    const doc = snapshot.docs[0];
+    await doc.ref.delete();
   }
 }

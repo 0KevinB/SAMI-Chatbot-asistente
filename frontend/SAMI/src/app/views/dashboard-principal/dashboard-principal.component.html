@@ -7,9 +7,14 @@
         <input
           type="text"
           placeholder="Buscar paciente (Cédula, nombres ...)"
+          [(ngModel)]="searchText"
+          (input)="filterPacientes()"
         />
-        <button class="search-button">Buscar</button>
+        <button class="search-button" (click)="filterPacientes()">
+          Buscar
+        </button>
       </div>
+
       <button class="add-patient" (click)="toggleFormulario()">
         + Nuevo paciente
       </button>
@@ -101,18 +106,20 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let paciente of listaPacientes">
+        <tr *ngFor="let paciente of filteredPacientes">
           <td class="data-patient">{{ paciente.cedula }}</td>
           <td class="data-patient">{{ paciente.nombre }}</td>
-          <td class="data-patient">{{ paciente.nombre }}</td>
+          <td class="data-patient">{{ paciente.apellido || "N/A" }}</td>
           <td class="data-patient">{{ paciente.telefono || "N/A" }}</td>
-          <td class="data-patient">
-            {{ getUltimaFechaEvaluacion(paciente) }}
-          </td>
+          <td class="data-patient">{{ getUltimaFechaEvaluacion(paciente) }}</td>
           <td>
             <div class="actions">
               <button
-              [routerLink]="['/perfil-paciente', paciente.id]" class="button-standar"> Ver más </button>
+                [routerLink]="['/perfil-paciente', paciente.id]"
+                class="button-standar"
+              >
+                Ver más
+              </button>
               <button
                 class="delete-action"
                 (click)="deletePatient(paciente.id)"

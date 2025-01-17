@@ -14,14 +14,13 @@
             {{ paciente.nombre }} {{ paciente.apellido }}
           </h3>
           <p class="data-patient">CI: {{ paciente.cedula }}</p>
-          <p class="data-patient">Contacto: {{ paciente.telefono || 'N/A' }}</p>
+          <p class="data-patient">Contacto: {{ paciente.telefono || "N/A" }}</p>
           <p class="data-patient">Correo: {{ paciente.email }}</p>
         </div>
       </div>
-      
+
       <div class="glucose-chart">
-        <!-- Aquí irá la gráfica de glucosa -->
-        <p>Espacio para la gráfica de glucosa</p>
+        <canvas id="glucoseChart"></canvas>
       </div>
     </div>
 
@@ -31,18 +30,20 @@
         <thead>
           <tr>
             <th>Fecha de consulta</th>
-            <!-- <th>Médico</th> -->
+            <th>Médico</th>
             <th>Motivo de consulta</th>
             <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let record of consultationRecords">
-            <td>{{ record.fecha | date:'dd/MM/yyyy' }}</td>
-            <!-- <td>{{ record.medicoCedula }}</td> -->
+            <td>{{ record.fecha | date : "dd/MM/yyyy" }}</td>
+            <td>Doctor: {{ getDoctorName(record.medicoCedula) | async }}</td>
             <td>{{ record.descripcion }}</td>
             <td>
-              <button class="view-btn" (click)="verHistoria(record.pdfUrl)">Ver historial</button>
+              <button class="view-btn" (click)="verHistoria(record.pdfUrl)">
+                Ver historial
+              </button>
             </td>
           </tr>
         </tbody>
@@ -50,4 +51,3 @@
     </div>
   </div>
 </div>
-

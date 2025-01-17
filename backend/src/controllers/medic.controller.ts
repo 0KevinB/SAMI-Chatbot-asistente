@@ -14,7 +14,7 @@ export class MedicoController {
   static async getMedicoById(req: Request, res: Response) {
     try {
       const { id } = req.params;
-      const medico = await MedicoService.getMedicoById(id);
+      const medico = await MedicoService.getMedicoByCedula(id);
       res.status(200).json(medico);
     } catch (error: any) {
       res.status(404).json({ error: error.message });
@@ -25,7 +25,10 @@ export class MedicoController {
     try {
       const { id } = req.params;
       const medicoData = req.body;
-      const updatedMedico = await MedicoService.updateMedico(id, medicoData);
+      const updatedMedico = await MedicoService.updateMedicoByCedula(
+        id,
+        medicoData
+      );
       res.status(200).json(updatedMedico);
     } catch (error: any) {
       res.status(404).json({ error: error.message });
@@ -35,7 +38,7 @@ export class MedicoController {
   static async deleteMedico(req: Request, res: Response) {
     try {
       const { id } = req.params;
-      await MedicoService.deleteMedico(id);
+      await MedicoService.deleteMedicoByCedula(id);
       res.status(204).send();
     } catch (error: any) {
       res.status(404).json({ error: error.message });

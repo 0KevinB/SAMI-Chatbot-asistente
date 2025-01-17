@@ -8,18 +8,15 @@ import { PacienteService } from '../../services/users/paciente.service';
 import { catchError, Observable, of } from 'rxjs';
 import { RouterLink } from '@angular/router';
 
-interface Paciente {
-  nombres: string;
-  apellidos: string;
-  identificacion: string;
-  contacto: string;
-  fechaNacimiento: string;
-  lugarNacimiento: string;
-}
-
 @Component({
   selector: 'app-dashboard-principal',
-  imports: [SlidebarComponent, HttpClientModule, CommonModule, FormsModule, RouterLink],
+  imports: [
+    SlidebarComponent,
+    HttpClientModule,
+    CommonModule,
+    FormsModule,
+    RouterLink,
+  ],
   templateUrl: './dashboard-principal.component.html',
   styleUrl: './dashboard-principal.component.css',
   standalone: true,
@@ -27,6 +24,8 @@ interface Paciente {
 })
 export class DashboardPrincipalComponent {
   listaPacientes: (Patient & { ultimaHistoriaClinica?: any })[] = [];
+  searchText: string = '';
+  filteredPacientes: (Patient & { ultimaHistoriaClinica?: any })[] = [];
 
   constructor(private pacienteService: PacienteService) {}
 
@@ -38,11 +37,22 @@ export class DashboardPrincipalComponent {
     this.pacienteService.getPacientes().subscribe({
       next: (pacientes) => {
         this.listaPacientes = pacientes;
+        this.filteredPacientes = pacientes; // Inicializa la lista filtrada
       },
       error: (error) => {
         console.error('Error fetching patients:', error);
       },
     });
+  }
+  filterPacientes() {
+    const lowerCaseSearch = this.searchText.toLowerCase();
+    this.filteredPacientes = this.listaPacientes.filter(
+      (paciente) =>
+        paciente.cedula.toLowerCase().includes(lowerCaseSearch) ||
+        paciente.nombre.toLowerCase().includes(lowerCaseSearch) ||
+        (paciente.apellido &&
+          paciente.apellido.toLowerCase().includes(lowerCaseSearch))
+    );
   }
   getUltimaFechaEvaluacion(
     paciente: Patient & { ultimaHistoriaClinica?: any }
