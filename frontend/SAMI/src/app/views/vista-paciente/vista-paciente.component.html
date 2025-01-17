@@ -1,45 +1,48 @@
-<div class="dashboard">
+<div class="dashboard-container">
   <app-slidebar></app-slidebar>
-  <div class="content">
+  <div class="dashboard-content">
     <header>
       <h1>Gestión de pacientes</h1>
       <button class="add-history">+ Nueva historia</button>
     </header>
 
-    <div class="patient-data">
-      <div class="patient-info">
+    <div class="patient-data-container">
+      <div class="patient-info" *ngIf="paciente">
         <img src="./../../../assets/images/Chatbot.png" alt="paciente" />
-        <div *ngFor="let paciente of listaPacientes" class="info">
+        <div class="info">
           <h3 class="data-patient-name">
-            {{ paciente.nombres + paciente.apellidos }}
+            {{ paciente.nombre }} {{ paciente.apellido }}
           </h3>
           <p class="data-patient">CI: {{ paciente.cedula }}</p>
-          <p class="data-patient">Contacto: {{ paciente.telefono }}</p>
-          <p class="data-patient">Correo: {{ paciente.correo }}</p>
+          <p class="data-patient">Contacto: {{ paciente.telefono || 'N/A' }}</p>
+          <p class="data-patient">Correo: {{ paciente.email }}</p>
         </div>
       </div>
-
-      <div class="history-chart">
-        <h3>Estado de glucosa</h3>
-        <!-- <app-line-chart [data]="waitingListData"></app-line-chart> -->
+      
+      <div class="glucose-chart">
+        <!-- Aquí irá la gráfica de glucosa -->
+        <p>Espacio para la gráfica de glucosa</p>
       </div>
     </div>
-    <div class="history-container">
+
+    <div class="history-container" *ngIf="consultationRecords.length > 0">
       <h2 class="Subtitulo">Historial Clínico</h2>
       <table class="history-table">
         <thead>
           <tr>
             <th>Fecha de consulta</th>
+            <!-- <th>Médico</th> -->
             <th>Motivo de consulta</th>
-            <th></th>
+            <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let record of consultationRecords">
-            <td>{{ record.date }}</td>
-            <td>{{ record.reason }}</td>
+            <td>{{ record.fecha | date:'dd/MM/yyyy' }}</td>
+            <!-- <td>{{ record.medicoCedula }}</td> -->
+            <td>{{ record.descripcion }}</td>
             <td>
-              <button class="view-btn">Ver historial</button>
+              <button class="view-btn" (click)="verHistoria(record.pdfUrl)">Ver historial</button>
             </td>
           </tr>
         </tbody>
@@ -47,3 +50,4 @@
     </div>
   </div>
 </div>
+

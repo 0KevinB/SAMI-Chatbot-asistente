@@ -55,4 +55,37 @@ export class PacienteService {
   deletePatient(id: string): Observable<any> {
     return this.http.delete(`${this.apiUrl}/patients/${id}`);
   }
+
+  getPacienteById(id: string): Observable<Patient | null> {
+    return this.http.get<Patient>(`${this.apiUrl}/patients/${id}`).pipe(
+      switchMap(patient => {
+        if (patient && patient.historiasClinicas && patient.historiasClinicas.length > 0) {
+          const historiasObservables = patient.historiasClinicas.map(historia => 
+            this.getHistoriaClinicaDetails(historia.id)
+          );
+          return forkJoin(historiasObservables).pipe(
+            map(historiasDetalladas => {
+              patient.historiasClinicas = historiasDetalladas;
+              return patient;
+            })
+          );
+        }
+        return of(patient);
+      }),
+      catchError((error) => {
+        console.error('Error al obtener el paciente:', error);
+        return of(null);
+      })
+    );
+  }
+
+  getHistoriaClinicaDetails(id: string): Observable<any> {
+    return this.http.get<any>(`${this.apiUrl}/historias-clinicas/${id}`).pipe(
+      catchError((error) => {
+        console.error('Error al obtener los detalles de la historia clínica:', error);
+        return of(null);
+      })
+    );
+  }
+  
 }

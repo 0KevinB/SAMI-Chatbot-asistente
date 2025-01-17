@@ -10,6 +10,6 @@ export const routes: Routes = [
   { path: 'login-medico', component: LoginMedicoComponent },
   { path: 'dashboard-principal', component: DashboardPrincipalComponent },
   { path: 'dashboard-citas', component: CitasMedicasComponent },
-  { path: 'perfil-paciente', component: VistaPacienteComponent },
+  { path: 'perfil-paciente/:id', component: VistaPacienteComponent },
   { path: 'historial-clinico', component: HistorialClinicoPacienteComponent },
 ];

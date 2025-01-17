@@ -111,7 +111,8 @@
           </td>
           <td>
             <div class="actions">
-              <button class="button-standar" routerLink="/perfil-paciente">Ver más</button>
+              <button
+              [routerLink]="['/perfil-paciente', paciente.id]" class="button-standar"> Ver más </button>
               <button
                 class="delete-action"
                 (click)="deletePatient(paciente.id)"
