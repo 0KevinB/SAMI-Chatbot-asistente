@@ -16,11 +16,9 @@
             <span class="search-icon">&#128269;</span>
           </div>
         </div>
-        
+
         <!-- Loading State -->
-        <div *ngIf="isLoading" class="loading-state">
-          Cargando citas...
-        </div>
+        <div *ngIf="isLoading" class="loading-state">Cargando citas...</div>
 
         <!-- Error State -->
         <div *ngIf="error" class="error-state">
@@ -38,18 +36,35 @@
                     <div class="day-number">{{ formatDate(day, "dd") }}</div>
                   </div>
                   <div class="day-content">
-                    <ng-container *ngFor="let appointment of getAppointmentsForDay(day)">
+                    <ng-container
+                      *ngFor="let appointment of getAppointmentsForDay(day)"
+                    >
                       <div
                         class="appointment"
                         [class]="appointment.color"
-                        [class.appointment-pending]="appointment.estado === 'pendiente'"
-                        [class.appointment-confirmed]="appointment.estado === 'confirmada'"
-                        [class.appointment-cancelled]="appointment.estado === 'cancelada'"
-                        [class.appointment-completed]="appointment.estado === 'completada'"
+                        [class.appointment-pending]="
+                          appointment.estado === 'pendiente'
+                        "
+                        [class.appointment-confirmed]="
+                          appointment.estado === 'confirmada'
+                        "
+                        [class.appointment-cancelled]="
+                          appointment.estado === 'cancelada'
+                        "
+                        [class.appointment-completed]="
+                          appointment.estado === 'completada'
+                        "
                       >
-                        <div class="appointment-time">{{ appointment.horaInicio }}</div>
-                        <div class="appointment-name">{{ appointment.eventName }}</div>
-                        <div class="appointment-status" [class]="appointment.color">
+                        <div class="appointment-time">
+                          {{ appointment.horaInicio }}
+                        </div>
+                        <div class="appointment-name">
+                          {{ appointment.eventName }}
+                        </div>
+                        <div
+                          class="appointment-status"
+                          [class]="appointment.color"
+                        >
                           {{ appointment.estado }}
                         </div>
                       </div>
@@ -60,18 +75,30 @@
             </div>
           </ng-container>
         </div>
-        
       </div>
-      
+
       <div class="pendient-date">
         <h2>Solicitudes pendientes</h2>
         <div class="pendient-notification">
           <ng-container *ngFor="let appointment of appointments">
-            <div *ngIf="appointment.estado === 'pendiente'" class="pending-item">
+            <div
+              *ngIf="appointment.estado === 'pendiente'"
+              class="pending-item"
+            >
               <div class="pending-time">{{ appointment.horaInicio }}</div>
               <div class="pending-details">
                 <div>{{ appointment.eventName }}</div>
-                <div class="pending-specialty">{{ appointment.especialidad }}</div>
+                <div class="pending-specialty">
+                  {{ appointment.especialidad }}
+                </div>
+              </div>
+              <div class="pending-actions">
+                <button (click)="aceptarCita(appointment)" class="btn-accept">
+                  Aceptar
+                </button>
+                <button (click)="rechazarCita(appointment)" class="btn-reject">
+                  Rechazar
+                </button>
               </div>
             </div>
           </ng-container>
