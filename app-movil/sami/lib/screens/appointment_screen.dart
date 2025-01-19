@@ -6,7 +6,6 @@ import 'package:table_calendar/table_calendar.dart';
 import '../services/appointment_service.dart';
 import '../models/appointment.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 class AppointmentsScreen extends StatefulWidget {
@@ -17,6 +16,7 @@ class AppointmentsScreen extends StatefulWidget {
 }
 
 class _AppointmentsScreenState extends State<AppointmentsScreen> {
+  // ignore: prefer_final_fields
   CalendarFormat _calendarFormat = CalendarFormat.month;
   DateTime _focusedDay = DateTime.now();
   DateTime? _selectedDay;

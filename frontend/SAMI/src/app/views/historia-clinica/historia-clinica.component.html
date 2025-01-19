@@ -1,0 +1,615 @@
+<div class="dashboard">
+  <app-slidebar></app-slidebar>
+  <div class="content">
+    <div #pdfContent>
+      <form
+        [formGroup]="historiaClinicaForm"
+        (ngSubmit)="onSubmit()"
+        class="historia-clinica-form"
+      >
+        <h1 class="form-title">Historia Clínica</h1>
+
+        <div class="form-field">
+          <label for="establecimientoDeSalud">Establecimiento de Salud*</label>
+          <input
+            id="establecimientoDeSalud"
+            type="text"
+            formControlName="establecimientoDeSalud"
+          />
+          <div
+            class="error-message"
+            *ngIf="
+              historiaClinicaForm.get('establecimientoDeSalud')?.touched &&
+              historiaClinicaForm.get('establecimientoDeSalud')?.invalid
+            "
+          >
+            Este campo es requerido
+          </div>
+        </div>
+
+        <div formGroupName="paciente" class="form-section">
+          <h2 class="section-title">Información del Paciente</h2>
+
+          <div class="form-field">
+            <label for="nombre">Nombre*</label>
+            <input id="nombre" type="text" formControlName="nombre" />
+            <div
+              class="error-message"
+              *ngIf="
+                historiaClinicaForm.get('paciente.nombre')?.touched &&
+                historiaClinicaForm.get('paciente.nombre')?.invalid
+              "
+            >
+              Este campo es requerido
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label for="apellidos">Apellidos*</label>
+            <input id="apellidos" type="text" formControlName="apellidos" />
+            <div
+              class="error-message"
+              *ngIf="
+                historiaClinicaForm.get('paciente.apellidos')?.touched &&
+                historiaClinicaForm.get('paciente.apellidos')?.invalid
+              "
+            >
+              Este campo es requerido
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label for="sexo">Sexo*</label>
+            <select id="sexo" formControlName="sexo">
+              <option value="">Seleccione</option>
+              <option value="MASCULINO">Masculino</option>
+              <option value="FEMENINO">Femenino</option>
+            </select>
+            <div
+              class="error-message"
+              *ngIf="
+                historiaClinicaForm.get('paciente.sexo')?.touched &&
+                historiaClinicaForm.get('paciente.sexo')?.invalid
+              "
+            >
+              Este campo es requerido
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label for="edad">Edad*</label>
+            <input id="edad" type="text" formControlName="edad" />
+            <div
+              class="error-message"
+              *ngIf="
+                historiaClinicaForm.get('paciente.edad')?.touched &&
+                historiaClinicaForm.get('paciente.edad')?.invalid
+              "
+            >
+              Este campo es requerido
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label for="numeroHistoriaClinica"
+              >Número de Historia Clínica*</label
+            >
+            <input
+              id="numeroHistoriaClinica"
+              type="text"
+              formControlName="numeroHistoriaClinica"
+            />
+            <div
+              class="error-message"
+              *ngIf="
+                historiaClinicaForm.get('paciente.numeroHistoriaClinica')
+                  ?.touched &&
+                historiaClinicaForm.get('paciente.numeroHistoriaClinica')
+                  ?.invalid
+              "
+            >
+              Este campo es requerido
+            </div>
+          </div>
+        </div>
+
+        <div formGroupName="antecedentes" class="form-section">
+          <h2 class="section-title">Antecedentes</h2>
+
+          <div class="form-field">
+            <label for="personales">Personales</label>
+            <textarea
+              id="personales"
+              formControlName="personales"
+              rows="3"
+            ></textarea>
+          </div>
+
+          <div class="form-field">
+            <label for="quirurgicos">Quirúrgicos</label>
+            <textarea
+              id="quirurgicos"
+              formControlName="quirurgicos"
+              rows="3"
+            ></textarea>
+          </div>
+
+          <div class="form-field">
+            <label for="alergias">Alergias</label>
+            <textarea
+              id="alergias"
+              formControlName="alergias"
+              rows="3"
+            ></textarea>
+          </div>
+
+          <div class="form-field">
+            <label for="habitos">Hábitos</label>
+            <textarea
+              id="habitos"
+              formControlName="habitos"
+              rows="3"
+            ></textarea>
+          </div>
+
+          <div class="form-field">
+            <label for="tratamientosEspeciales">Tratamientos Especiales</label>
+            <textarea
+              id="tratamientosEspeciales"
+              formControlName="tratamientosEspeciales"
+              rows="3"
+            ></textarea>
+          </div>
+
+          <div class="form-field">
+            <label for="ginecologicosObstetricos"
+              >Ginecológicos/Obstétricos</label
+            >
+            <textarea
+              id="ginecologicosObstetricos"
+              formControlName="ginecologicosObstetricos"
+              rows="3"
+            ></textarea>
+          </div>
+
+          <div class="form-field">
+            <label for="familiares">Familiares</label>
+            <textarea
+              id="familiares"
+              formControlName="familiares"
+              rows="3"
+            ></textarea>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label for="indicacionesAdicionales">Indicaciones Adicionales</label>
+          <textarea
+            id="indicacionesAdicionales"
+            formControlName="indicacionesAdicionales"
+            rows="3"
+          ></textarea>
+        </div>
+
+        <div formGroupName="signosVitales" class="form-section">
+          <h2 class="section-title">Signos Vitales y Antropométricos</h2>
+
+          <div class="form-field">
+            <label for="fecha">Fecha*</label>
+            <input id="fecha" type="date" formControlName="fecha" />
+            <div
+              class="error-message"
+              *ngIf="
+                historiaClinicaForm.get('signosVitales.fecha')?.touched &&
+                historiaClinicaForm.get('signosVitales.fecha')?.invalid
+              "
+            >
+              Este campo es requerido
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label for="profesional">Profesional*</label>
+            <input id="profesional" type="text" formControlName="profesional" />
+            <div
+              class="error-message"
+              *ngIf="
+                historiaClinicaForm.get('signosVitales.profesional')?.touched &&
+                historiaClinicaForm.get('signosVitales.profesional')?.invalid
+              "
+            >
+              Este campo es requerido
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label for="especialidad">Especialidad*</label>
+            <input
+              id="especialidad"
+              type="text"
+              formControlName="especialidad"
+            />
+            <div
+              class="error-message"
+              *ngIf="
+                historiaClinicaForm.get('signosVitales.especialidad')
+                  ?.touched &&
+                historiaClinicaForm.get('signosVitales.especialidad')?.invalid
+              "
+            >
+              Este campo es requerido
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label for="temperatura">Temperatura (°C)</label>
+            <input
+              id="temperatura"
+              type="number"
+              formControlName="temperatura"
+            />
+          </div>
+
+          <div class="form-field">
+            <label for="presionArterial">Presión Arterial</label>
+            <input
+              id="presionArterial"
+              type="text"
+              formControlName="presionArterial"
+            />
+          </div>
+
+          <div class="form-field">
+            <label for="pulsoFrecuenciaCardiaca"
+              >Pulso / Frecuencia Cardíaca</label
+            >
+            <input
+              id="pulsoFrecuenciaCardiaca"
+              type="number"
+              formControlName="pulsoFrecuenciaCardiaca"
+            />
+          </div>
+
+          <div class="form-field">
+            <label for="frecuenciaRespiratoria">Frecuencia Respiratoria</label>
+            <input
+              id="frecuenciaRespiratoria"
+              type="number"
+              formControlName="frecuenciaRespiratoria"
+            />
+          </div>
+
+          <div class="form-field">
+            <label for="saturacionOxigeno">Saturación de Oxígeno (%)</label>
+            <input
+              id="saturacionOxigeno"
+              type="number"
+              formControlName="saturacionOxigeno"
+            />
+          </div>
+
+          <div class="form-field">
+            <label for="talla">Talla (cm)</label>
+            <input id="talla" type="number" formControlName="talla" />
+          </div>
+
+          <div formGroupName="peso">
+            <div class="form-field">
+              <label for="pesoKg">Peso (kg)</label>
+              <input id="pesoKg" type="number" formControlName="kg" />
+            </div>
+            <div class="form-field">
+              <label for="pesoLb">Peso (lb)</label>
+              <input id="pesoLb" type="number" formControlName="lb" />
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label for="imc">I.M.C</label>
+            <input id="imc" type="number" formControlName="imc" />
+          </div>
+
+          <div class="form-field">
+            <label for="perimetroCefalico">Per. Cefálico (cm)</label>
+            <input
+              id="perimetroCefalico"
+              type="number"
+              formControlName="perimetroCefalico"
+            />
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label for="motivoConsulta">Motivo de Consulta*</label>
+          <textarea
+            id="motivoConsulta"
+            formControlName="motivoConsulta"
+            rows="3"
+          ></textarea>
+          <div
+            class="error-message"
+            *ngIf="
+              historiaClinicaForm.get('motivoConsulta')?.touched &&
+              historiaClinicaForm.get('motivoConsulta')?.invalid
+            "
+          >
+            Este campo es requerido
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label for="enfermedadProblemaActual"
+            >Enfermedad o Problema Actual*</label
+          >
+          <textarea
+            id="enfermedadProblemaActual"
+            formControlName="enfermedadProblemaActual"
+            rows="3"
+          ></textarea>
+          <div
+            class="error-message"
+            *ngIf="
+              historiaClinicaForm.get('enfermedadProblemaActual')?.touched &&
+              historiaClinicaForm.get('enfermedadProblemaActual')?.invalid
+            "
+          >
+            Este campo es requerido
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label for="examenFisico">Examen Físico*</label>
+          <textarea
+            id="examenFisico"
+            formControlName="examenFisico"
+            rows="3"
+          ></textarea>
+          <div
+            class="error-message"
+            *ngIf="
+              historiaClinicaForm.get('examenFisico')?.touched &&
+              historiaClinicaForm.get('examenFisico')?.invalid
+            "
+          >
+            Este campo es requerido
+          </div>
+        </div>
+
+        <div formGroupName="diagnosticos" class="form-section">
+          <h2 class="section-title">Diagnósticos</h2>
+
+          <h3>Diagnósticos Presuntivos</h3>
+          <div formArrayName="presuntivos">
+            <div
+              *ngFor="
+                let diagnostico of diagnosticosPresuntivos.controls;
+                let i = index
+              "
+            >
+              <div [formGroupName]="i" class="form-group">
+                <input
+                  type="text"
+                  formControlName="descripcion"
+                  placeholder="Descripción"
+                />
+                <input
+                  type="text"
+                  formControlName="codigo"
+                  placeholder="Código"
+                />
+                <button type="button" (click)="removeDiagnosticoPresuntivo(i)">
+                  Eliminar
+                </button>
+              </div>
+            </div>
+          </div>
+          <button type="button" (click)="addDiagnosticoPresuntivo()">
+            Agregar Diagnóstico Presuntivo
+          </button>
+
+          <h3>Diagnósticos Definitivos</h3>
+          <div formArrayName="definitivos">
+            <div
+              *ngFor="
+                let diagnostico of diagnosticosDefinitivos.controls;
+                let i = index
+              "
+            >
+              <div [formGroupName]="i" class="form-group">
+                <input
+                  type="text"
+                  formControlName="descripcion"
+                  placeholder="Descripción"
+                />
+                <input
+                  type="text"
+                  formControlName="codigo"
+                  placeholder="Código"
+                />
+                <button type="button" (click)="removeDiagnosticoDefinitivo(i)">
+                  Eliminar
+                </button>
+              </div>
+            </div>
+          </div>
+          <button type="button" (click)="addDiagnosticoDefinitivo()">
+            Agregar Diagnóstico Definitivo
+          </button>
+        </div>
+
+        <div class="form-section">
+          <h2 class="section-title">Planes de Tratamiento</h2>
+          <div formArrayName="planesTratamiento">
+            <div *ngFor="let plan of planesTratamiento.controls; let i = index">
+              <div class="form-group">
+                <input
+                  type="text"
+                  [formControlName]="i"
+                  placeholder="Plan de tratamiento"
+                />
+                <button type="button" (click)="removePlanTratamiento(i)">
+                  Eliminar
+                </button>
+              </div>
+            </div>
+          </div>
+          <button type="button" (click)="addPlanTratamiento()">
+            Agregar Plan de Tratamiento
+          </button>
+        </div>
+
+        <div class="form-field">
+          <label for="evolucion">Evolución</label>
+          <textarea
+            id="evolucion"
+            formControlName="evolucion"
+            rows="3"
+          ></textarea>
+        </div>
+
+        <div class="form-section">
+          <h2 class="section-title">Prescripciones</h2>
+          <div formArrayName="prescripciones">
+            <div
+              *ngFor="
+                let prescripcion of prescripciones.controls;
+                let i = index
+              "
+            >
+              <div [formGroupName]="i" class="form-group">
+                <input
+                  type="text"
+                  formControlName="medicamento"
+                  placeholder="Medicamento"
+                />
+                <input
+                  type="text"
+                  formControlName="cantidad"
+                  placeholder="Cantidad"
+                />
+                <input
+                  type="text"
+                  formControlName="indicaciones"
+                  placeholder="Indicaciones"
+                />
+                <button type="button" (click)="removePrescripcion(i)">
+                  Eliminar
+                </button>
+              </div>
+            </div>
+          </div>
+          <button type="button" (click)="addPrescripcion()">
+            Agregar Prescripción
+          </button>
+        </div>
+
+        <div class="form-field">
+          <label for="observacionesRecomendaciones"
+            >Observaciones y/o Recomendaciones Adicionales</label
+          >
+          <textarea
+            id="observacionesRecomendaciones"
+            formControlName="observacionesRecomendaciones"
+            rows="3"
+          ></textarea>
+        </div>
+
+        <div formGroupName="atencion" class="form-section">
+          <h2 class="section-title">Atención</h2>
+
+          <div class="form-field">
+            <label for="fechaAtencion">Fecha*</label>
+            <input id="fechaAtencion" type="date" formControlName="fecha" />
+            <div
+              class="error-message"
+              *ngIf="
+                historiaClinicaForm.get('atencion.fecha')?.touched &&
+                historiaClinicaForm.get('atencion.fecha')?.invalid
+              "
+            >
+              Este campo es requerido
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label for="horaAtencion">Hora*</label>
+            <input id="horaAtencion" type="time" formControlName="hora" />
+            <div
+              class="error-message"
+              *ngIf="
+                historiaClinicaForm.get('atencion.hora')?.touched &&
+                historiaClinicaForm.get('atencion.hora')?.invalid
+              "
+            >
+              Este campo es requerido
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label for="especialidadAtencion">Especialidad*</label>
+            <input
+              id="especialidadAtencion"
+              type="text"
+              formControlName="especialidad"
+            />
+            <div
+              class="error-message"
+              *ngIf="
+                historiaClinicaForm.get('atencion.especialidad')?.touched &&
+                historiaClinicaForm.get('atencion.especialidad')?.invalid
+              "
+            >
+              Este campo es requerido
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label for="nombreProfesional">Nombre del Profesional*</label>
+            <input
+              id="nombreProfesional"
+              type="text"
+              formControlName="nombreProfesional"
+            />
+            <div
+              class="error-message"
+              *ngIf="
+                historiaClinicaForm.get('atencion.nombreProfesional')
+                  ?.touched &&
+                historiaClinicaForm.get('atencion.nombreProfesional')?.invalid
+              "
+            >
+              Este campo es requerido
+            </div>
+          </div>
+
+          <div class="form-field">
+            <label for="codigoProfesional">Código*</label>
+            <input
+              id="codigoProfesional"
+              type="text"
+              formControlName="codigo"
+            />
+            <div
+              class="error-message"
+              *ngIf="
+                historiaClinicaForm.get('atencion.codigo')?.touched &&
+                historiaClinicaForm.get('atencion.codigo')?.invalid
+              "
+            >
+              Este campo es requerido
+            </div>
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn-primary" (click)="onSubmit()">
+            Guardar Historia Clínica
+          </button>
+          <button type="button" class="btn-secondary" (click)="generatePDF()">
+            Descargar PDF
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

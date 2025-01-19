@@ -4,6 +4,7 @@ import { DashboardPrincipalComponent } from './views/dashboard-principal/dashboa
 import { CitasMedicasComponent } from './views/citas-medicas/citas-medicas.component';
 import { HistorialClinicoPacienteComponent } from './views/historial-clinico-paciente/historial-clinico-paciente.component';
 import { VistaPacienteComponent } from './views/vista-paciente/vista-paciente.component';
+import { HistoriaClinicaComponent } from './views/historia-clinica/historia-clinica.component';
 
 export const routes: Routes = [
   { path: '', component: LoginMedicoComponent },
@@ -11,5 +12,6 @@ export const routes: Routes = [
   { path: 'dashboard-principal', component: DashboardPrincipalComponent },
   { path: 'dashboard-citas', component: CitasMedicasComponent },
   { path: 'perfil-paciente/:id', component: VistaPacienteComponent },
+  { path: 'historia-clinica', component: HistoriaClinicaComponent },
   { path: 'historial-clinico', component: HistorialClinicoPacienteComponent },
 ];

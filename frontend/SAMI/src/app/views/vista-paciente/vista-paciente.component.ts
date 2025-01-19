@@ -10,6 +10,7 @@ import { Medic } from '../../interfaces/medic.interface';
 import { Observable, of } from 'rxjs';
 import { map, catchError } from 'rxjs/operators';
 import Chart from 'chart.js/auto';
+import { RouterLink } from '@angular/router';
 
 interface DoctorInfo {
   [cedula: string]: Observable<string>;
@@ -17,7 +18,7 @@ interface DoctorInfo {
 
 @Component({
   selector: 'app-vista-paciente',
-  imports: [CommonModule, SlidebarComponent, HttpClientModule],
+  imports: [CommonModule, SlidebarComponent, HttpClientModule, RouterLink],
   templateUrl: './vista-paciente.component.html',
   styleUrl: './vista-paciente.component.css',
   standalone: true,
@@ -95,8 +96,15 @@ export class VistaPacienteComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    const fechas = this.paciente.nivelesGlucosa.map((nivel) => nivel.fecha);
-    const niveles = this.paciente.nivelesGlucosa.map((nivel) => nivel.valor);
+    // Ordenar los niveles de glucosa por fecha
+    const nivelesGlucosaOrdenados = this.paciente.nivelesGlucosa.sort(
+      (a, b) => {
+        return new Date(a.fecha).getTime() - new Date(b.fecha).getTime();
+      }
+    );
+
+    const fechas = nivelesGlucosaOrdenados.map((nivel) => nivel.fecha);
+    const niveles = nivelesGlucosaOrdenados.map((nivel) => nivel.valor);
     const min = this.paciente.rangoGlucosa?.min || 0;
     const max = this.paciente.rangoGlucosa?.max || 0;
     const objetivo = this.paciente.rangoGlucosa?.objetivo || 0;
