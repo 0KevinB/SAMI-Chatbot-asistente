@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sami/screens/alert_screen.dart';
 import 'package:sami/screens/appointment_screen.dart';
@@ -8,10 +9,10 @@ import 'package:sami/screens/prescription_screen.dart';
 import 'package:sami/services/auth_service.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sami/services/notification_service.dart';
+import 'package:video_player/video_player.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
-
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
@@ -109,9 +110,19 @@ class _HomeScreenState extends State<HomeScreen> {
               const SizedBox(height: 24),
               // Robot Image
               Center(
-                child: Image.asset(
-                  'assets/img/sami_logo.png',
-                  height: 150,
+                child: Container(
+                  width: 300, // Ajusta según necesites
+                  height: 300,
+                  decoration: BoxDecoration(
+                    // Puedes agregar un borderRadius si lo deseas
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  child: Image.asset(
+                    'assets/img/Sami.png', // Ruta de tu imagen
+                    fit: BoxFit
+                        .contain, // Puedes usar 'cover' si prefieres que llene todo el espacio
+                    filterQuality: FilterQuality.high,
+                  ),
                 ),
               ),
               // Medication Reminder

@@ -41,9 +41,9 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset('assets/img/sami_logo.png', height: 120),
-            const SizedBox(height: 24),
+            Image.asset('assets/img/Sami.png', height: 300),
             const CircularProgressIndicator(),
+            Text('SAMI: BotAssitant', style: TextStyle(fontSize: 24)),
           ],
         ),
       ),
