@@ -3,9 +3,37 @@
   <div class="dashboard-content">
     <header>
       <h1>Gestión de pacientes</h1>
-      <a href="/historia-clinica">
-        <button class="add-history">+ Nueva historia</button></a
-      >
+      <div>
+        <button
+          class="add-history"
+          [routerLink]="['/historia-clinica']"
+          [queryParams]="{
+            cedula: paciente?.cedula,
+            nombre: paciente?.nombre,
+            apellido: paciente?.apellido,
+            email: paciente?.email,
+            telefono: paciente?.telefono,
+            edad: paciente?.edad,
+            genero: paciente?.genero
+          }"
+        >
+          + Nueva historia
+        </button>
+
+        <button
+          class="add-receta"
+          [routerLink]="['/receta']"
+          [queryParams]="{
+            cedula: paciente?.cedula,
+            nombre: paciente?.nombre,
+            apellido: paciente?.apellido,
+            email: paciente?.email,
+            telefono: paciente?.telefono
+          }"
+        >
+          + Nueva receta
+        </button>
+      </div>
     </header>
 
     <div class="patient-data-container">

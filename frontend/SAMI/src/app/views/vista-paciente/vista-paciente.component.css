@@ -36,6 +36,17 @@ header h1 {
   font: var(--text-button-style);
 }
 
+.add-receta {
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: var(--light-blue-principal);
+  font: var(--text-button-style);
+  margin-left: 8px;
+}
+
 .patient-data-container {
   display: flex;
   justify-content: space-between;

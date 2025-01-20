@@ -1,0 +1,144 @@
+<div class="dashboard">
+  <app-slidebar></app-slidebar>
+  <div class="content">
+    <div #pdfContent>
+      <form
+        [formGroup]="recetaMedicaForm"
+        (ngSubmit)="onSubmit()"
+        class="receta-medica-form"
+      >
+        <div class="header" formGroupName="doctor">
+          <div class="form-field">
+            <label for="doctorNombre">Nombre del Doctor:</label>
+            <input id="doctorNombre" type="text" formControlName="nombre" />
+          </div>
+          <div class="form-field">
+            <label for="doctorCedula">Cédula:</label>
+            <input id="doctorCedula" type="text" formControlName="cedula" />
+          </div>
+          <div class="form-field">
+            <label for="doctorRegProf">Reg. Prof:</label>
+            <input id="doctorRegProf" type="text" formControlName="regProf" />
+          </div>
+          <div class="form-field">
+            <label for="doctorEspecialidad">Especialidad:</label>
+            <input
+              id="doctorEspecialidad"
+              type="text"
+              formControlName="especialidad"
+            />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-field">
+            <label for="fecha">FECHA:</label>
+            <input id="fecha" type="datetime-local" formControlName="fecha" />
+          </div>
+          <div class="form-field">
+            <label for="recetaNumero">RECETA #:</label>
+            <input
+              id="recetaNumero"
+              type="text"
+              formControlName="recetaNumero"
+            />
+          </div>
+          <div class="form-field">
+            <label for="proximaCita">PRÓXIMA CITA:</label>
+            <input id="proximaCita" type="date" formControlName="proximaCita" />
+          </div>
+        </div>
+
+        <div formGroupName="paciente" class="form-section">
+          <h3>PACIENTE</h3>
+          <div class="form-row">
+            <div class="form-field">
+              <label for="nombrePaciente">NOMBRE:</label>
+              <input id="nombrePaciente" type="text" formControlName="nombre" />
+            </div>
+            <div class="form-field">
+              <label for="dniPaciente">DNI:</label>
+              <input id="dniPaciente" type="text" formControlName="cedula" />
+            </div>
+            <div class="form-field">
+              <label for="edadPaciente">EDAD:</label>
+              <input id="edadPaciente" type="text" formControlName="edad" />
+            </div>
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label for="diagnostico">DIAGNÓSTICO:</label>
+          <input id="diagnostico" type="text" formControlName="diagnostico" />
+        </div>
+
+        <div formArrayName="medicamentos" class="form-section">
+          <h3>MEDICAMENTOS</h3>
+          <div
+            *ngFor="let medicamento of medicamentos.controls; let i = index"
+            [formGroupName]="i"
+            class="medicamento-item"
+          >
+            <div class="form-field">
+              <label [for]="'descripcion' + i">DESCRIPCIÓN:</label>
+              <input
+                [id]="'descripcion' + i"
+                type="text"
+                formControlName="descripcion"
+              />
+            </div>
+            <div class="form-field">
+              <label [for]="'cantidad' + i">CANTIDAD:</label>
+              <input
+                [id]="'cantidad' + i"
+                type="text"
+                formControlName="cantidad"
+              />
+            </div>
+            <div class="form-field">
+              <label [for]="'indicaciones' + i">INDICACIONES:</label>
+              <textarea
+                [id]="'indicaciones' + i"
+                formControlName="indicaciones"
+                rows="2"
+              ></textarea>
+            </div>
+            <button
+              type="button"
+              (click)="removeMedicamento(i)"
+              class="btn-remove"
+            >
+              Eliminar
+            </button>
+          </div>
+          <button type="button" (click)="addMedicamento()" class="btn-add">
+            Agregar Medicamento
+          </button>
+        </div>
+
+        <div class="form-field">
+          <label for="alergias">ALERGIAS:</label>
+          <input id="alergias" type="text" formControlName="alergias" />
+        </div>
+
+        <div class="form-field">
+          <label for="recomendaciones"
+            >RECOMENDACIONES NO FARMACOLÓGICAS Y SIGNOS DE ALARMA:</label
+          >
+          <textarea
+            id="recomendaciones"
+            formControlName="recomendaciones"
+            rows="3"
+          ></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="btn-primary">Guardar Receta</button>
+          <button type="button" class="btn-secondary" (click)="generatePDF()">
+            Descargar PDF
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

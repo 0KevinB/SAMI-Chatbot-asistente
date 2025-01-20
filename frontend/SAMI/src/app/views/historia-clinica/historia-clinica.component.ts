@@ -20,6 +20,7 @@ import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { SlidebarComponent } from '../../components/slidebar/slidebar.component';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-historia-clinica',
@@ -39,9 +40,7 @@ export class HistoriaClinicaComponent implements OnInit, AfterViewInit {
   pdfText: string = '';
   @ViewChild('pdfContent', { static: false }) pdfContent!: ElementRef;
   pdfReady = false;
-  constructor(private fb: FormBuilder) {}
-
-  ngOnInit() {
+  constructor(private fb: FormBuilder, private route: ActivatedRoute) {
     this.historiaClinicaForm = this.fb.group({
       establecimientoDeSalud: ['', Validators.required],
       paciente: this.fb.group({
@@ -96,6 +95,23 @@ export class HistoriaClinicaComponent implements OnInit, AfterViewInit {
         nombreProfesional: ['', Validators.required],
         codigo: ['', Validators.required],
       }),
+    });
+  }
+
+  ngOnInit() {
+    // Obtener los datos del paciente de los queryParams
+    this.route.queryParams.subscribe((params) => {
+      if (params['cedula']) {
+        this.historiaClinicaForm.patchValue({
+          paciente: {
+            nombre: params['nombre'] || '',
+            apellidos: params['apellido'] || '',
+            sexo: params['genero'] || '',
+            edad: params['edad'] || '',
+            numeroHistoriaClinica: params['cedula'] || '',
+          },
+        });
+      }
     });
   }
   ngAfterViewInit() {
