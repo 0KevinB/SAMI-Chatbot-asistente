@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:sami/services/auth_service.dart';
 import 'package:sami/screens/login_screen.dart';
 import 'package:sami/screens/main_screen.dart';
@@ -41,9 +42,13 @@ class _SplashScreenState extends State<SplashScreen> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset('assets/img/Sami.png', height: 300),
+            Image.asset('assets/img/Sami.png', height: 200),
             const CircularProgressIndicator(),
-            Text('SAMI: BotAssitant', style: TextStyle(fontSize: 24)),
+            Text('BotAssit: SAMI',
+                style: GoogleFonts.roboto(
+                    fontSize: 24,
+                    color: const Color(0xFF5DABF5),
+                    fontWeight: FontWeight.bold)),
           ],
         ),
       ),

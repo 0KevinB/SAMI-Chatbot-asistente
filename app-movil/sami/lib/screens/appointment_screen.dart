@@ -172,7 +172,17 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
                           ),
                         ).then((_) => _loadAppointments());
                       },
-                      child: const Text('Solicitar cita médica'),
+                      style: ButtonStyle(
+                          backgroundColor:
+                              WidgetStateProperty.all(const Color(0xFF5DABF5))),
+                      child: Text(
+                        'Solicitar cita médica',
+                        style: GoogleFonts.roboto(
+                            textStyle: const TextStyle(
+                                color: Color(0xFFFFFFFF),
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold)),
+                      ),
                     ),
                   ),
                 ),

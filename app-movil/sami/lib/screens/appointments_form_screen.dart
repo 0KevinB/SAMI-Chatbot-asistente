@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import '../services/appointment_service.dart';
 import '../models/doctor.dart';
@@ -128,15 +129,44 @@ class _AppointmentFormScreenState extends State<AppointmentFormScreen> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Especialidad
-                    const Text('Especialidad',
-                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    Text('Especialidad',
+                        style: GoogleFonts.roboto(
+                          textStyle: const TextStyle(
+                            color: Color(0xFF857E8E),
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )),
                     const SizedBox(height: 8),
                     DropdownButtonFormField<String>(
                       value: _selectedSpecialty,
                       decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
+                        // Estilos del input
+                        filled: true,
+                        fillColor: Color(0xFFF0F4FF),
+                        isDense: true,
                         contentPadding:
-                            EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                            EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                        // Bordes redondeados para todos los estados
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          borderSide:
+                              BorderSide(color: Color(0xFF5DABF5), width: 2),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          borderSide:
+                              BorderSide(color: Color(0xFF0466C3), width: 2),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          borderSide: BorderSide(color: Colors.red, width: 2),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          borderSide: BorderSide(color: Colors.red, width: 2),
+                        ),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
                       ),
                       items: _specialties.map((String specialty) {
                         return DropdownMenuItem<String>(
@@ -156,15 +186,42 @@ class _AppointmentFormScreenState extends State<AppointmentFormScreen> {
                     const SizedBox(height: 16),
 
                     // Médico
-                    const Text('Médico',
-                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    Text('Médico',
+                        style: GoogleFonts.roboto(
+                          textStyle: const TextStyle(
+                            color: Color(0xFF857E8E),
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )),
                     const SizedBox(height: 8),
                     DropdownButtonFormField<Doctor>(
                       value: _selectedDoctor,
                       decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
+                        filled: true,
+                        fillColor: Color(0xFFF0F4FF),
+                        isDense: true,
                         contentPadding:
-                            EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                            EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          borderSide:
+                              BorderSide(color: Color(0xFF5DABF5), width: 2),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          borderSide:
+                              BorderSide(color: Color(0xFF0466C3), width: 2),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          borderSide: BorderSide(color: Colors.red, width: 2),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          borderSide: BorderSide(color: Colors.red, width: 2),
+                        ),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
                       ),
                       items: _selectedSpecialty == null
                           ? []
@@ -186,8 +243,14 @@ class _AppointmentFormScreenState extends State<AppointmentFormScreen> {
                     const SizedBox(height: 16),
 
                     // Fecha
-                    const Text('Fecha',
-                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    Text('Fecha',
+                        style: GoogleFonts.roboto(
+                          textStyle: const TextStyle(
+                            color: Color(0xFF857E8E),
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )),
                     const SizedBox(height: 8),
                     InkWell(
                       onTap: () async {
@@ -206,10 +269,14 @@ class _AppointmentFormScreenState extends State<AppointmentFormScreen> {
                       },
                       child: Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 15),
+                            horizontal: 16, vertical: 12),
                         decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey),
-                          borderRadius: BorderRadius.circular(4),
+                          color: const Color(0xFFF0F4FF),
+                          border: Border.all(
+                            color: const Color(0xFF5DABF5),
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.circular(10),
                         ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -219,8 +286,16 @@ class _AppointmentFormScreenState extends State<AppointmentFormScreen> {
                                   ? 'Seleccionar fecha'
                                   : DateFormat('dd/MM/yyyy')
                                       .format(_selectedDate!),
+                              style: GoogleFonts.roboto(
+                                color: _selectedDate == null
+                                    ? const Color(0xFF857E8E)
+                                    : Colors.black,
+                              ),
                             ),
-                            const Icon(Icons.calendar_today),
+                            const Icon(
+                              Icons.calendar_today,
+                              color: Color(0xFF5DABF5),
+                            ),
                           ],
                         ),
                       ),
@@ -228,8 +303,14 @@ class _AppointmentFormScreenState extends State<AppointmentFormScreen> {
                     const SizedBox(height: 16),
 
                     // Hora de inicio
-                    const Text('Hora de inicio',
-                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    Text('Hora de inicio',
+                        style: GoogleFonts.roboto(
+                          textStyle: const TextStyle(
+                            color: Color(0xFF857E8E),
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )),
                     const SizedBox(height: 8),
                     InkWell(
                       onTap: () async {
@@ -251,10 +332,14 @@ class _AppointmentFormScreenState extends State<AppointmentFormScreen> {
                       },
                       child: Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 15),
+                            horizontal: 16, vertical: 12),
                         decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey),
-                          borderRadius: BorderRadius.circular(4),
+                          color: const Color(0xFFF0F4FF),
+                          border: Border.all(
+                            color: const Color(0xFF5DABF5),
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.circular(10),
                         ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -263,8 +348,16 @@ class _AppointmentFormScreenState extends State<AppointmentFormScreen> {
                               _startTime == null
                                   ? 'Seleccionar hora de inicio'
                                   : _formatTimeOfDay(_startTime!),
+                              style: GoogleFonts.roboto(
+                                color: _startTime == null
+                                    ? const Color(0xFF857E8E)
+                                    : Colors.black,
+                              ),
                             ),
-                            const Icon(Icons.access_time),
+                            const Icon(
+                              Icons.access_time,
+                              color: Color(0xFF5DABF5),
+                            ),
                           ],
                         ),
                       ),
@@ -272,8 +365,14 @@ class _AppointmentFormScreenState extends State<AppointmentFormScreen> {
                     const SizedBox(height: 16),
 
                     // Hora de fin
-                    const Text('Hora de fin',
-                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    Text('Hora de fin',
+                        style: GoogleFonts.roboto(
+                          textStyle: const TextStyle(
+                            color: Color(0xFF857E8E),
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )),
                     const SizedBox(height: 8),
                     InkWell(
                       onTap: () async {
@@ -290,10 +389,14 @@ class _AppointmentFormScreenState extends State<AppointmentFormScreen> {
                       },
                       child: Container(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 15),
+                            horizontal: 16, vertical: 12),
                         decoration: BoxDecoration(
-                          border: Border.all(color: Colors.grey),
-                          borderRadius: BorderRadius.circular(4),
+                          color: const Color(0xFFF0F4FF),
+                          border: Border.all(
+                            color: const Color(0xFF5DABF5),
+                            width: 2,
+                          ),
+                          borderRadius: BorderRadius.circular(10),
                         ),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -302,8 +405,16 @@ class _AppointmentFormScreenState extends State<AppointmentFormScreen> {
                               _endTime == null
                                   ? 'Seleccionar hora de fin'
                                   : _formatTimeOfDay(_endTime!),
+                              style: GoogleFonts.roboto(
+                                color: _endTime == null
+                                    ? const Color(0xFF857E8E)
+                                    : Colors.black,
+                              ),
                             ),
-                            const Icon(Icons.access_time),
+                            const Icon(
+                              Icons.access_time,
+                              color: Color(0xFF5DABF5),
+                            ),
                           ],
                         ),
                       ),
@@ -311,16 +422,48 @@ class _AppointmentFormScreenState extends State<AppointmentFormScreen> {
                     const SizedBox(height: 16),
 
                     // Motivo de consulta
-                    const Text('Motivo de consulta',
-                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    Text('Motivo de consulta',
+                        style: GoogleFonts.roboto(
+                          textStyle: const TextStyle(
+                            color: Color(0xFF857E8E),
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )),
                     const SizedBox(height: 8),
                     TextFormField(
                       controller: _reasonController,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'Ingrese el motivo de la consulta',
-                      ),
                       maxLines: 3,
+                      decoration: InputDecoration(
+                        hintText: 'Ingrese el motivo de la consulta',
+                        hintStyle: GoogleFonts.roboto(
+                          color: Color(0xFF857E8E),
+                        ),
+                        isDense: true,
+                        contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 12),
+                        filled: true,
+                        fillColor: const Color(0xFFF0F4FF),
+                        enabledBorder: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          borderSide:
+                              BorderSide(color: Color(0xFF5DABF5), width: 2),
+                        ),
+                        focusedBorder: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          borderSide:
+                              BorderSide(color: Color(0xFF0466C3), width: 2),
+                        ),
+                        errorBorder: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          borderSide: BorderSide(color: Colors.red, width: 2),
+                        ),
+                        focusedErrorBorder: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          borderSide: BorderSide(color: Colors.red, width: 2),
+                        ),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                      ),
                       validator: (value) => value?.isEmpty ?? true
                           ? 'Ingrese el motivo de la consulta'
                           : null,
@@ -328,16 +471,48 @@ class _AppointmentFormScreenState extends State<AppointmentFormScreen> {
                     const SizedBox(height: 16),
 
                     // Notas adicionales
-                    const Text('Notas adicionales',
-                        style: TextStyle(fontWeight: FontWeight.bold)),
+                    Text('Notas adicionales',
+                        style: GoogleFonts.roboto(
+                          textStyle: const TextStyle(
+                            color: Color(0xFF857E8E),
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )),
                     const SizedBox(height: 8),
                     TextFormField(
                       controller: _notesController,
-                      decoration: const InputDecoration(
-                        border: OutlineInputBorder(),
-                        hintText: 'Ingrese notas adicionales (opcional)',
-                      ),
                       maxLines: 3,
+                      decoration: InputDecoration(
+                        hintText: 'Ingrese notas adicionales (opcional)',
+                        hintStyle: GoogleFonts.roboto(
+                          color: Color(0xFF857E8E),
+                        ),
+                        isDense: true,
+                        contentPadding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 12),
+                        filled: true,
+                        fillColor: const Color(0xFFF0F4FF),
+                        enabledBorder: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          borderSide:
+                              BorderSide(color: Color(0xFF5DABF5), width: 2),
+                        ),
+                        focusedBorder: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          borderSide:
+                              BorderSide(color: Color(0xFF0466C3), width: 2),
+                        ),
+                        errorBorder: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          borderSide: BorderSide(color: Colors.red, width: 2),
+                        ),
+                        focusedErrorBorder: const OutlineInputBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(10)),
+                          borderSide: BorderSide(color: Colors.red, width: 2),
+                        ),
+                        floatingLabelBehavior: FloatingLabelBehavior.always,
+                      ),
                     ),
                     const SizedBox(height: 24),
 

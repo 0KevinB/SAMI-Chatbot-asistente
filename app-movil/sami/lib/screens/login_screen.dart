@@ -94,7 +94,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         color: Color(0xFF5DABF5),
                       )),
                 ),
-                Image.asset('assets/img/Sami.png', height: 300),
+                Image.asset('assets/img/Sami.png', height: 200),
                 const SizedBox(height: 32),
                 Text(
                   'Ingresar al sistema',

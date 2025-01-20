@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sami/screens/home_screen.dart';
-import 'package:sami/screens/chat_screen.dart';
+// import 'package:sami/screens/chat_screen.dart';
 import 'package:sami/screens/profile_screen.dart';
 
 class MainScreen extends StatefulWidget {
@@ -15,9 +15,12 @@ class _MainScreenState extends State<MainScreen> {
 
   static const List<Widget> _screens = <Widget>[
     HomeScreen(),
-    ChatScreen(),
+    // ChatScreen(),
     ProfileScreen()
   ];
+
+  // Define el color personalizado
+  static const Color customColor = Color(0xFF5DABF5);
 
   @override
   Widget build(BuildContext context) {
@@ -32,20 +35,20 @@ class _MainScreenState extends State<MainScreen> {
             _selectedIndex = index;
           });
         },
-        destinations: const <NavigationDestination>[
+        // Personaliza los colores del NavigationBar
+        indicatorColor: customColor,
+        labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+        destinations: <NavigationDestination>[
           NavigationDestination(
-            icon: Icon(Icons.home_outlined),
-            selectedIcon: Icon(Icons.home),
+            icon: Icon(Icons.home_outlined,
+                color: _selectedIndex == 0 ? Colors.white : customColor),
+            selectedIcon: Icon(Icons.home, color: Colors.white),
             label: 'Inicio',
           ),
           NavigationDestination(
-            icon: Icon(Icons.chat_outlined),
-            selectedIcon: Icon(Icons.chat),
-            label: 'Chat',
-          ),
-          NavigationDestination(
-            icon: Icon(Icons.person_outline),
-            selectedIcon: Icon(Icons.person),
+            icon: Icon(Icons.person_outline,
+                color: _selectedIndex == 1 ? Colors.white : customColor),
+            selectedIcon: Icon(Icons.person, color: Colors.white),
             label: 'Perfil',
           ),
         ],
