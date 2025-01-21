@@ -165,3 +165,127 @@ h2 {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.calendar-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 16px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}
+
+.calendar-week {
+  display: flex;
+  gap: 8px;
+}
+
+.calendar-day {
+  flex: 1;
+  min-height: 150px;
+  background-color: white;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+}
+
+.day-header {
+  padding: 8px;
+  border-bottom: 1px solid #eee;
+  text-align: center;
+}
+
+.day-name {
+  font-size: 0.85rem;
+  color: #666;
+  text-transform: uppercase;
+}
+
+.day-number {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #333;
+}
+
+.day-content {
+  flex: 1;
+  padding: 8px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.appointment {
+  padding: 8px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.appointment:hover {
+  transform: scale(1.02);
+}
+
+.appointment-time {
+  font-weight: 600;
+  font-size: 0.8rem;
+}
+
+.appointment-name {
+  margin: 4px 0;
+  font-weight: 500;
+}
+
+.appointment-status {
+  font-size: 0.75rem;
+  text-transform: capitalize;
+}
+
+/* Estados de las citas */
+.appointment-pending {
+  background-color: #fff3cd;
+  border-left: 3px solid #ffc107;
+}
+
+.appointment-confirmed {
+  background-color: #d4edda;
+  border-left: 3px solid #28a745;
+}
+
+.appointment-cancelled {
+  background-color: #f8d7da;
+  border-left: 3px solid #dc3545;
+}
+
+.appointment-completed {
+  background-color: #cce5ff;
+  border-left: 3px solid #007bff;
+}
+
+/* Estilos para scroll personalizado */
+.day-content::-webkit-scrollbar {
+  width: 4px;
+}
+
+.day-content::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+.day-content::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .calendar-week {
+    flex-direction: column;
+  }
+  
+  .calendar-day {
+    min-height: auto;
+  }
+}
