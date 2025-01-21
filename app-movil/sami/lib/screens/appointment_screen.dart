@@ -67,7 +67,7 @@ class _AppointmentsScreenState extends State<AppointmentsScreen> {
         leading: const BackButton(),
         title: Text('CITAS MÉDICAS',
             style:
-                GoogleFonts.roboto(fontSize: 20, fontWeight: FontWeight.bold)),
+                GoogleFonts.roboto(fontSize: 18, fontWeight: FontWeight.bold)),
         actions: [
           IconButton(
             icon: const Icon(Icons.refresh),

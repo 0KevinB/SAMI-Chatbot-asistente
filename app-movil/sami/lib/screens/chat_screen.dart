@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:sami/services/chat_service.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -64,14 +65,26 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       appBar: AppBar(
         leading: const BackButton(),
-        title: const Row(
+        title: Row(
           children: [
-            CircleAvatar(
-              backgroundColor: Color(0xFF2196F3),
-              child: Text('S', style: TextStyle(color: Colors.white)),
+            Container(
+              width: 40, // Tamaño específico para el círculo
+              height: 40,
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(
+                  image: AssetImage('assets/img/Sami.png'),
+                  fit: BoxFit
+                      .cover, // Asegura que la imagen cubra todo el espacio
+                ),
+              ),
             ),
-            SizedBox(width: 8),
-            Text('SAMI'),
+            const SizedBox(width: 8),
+            Text('SAMI',
+                style: GoogleFonts.roboto(
+                    textStyle:
+                        TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    color: Colors.black)),
           ],
         ),
         actions: [
@@ -160,8 +173,9 @@ class ChatMessage extends StatelessWidget {
         children: [
           if (isBot) ...[
             const CircleAvatar(
-              backgroundColor: Color(0xFF2196F3),
-              child: Text('S', style: TextStyle(color: Colors.white)),
+              radius: 16, // Ajusta el tamaño según necesites
+              backgroundColor: Colors.transparent,
+              backgroundImage: AssetImage('assets/img/Sami.png'),
             ),
             const SizedBox(width: 8.0),
           ],

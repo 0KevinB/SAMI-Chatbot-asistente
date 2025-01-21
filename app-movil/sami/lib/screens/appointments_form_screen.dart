@@ -117,7 +117,14 @@ class _AppointmentFormScreenState extends State<AppointmentFormScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Solicitar Cita Médica'),
+        title: Text('SOLICITAR CITA MÉDICA',
+            style: GoogleFonts.roboto(
+              textStyle: const TextStyle(
+                color: Color(0xFF000000),
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            )),
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
@@ -523,10 +530,16 @@ class _AppointmentFormScreenState extends State<AppointmentFormScreen> {
                         onPressed: _submitAppointment,
                         style: ElevatedButton.styleFrom(
                           padding: const EdgeInsets.symmetric(vertical: 16),
+                          backgroundColor: const Color(0xFF5DABF5),
                         ),
-                        child: const Text(
+                        child: Text(
                           'Solicitar Cita',
-                          style: TextStyle(fontSize: 16),
+                          style: GoogleFonts.roboto(
+                              textStyle: const TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFFFFFFFF),
+                          )),
                         ),
                       ),
                     ),
