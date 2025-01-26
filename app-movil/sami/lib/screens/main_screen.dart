@@ -42,13 +42,13 @@ class _MainScreenState extends State<MainScreen> {
           NavigationDestination(
             icon: Icon(Icons.home_outlined,
                 color: _selectedIndex == 0 ? Colors.white : customColor),
-            selectedIcon: Icon(Icons.home, color: Colors.white),
+            selectedIcon: const Icon(Icons.home, color: Colors.white),
             label: 'Inicio',
           ),
           NavigationDestination(
             icon: Icon(Icons.person_outline,
                 color: _selectedIndex == 1 ? Colors.white : customColor),
-            selectedIcon: Icon(Icons.person, color: Colors.white),
+            selectedIcon: const Icon(Icons.person, color: Colors.white),
             label: 'Perfil',
           ),
         ],

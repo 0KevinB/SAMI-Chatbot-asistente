@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sami/screens/alert_screen.dart';
 import 'package:sami/screens/appointment_screen.dart';

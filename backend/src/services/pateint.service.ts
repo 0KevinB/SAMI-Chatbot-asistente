@@ -19,14 +19,27 @@ export class PatientService {
    * Obtiene un paciente por su ID desde el documento "users".
    */
   static async getPatientById(id: string) {
+    // Primero, intentamos buscar por ID
     const patientRef = db.collection("users").doc(id);
     const snapshot = await patientRef.get();
 
-    if (!snapshot.exists) {
+    if (snapshot.exists) {
+      return { id: snapshot.id, ...snapshot.data() };
+    }
+
+    // Si no se encuentra por ID, buscamos por cédula
+    const querySnapshot = await db
+      .collection("users")
+      .where("cedula", "==", id)
+      .limit(1)
+      .get();
+
+    if (querySnapshot.empty) {
       throw new Error("Paciente no encontrado");
     }
 
-    return { id: snapshot.id, ...snapshot.data() };
+    const patientDoc = querySnapshot.docs[0];
+    return { id: patientDoc.id, ...patientDoc.data() };
   }
 
   /**

@@ -444,7 +444,7 @@ class _AppointmentFormScreenState extends State<AppointmentFormScreen> {
                       decoration: InputDecoration(
                         hintText: 'Ingrese el motivo de la consulta',
                         hintStyle: GoogleFonts.roboto(
-                          color: Color(0xFF857E8E),
+                          color: const Color(0xFF857E8E),
                         ),
                         isDense: true,
                         contentPadding: const EdgeInsets.symmetric(
@@ -493,7 +493,7 @@ class _AppointmentFormScreenState extends State<AppointmentFormScreen> {
                       decoration: InputDecoration(
                         hintText: 'Ingrese notas adicionales (opcional)',
                         hintStyle: GoogleFonts.roboto(
-                          color: Color(0xFF857E8E),
+                          color: const Color(0xFF857E8E),
                         ),
                         isDense: true,
                         contentPadding: const EdgeInsets.symmetric(

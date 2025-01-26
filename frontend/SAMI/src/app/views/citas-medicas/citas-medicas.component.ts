@@ -1,16 +1,18 @@
+// citas-medicas.component.ts
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { SlidebarComponent } from '../../components/slidebar/slidebar.component';
 import { HttpClientModule } from '@angular/common/http';
-import { CitasService } from '../../services/users/appointment.service'; // Asegúrate de importar el CitasService
-import { AuthService } from '../../services/users/auth.service'; // Asegúrate de importar el AuthService
+import { CitasService } from '../../services/users/appointment.service';
+import { AuthService } from '../../services/users/auth.service';
 import { Appointment } from '../../interfaces/appointment.interface';
 import {
   addDays,
   differenceInDays,
   endOfMonth,
   format,
+  isToday,
   startOfMonth,
 } from 'date-fns';
 import { es } from 'date-fns/locale';
@@ -32,6 +34,24 @@ export class CitasMedicasComponent implements OnInit, OnDestroy {
   isLoading = false;
   error: string | null = null;
   medicoCedula: string;
+  selectedAppointment: Appointment | null = null;
+  currentFilter: string = 'todos';
+
+  statusFilters = [
+    { label: 'Todos', value: 'todos', class: 'filter-btn-all' },
+    { label: 'Pendientes', value: 'pendiente', class: 'filter-btn-pending' },
+    {
+      label: 'Confirmadas',
+      value: 'confirmada',
+      class: 'filter-btn-confirmed',
+    },
+    { label: 'Canceladas', value: 'cancelada', class: 'filter-btn-cancelled' },
+    {
+      label: 'Completadas',
+      value: 'completada',
+      class: 'filter-btn-completed',
+    },
+  ];
 
   private destroy$ = new Subject<void>();
   private searchSubject = new Subject<string>();
@@ -40,7 +60,6 @@ export class CitasMedicasComponent implements OnInit, OnDestroy {
     private citasService: CitasService,
     private authService: AuthService
   ) {
-    // this.medicoCedula = this.authService.getDecodedToken().cedula;
     this.medicoCedula = '1234567890';
     this.searchSubject
       .pipe(debounceTime(300), distinctUntilChanged(), takeUntil(this.destroy$))
@@ -52,6 +71,7 @@ export class CitasMedicasComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.initializeMonthDays();
     this.loadAppointments();
+    console.log(this.appointments);
   }
 
   ngOnDestroy() {
@@ -85,6 +105,41 @@ export class CitasMedicasComponent implements OnInit, OnDestroy {
     });
 
     return weeks;
+  }
+
+  setStatusFilter(status: string) {
+    this.currentFilter = status;
+  }
+
+  getFilteredAppointmentsForDay(date: Date): Appointment[] {
+    const appointments = this.getAppointmentsForDay(date);
+    if (this.currentFilter === 'todos') {
+      return appointments;
+    }
+    return appointments.filter((app) => app.estado === this.currentFilter);
+  }
+
+  showAppointmentDetails(appointment: Appointment) {
+    this.selectedAppointment = appointment;
+  }
+
+  closeModal(event: MouseEvent) {
+    if ((event.target as HTMLElement).classList.contains('modal')) {
+      this.selectedAppointment = null;
+    }
+  }
+
+  getAppointmentClasses(appointment: Appointment) {
+    return {
+      'appointment-pending': appointment.estado === 'pendiente',
+      'appointment-confirmed': appointment.estado === 'confirmada',
+      'appointment-cancelled': appointment.estado === 'cancelada',
+      'appointment-completed': appointment.estado === 'completada',
+    };
+  }
+
+  isToday(date: Date): boolean {
+    return isToday(date);
   }
 
   onSearch() {
@@ -131,14 +186,15 @@ export class CitasMedicasComponent implements OnInit, OnDestroy {
   getAppointmentsForDay(date: Date): Appointment[] {
     const dateStr = format(date, 'yyyy-MM-dd');
     return this.appointments.filter(
-      (appointment) => format(appointment.fecha, 'yyyy-MM-dd') === dateStr
+      (appointment) =>
+        format(new Date(appointment.fecha), 'yyyy-MM-dd') === dateStr
     );
   }
 
   aceptarCita(appointment: Appointment) {
     this.actualizarEstadoCita(
       appointment.id,
-      'aceptada',
+      'confirmada',
       'Cita aceptada por el médico'
     );
   }
@@ -161,19 +217,18 @@ export class CitasMedicasComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
-          // Actualizar el estado de la cita localmente
           const citaIndex = this.appointments.findIndex(
             (cita) => cita.id === id
           );
           if (citaIndex !== -1) {
             this.appointments[citaIndex].estado = nuevoEstado;
-            this.appointments[citaIndex].color =
-              this.citasService.getAppointmentColor(nuevoEstado);
           }
+          this.loadAppointments();
         },
         error: (error) => {
           console.error('Error al actualizar la cita:', error);
-          // Aquí podrías mostrar un mensaje de error al usuario
+          this.error =
+            'Error al actualizar la cita. Por favor, intente nuevamente.';
         },
       });
   }

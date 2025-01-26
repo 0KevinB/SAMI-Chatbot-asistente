@@ -1,7 +1,22 @@
+<!-- citas-medicas.component.html -->
 <div class="dashboard">
   <app-slidebar></app-slidebar>
   <div class="container">
-    <h1>Citas médicas</h1>
+    <div class="header-section">
+      <h1>Citas médicas</h1>
+      <div class="filter-buttons">
+        <button
+          *ngFor="let filter of statusFilters"
+          (click)="setStatusFilter(filter.value)"
+          [class.active]="currentFilter === filter.value"
+          class="filter-btn"
+          [ngClass]="filter.class"
+        >
+          {{ filter.label }}
+        </button>
+      </div>
+    </div>
+
     <div class="items-dashboard">
       <div class="calendar">
         <div class="calendar-header">
@@ -12,17 +27,22 @@
               placeholder="Buscar paciente (Cédula, nombres...)"
               [(ngModel)]="searchTerm"
               (input)="onSearch()"
+              class="search-input"
             />
-            <span class="search-icon">&#128269;</span>
+            <i class="fas fa-search search-icon"></i>
           </div>
         </div>
 
         <!-- Loading State -->
-        <div *ngIf="isLoading" class="loading-state">Cargando citas...</div>
+        <div *ngIf="isLoading" class="loading-state">
+          <div class="spinner"></div>
+          <span>Cargando citas...</span>
+        </div>
 
         <!-- Error State -->
         <div *ngIf="error" class="error-state">
-          {{ error }}
+          <i class="fas fa-exclamation-circle"></i>
+          <span>{{ error }}</span>
         </div>
 
         <!-- Calendar Grid -->
@@ -30,30 +50,21 @@
           <ng-container *ngFor="let week of getWeeks()">
             <div class="calendar-week">
               <ng-container *ngFor="let day of week">
-                <div class="calendar-day">
+                <div class="calendar-day" [class.today]="isToday(day)">
                   <div class="day-header">
                     <div class="day-name">{{ formatDate(day, "EEE") }}</div>
                     <div class="day-number">{{ formatDate(day, "dd") }}</div>
                   </div>
                   <div class="day-content">
                     <ng-container
-                      *ngFor="let appointment of getAppointmentsForDay(day)"
+                      *ngFor="
+                        let appointment of getFilteredAppointmentsForDay(day)
+                      "
                     >
                       <div
                         class="appointment"
-                        [class]="appointment.color"
-                        [class.appointment-pending]="
-                          appointment.estado === 'pendiente'
-                        "
-                        [class.appointment-confirmed]="
-                          appointment.estado === 'confirmada'
-                        "
-                        [class.appointment-cancelled]="
-                          appointment.estado === 'cancelada'
-                        "
-                        [class.appointment-completed]="
-                          appointment.estado === 'completada'
-                        "
+                        [ngClass]="getAppointmentClasses(appointment)"
+                        (click)="showAppointmentDetails(appointment)"
                       >
                         <div class="appointment-time">
                           {{ appointment.horaInicio }}
@@ -61,10 +72,7 @@
                         <div class="appointment-name">
                           {{ appointment.eventName }}
                         </div>
-                        <div
-                          class="appointment-status"
-                          [class]="appointment.color"
-                        >
+                        <div class="appointment-status">
                           {{ appointment.estado }}
                         </div>
                       </div>
@@ -77,6 +85,54 @@
         </div>
       </div>
 
+      <!-- Appointment Details Modal -->
+      <div
+        class="modal"
+        *ngIf="selectedAppointment"
+        (click)="closeModal($event)"
+      >
+        <div class="modal-content">
+          <div class="modal-header">
+            <h3>Detalles de la Cita</h3>
+            <button class="close-btn" (click)="selectedAppointment = null">
+              &times;
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="detail-row">
+              <span class="label">Especialidad:</span>
+              <span>{{ selectedAppointment.especialidad }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">Fecha:</span>
+              <span>{{ formatDate(selectedAppointment.fecha, "PPP") }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">Horario:</span>
+              <span
+                >{{ selectedAppointment.horaInicio }} -
+                {{ selectedAppointment.horaFin }}</span
+              >
+            </div>
+            <div class="detail-row">
+              <span class="label">Estado:</span>
+              <span [class]="'status-badge ' + selectedAppointment.estado">
+                {{ selectedAppointment.estado }}
+              </span>
+            </div>
+            <div class="detail-row">
+              <span class="label">Motivo:</span>
+              <span>{{ selectedAppointment.motivoConsulta }}</span>
+            </div>
+            <div class="detail-row">
+              <span class="label">Notas:</span>
+              <span>{{ selectedAppointment.notas || "Sin notas" }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pending Appointments Section -->
       <div class="pendient-date">
         <h2>Solicitudes pendientes</h2>
         <div class="pendient-notification">
@@ -87,7 +143,7 @@
             >
               <div class="pending-time">{{ appointment.horaInicio }}</div>
               <div class="pending-details">
-                <div>{{ appointment.eventName }}</div>
+                <div class="pending-title">{{ appointment.eventName }}</div>
                 <div class="pending-specialty">
                   {{ appointment.especialidad }}
                 </div>
