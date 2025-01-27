@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -139,7 +140,41 @@ class _GlucoseRecordFormState extends State<GlucoseRecordForm> {
                   controller: _valueController,
                   decoration: InputDecoration(
                     labelText: 'Valor de Glucosa',
+                    labelStyle: GoogleFonts.roboto(
+                      textStyle: const TextStyle(
+                        color: Color(0xFF857E8E),
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                     suffixText: _selectedUnit,
+                    suffixStyle: GoogleFonts.roboto(
+                      color: const Color(0xFF857E8E),
+                    ),
+                    isDense: true,
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 12),
+                    filled: true,
+                    fillColor: const Color(0xFFF0F4FF),
+                    enabledBorder: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderSide:
+                          BorderSide(color: Color(0xFF5DABF5), width: 2),
+                    ),
+                    focusedBorder: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderSide:
+                          BorderSide(color: Color(0xFF0466C3), width: 2),
+                    ),
+                    errorBorder: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderSide: BorderSide(color: Colors.red, width: 2),
+                    ),
+                    focusedErrorBorder: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderSide: BorderSide(color: Colors.red, width: 2),
+                    ),
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
                   keyboardType: TextInputType.number,
                   inputFormatters: [
@@ -160,20 +195,105 @@ class _GlucoseRecordFormState extends State<GlucoseRecordForm> {
                 Row(
                   children: [
                     Expanded(
-                      child: ListTile(
-                        title: const Text('Fecha'),
-                        subtitle: Text(
-                            DateFormat('dd/MM/yyyy').format(_selectedDate)),
-                        trailing: const Icon(Icons.calendar_today),
+                      child: InkWell(
                         onTap: () => _selectDate(context),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 12),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFF0F4FF),
+                            border: Border.all(
+                              color: const Color(0xFF5DABF5),
+                              width: 2,
+                            ),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                'Fecha',
+                                style: GoogleFonts.roboto(
+                                  textStyle: const TextStyle(
+                                    color: Color(0xFF857E8E),
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    DateFormat('dd/MM/yyyy')
+                                        .format(_selectedDate),
+                                    style: GoogleFonts.roboto(
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  const Icon(
+                                    Icons.calendar_today,
+                                    color: Color(0xFF5DABF5),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ),
+                    const SizedBox(width: 16),
                     Expanded(
-                      child: ListTile(
-                        title: const Text('Hora'),
-                        subtitle: Text(_selectedTime.format(context)),
-                        trailing: const Icon(Icons.access_time),
+                      child: InkWell(
                         onTap: () => _selectTime(context),
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 16, vertical: 12),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFF0F4FF),
+                            border: Border.all(
+                              color: const Color(0xFF5DABF5),
+                              width: 2,
+                            ),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                'Hora',
+                                style: GoogleFonts.roboto(
+                                  textStyle: const TextStyle(
+                                    color: Color(0xFF857E8E),
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 4),
+                              Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Text(
+                                    _selectedTime.format(context),
+                                    style: GoogleFonts.roboto(
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                  const Icon(
+                                    Icons.access_time,
+                                    color: Color(0xFF5DABF5),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ),
                   ],
@@ -181,13 +301,47 @@ class _GlucoseRecordFormState extends State<GlucoseRecordForm> {
                 const SizedBox(height: 16),
                 DropdownButtonFormField<String>(
                   value: _selectedContext,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     labelText: 'Contexto',
+                    labelStyle: GoogleFonts.roboto(
+                      textStyle: const TextStyle(
+                        color: Color(0xFF857E8E),
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    isDense: true,
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 12),
+                    filled: true,
+                    fillColor: const Color(0xFFF0F4FF),
+                    enabledBorder: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderSide:
+                          BorderSide(color: Color(0xFF5DABF5), width: 2),
+                    ),
+                    focusedBorder: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderSide:
+                          BorderSide(color: Color(0xFF0466C3), width: 2),
+                    ),
+                    errorBorder: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderSide: BorderSide(color: Colors.red, width: 2),
+                    ),
+                    focusedErrorBorder: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderSide: BorderSide(color: Colors.red, width: 2),
+                    ),
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
                   items: _contextOptions.map((String value) {
                     return DropdownMenuItem<String>(
                       value: value,
-                      child: Text(value),
+                      child: Text(
+                        value,
+                        style: GoogleFonts.roboto(),
+                      ),
                     );
                   }).toList(),
                   onChanged: (String? newValue) {
@@ -197,15 +351,49 @@ class _GlucoseRecordFormState extends State<GlucoseRecordForm> {
                   },
                 ),
                 const SizedBox(height: 16),
-                DropdownButtonFormField<String>(
+                DropdownButtonFormField(
                   value: _selectedUnit,
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     labelText: 'Unidad',
+                    labelStyle: GoogleFonts.roboto(
+                      textStyle: const TextStyle(
+                        color: Color(0xFF857E8E),
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    isDense: true,
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 12),
+                    filled: true,
+                    fillColor: const Color(0xFFF0F4FF),
+                    enabledBorder: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderSide:
+                          BorderSide(color: Color(0xFF5DABF5), width: 2),
+                    ),
+                    focusedBorder: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderSide:
+                          BorderSide(color: Color(0xFF0466C3), width: 2),
+                    ),
+                    errorBorder: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderSide: BorderSide(color: Colors.red, width: 2),
+                    ),
+                    focusedErrorBorder: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderSide: BorderSide(color: Colors.red, width: 2),
+                    ),
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
                   ),
                   items: _unitOptions.map((String value) {
-                    return DropdownMenuItem<String>(
+                    return DropdownMenuItem(
                       value: value,
-                      child: Text(value),
+                      child: Text(
+                        value,
+                        style: GoogleFonts.roboto(),
+                      ),
                     );
                   }).toList(),
                   onChanged: (String? newValue) {
@@ -217,10 +405,41 @@ class _GlucoseRecordFormState extends State<GlucoseRecordForm> {
                 const SizedBox(height: 16),
                 TextFormField(
                   controller: _notesController,
-                  decoration: const InputDecoration(
-                    labelText: 'Notas adicionales',
-                  ),
                   maxLines: 3,
+                  decoration: InputDecoration(
+                    labelText: 'Notas adicionales',
+                    labelStyle: GoogleFonts.roboto(
+                      textStyle: const TextStyle(
+                        color: Color(0xFF857E8E),
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    isDense: true,
+                    contentPadding: const EdgeInsets.symmetric(
+                        horizontal: 16, vertical: 12),
+                    filled: true,
+                    fillColor: const Color(0xFFF0F4FF),
+                    enabledBorder: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderSide:
+                          BorderSide(color: Color(0xFF5DABF5), width: 2),
+                    ),
+                    focusedBorder: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderSide:
+                          BorderSide(color: Color(0xFF0466C3), width: 2),
+                    ),
+                    errorBorder: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderSide: BorderSide(color: Colors.red, width: 2),
+                    ),
+                    focusedErrorBorder: const OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      borderSide: BorderSide(color: Colors.red, width: 2),
+                    ),
+                    floatingLabelBehavior: FloatingLabelBehavior.always,
+                  ),
                 ),
                 const SizedBox(height: 24),
                 SizedBox(

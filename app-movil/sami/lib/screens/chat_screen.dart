@@ -5,7 +5,6 @@ import 'package:sami/services/chat_service.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:speech_to_text/speech_to_text.dart';
-import 'listening_overlay.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:sami/screens/prescription_screen.dart';
@@ -28,6 +27,12 @@ class _ChatScreenState extends State<ChatScreen> {
   double _soundLevel = 0;
   String _lastRecording = '';
   String _currentRecognizedText = '';
+
+  // Color constants
+  static const Color primaryBlue = Color(0xFF5DABF5);
+  static const Color botBubbleColor = Color(0xFFF0F4FF);
+  static const Color greyText = Color(0xFF857E8E);
+  static const Color lightBlue = Color(0xFFD1E0FF);
 
   @override
   void initState() {
@@ -62,7 +67,6 @@ class _ChatScreenState extends State<ChatScreen> {
     await _flutterTts.setLanguage("es-US");
     await _flutterTts.setVoice(
         {"name": "Google español de Estados Unidos", "locale": "es-US"});
-
     await _flutterTts.setSpeechRate(1.5);
     await _flutterTts.setPitch(1.3);
     await _flutterTts.setVolume(1.0);
@@ -189,26 +193,6 @@ class _ChatScreenState extends State<ChatScreen> {
     }
   }
 
-  Future<void> _speakResponse(String response) async {
-    if (_isSpeaking) {
-      await _flutterTts.stop();
-      setState(() => _isSpeaking = false);
-    } else {
-      setState(() => _isSpeaking = true);
-      await _flutterTts.speak(response);
-      setState(() => _isSpeaking = false);
-    }
-  }
-
-  Future<void> _replayLastRecording() async {
-    if (_lastRecording.isNotEmpty) {
-      setState(() {
-        _messageController.text = _lastRecording;
-      });
-      _handleSubmitted(_lastRecording);
-    }
-  }
-
   Future<Map<String, dynamic>> _fetchPatientData() async {
     final response = await http
         .get(Uri.parse('http://localhost:3000/api/patients/1105589426'));
@@ -266,6 +250,35 @@ class _ChatScreenState extends State<ChatScreen> {
     );
   }
 
+  Widget _buildRecordingIndicator() {
+    return Container(
+      padding: const EdgeInsets.all(16.0),
+      color: lightBlue.withOpacity(0.3),
+      child: Row(
+        children: [
+          Icon(Icons.mic, color: primaryBlue, size: 24),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Text(
+              _currentRecognizedText.isEmpty
+                  ? 'Escuchando...'
+                  : _currentRecognizedText,
+              style: TextStyle(color: greyText),
+            ),
+          ),
+          IconButton(
+            icon: const Icon(Icons.close),
+            color: greyText,
+            onPressed: () {
+              _speech.stop();
+              setState(() => _isListening = false);
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
   @override
   void dispose() {
     _flutterTts.stop();
@@ -274,75 +287,61 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Scaffold(
-          appBar: AppBar(
-            leading: const BackButton(),
-            title: Row(
-              children: [
-                Container(
-                  width: 40,
-                  height: 40,
-                  decoration: const BoxDecoration(
-                    shape: BoxShape.circle,
-                    image: DecorationImage(
-                      image: AssetImage('assets/img/Sami.png'),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
+    return Scaffold(
+      appBar: AppBar(
+        leading: const BackButton(),
+        title: Row(
+          children: [
+            Container(
+              width: 40,
+              height: 40,
+              decoration: const BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(
+                  image: AssetImage('assets/img/Sami.png'),
+                  fit: BoxFit.cover,
                 ),
-                const SizedBox(width: 8),
-                Text('SAMI',
-                    style: GoogleFonts.roboto(
-                        textStyle: const TextStyle(
-                            fontSize: 18, fontWeight: FontWeight.bold),
-                        color: Colors.black)),
-              ],
+              ),
             ),
-            actions: [
-              IconButton(
-                icon: const Icon(Icons.more_vert),
-                onPressed: () {},
-              ),
-            ],
-          ),
-          body: Column(
-            children: [
-              Expanded(
-                child: ListView.builder(
-                  padding: const EdgeInsets.all(8.0),
-                  reverse: true,
-                  itemCount: _messages.length,
-                  itemBuilder: (_, index) =>
-                      _messages[_messages.length - 1 - index],
-                ),
-              ),
-              if (_isLoading)
-                const Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: CircularProgressIndicator(),
-                ),
-              const Divider(height: 1.0),
-              Container(
-                decoration: BoxDecoration(color: Theme.of(context).cardColor),
-                child: _buildTextComposer(),
-              ),
-            ],
-          ),
+            const SizedBox(width: 8),
+            Text('SAMI',
+                style: GoogleFonts.roboto(
+                    textStyle: const TextStyle(
+                        fontSize: 18, fontWeight: FontWeight.bold),
+                    color: Colors.black)),
+          ],
         ),
-        if (_isListening)
-          ListeningOverlay(
-            onClose: () {
-              _speech.stop();
-              setState(() => _isListening = false);
-            },
-            soundLevel: _soundLevel,
-            recognizedText: _currentRecognizedText,
-            onReplay: _lastRecording.isNotEmpty ? _replayLastRecording : null,
-            lastRecording: _lastRecording,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.more_vert),
+            onPressed: () {},
           ),
-      ],
+        ],
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              padding: const EdgeInsets.all(8.0),
+              reverse: true,
+              itemCount: _messages.length,
+              itemBuilder: (_, index) =>
+                  _messages[_messages.length - 1 - index],
+            ),
+          ),
+          if (_isLoading)
+            const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: CircularProgressIndicator(),
+            ),
+          const Divider(height: 1.0),
+          Container(
+            decoration: BoxDecoration(color: Theme.of(context).cardColor),
+            child: _buildTextComposer(),
+          ),
+          if (_isListening) _buildRecordingIndicator(),
+        ],
+      ),
     );
   }
 
@@ -353,18 +352,29 @@ class _ChatScreenState extends State<ChatScreen> {
         children: [
           IconButton(
             icon: Icon(_isListening ? Icons.mic : Icons.mic_none),
+            color: primaryBlue,
             onPressed: _listen,
           ),
           Expanded(
             child: TextField(
               controller: _messageController,
-              decoration: const InputDecoration(
+              decoration: InputDecoration(
                 hintText: 'Enviar un mensaje...',
+                hintStyle: TextStyle(color: greyText),
                 border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                  borderRadius: BorderRadius.circular(20.0),
+                  borderSide: BorderSide(color: lightBlue),
+                ),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                  borderSide: BorderSide(color: lightBlue),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(20.0),
+                  borderSide: BorderSide(color: primaryBlue),
                 ),
                 contentPadding:
-                    EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
               ),
               onSubmitted: _handleSubmitted,
             ),
@@ -372,7 +382,8 @@ class _ChatScreenState extends State<ChatScreen> {
           const SizedBox(width: 8.0),
           FloatingActionButton(
             onPressed: () => _handleSubmitted(_messageController.text),
-            child: const Icon(Icons.send),
+            backgroundColor: primaryBlue,
+            child: const Icon(Icons.send, color: Colors.white),
           ),
         ],
       ),
@@ -391,6 +402,9 @@ class ChatMessage extends StatelessWidget {
     this.isBot = false,
     this.showOptions = false,
   });
+
+  static const Color primaryBlue = Color(0xFF5DABF5);
+  static const Color botBubbleColor = Color(0xFFF0F4FF);
 
   @override
   Widget build(BuildContext context) {
@@ -417,9 +431,7 @@ class ChatMessage extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(12.0),
                   decoration: BoxDecoration(
-                    color: isBot
-                        ? Colors.grey[200]
-                        : Theme.of(context).primaryColor,
+                    color: isBot ? botBubbleColor : primaryBlue,
                     borderRadius: BorderRadius.circular(16.0),
                   ),
                   child: Row(
@@ -451,11 +463,11 @@ class ChatMessage extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
+                        Text(
                           'Opciones más comunes',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            color: Colors.black87,
+                            color: primaryBlue,
                           ),
                         ),
                         const SizedBox(height: 8.0),
@@ -551,7 +563,7 @@ class _TtsButtonState extends State<TtsButton> {
     return IconButton(
       icon: Icon(_isSpeaking ? Icons.stop : Icons.volume_up),
       onPressed: _toggleSpeech,
-      color: Colors.black87,
+      color: _ChatScreenState.greyText,
       iconSize: 20,
       padding: EdgeInsets.zero,
       constraints: const BoxConstraints(),
@@ -580,8 +592,11 @@ class _OptionButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextButton.icon(
       onPressed: onPressed,
-      icon: Icon(icon, size: 18),
-      label: Text(text),
+      icon: Icon(icon, size: 18, color: _ChatScreenState.primaryBlue),
+      label: Text(
+        text,
+        style: TextStyle(color: _ChatScreenState.primaryBlue),
+      ),
       style: TextButton.styleFrom(
         alignment: Alignment.centerLeft,
         padding: const EdgeInsets.symmetric(vertical: 4.0),
